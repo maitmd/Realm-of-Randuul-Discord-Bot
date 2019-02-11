@@ -26,7 +26,7 @@ public class RollDice {
 			message = message + " [" + String.valueOf(rolls[i]) + "]";
 		}
 		
-		channel.sendMessage(message).complete();
+		try{channel.sendMessage(message).complete();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").complete(); }
 	}
 	
 	public int[] rollDice(int[] list, int amount, int value) {
