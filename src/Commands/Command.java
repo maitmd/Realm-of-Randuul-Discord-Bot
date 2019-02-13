@@ -1,9 +1,10 @@
 package Commands;
+import java.util.List;
+
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.utils.cache.MemberCacheView;
 
 public class Command extends ListenerAdapter{
 	private JDA jda;
@@ -17,6 +18,7 @@ public class Command extends ListenerAdapter{
 		String content = event.getMessage().getContentDisplay();
 		Message msg = event.getMessage();
 		MessageChannel channel = event.getChannel();
+		List<Member> mem = msg.getMentionedMembers();
 		
 		if(content.startsWith("!")) {
 			switch(getCommand(content)){
@@ -34,6 +36,8 @@ public class Command extends ListenerAdapter{
 				jda.shutdownNow();
 				break;
 			case "user":
+				Member test = mem.get(0);
+				channel.sendMessage(test.getEffectiveName() + " " + test.getNickname() + " " + test.getRoles() + " " + test.getJoinDate()).complete();
 		    	break;
 			}
 		}
