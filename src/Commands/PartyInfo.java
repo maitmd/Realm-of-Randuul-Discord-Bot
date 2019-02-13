@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class PartyInfo extends Command{
 	 
-	int partyLevel = 11;
+	private int partyLevel = 11;
 	public PartyInfo(MessageChannel channel,JDA jda) {
 		super(jda);
 		channel.sendMessage("The party is level " + partyLevel).queue();
