@@ -18,7 +18,7 @@ public class RollDice {
 			case "stats":
 				rolls = new int[6];
 				rollStats(rolls);
-				channel.sendMessage("Time to create a new destiny.").complete();
+				channel.sendMessage("Time to create a new destiny.").queue();
 				break;
 				
 			case "table":
@@ -29,13 +29,13 @@ public class RollDice {
 					diceAmount = Integer.parseInt(content.substring(content.indexOf(" ")+1, content.indexOf("d")));
 					diceValue = Integer.parseInt(content.substring(content.indexOf("d")+1));
 				}catch(Exception e){
-					channel.sendMessage("My creation, you do not understand what a dice is do you?").complete();
+					channel.sendMessage("My creation, you do not understand what a dice is do you?").queue();
 					return;
 				}
 				
 				rolls = new int[diceAmount];
 				
-				channel.sendMessage("Your fate is being unraveled as we speak.").complete();
+				channel.sendMessage("Your fate is being unraveled as we speak.").queue();
 				rollDice(rolls, diceValue);
 		}
 		
@@ -47,7 +47,7 @@ public class RollDice {
 			output = output + " [" + String.valueOf(rolls[i]) + "]";
 		}
 		
-		try{channel.sendMessage(output).queue();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").complete(); }
+		try{channel.sendMessage(output).queue();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").queue(); }
 	}
 	
 	public int[] rollDice(int[] list, int value) {

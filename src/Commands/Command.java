@@ -3,6 +3,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.utils.cache.MemberCacheView;
 
 public class Command extends ListenerAdapter{
 	private JDA jda;
@@ -32,6 +33,8 @@ public class Command extends ListenerAdapter{
 			case "collapse":
 				jda.shutdownNow();
 				break;
+			case "user":
+		    	break;
 			}
 		}
 		
