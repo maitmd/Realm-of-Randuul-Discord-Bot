@@ -20,13 +20,14 @@ public class RollDice {
 		
 		rolls = new int[diceAmount];
 		
+		channel.sendMessage("Your fate is being unraveled as we speak.").complete();
 		rollDice(rolls, diceAmount, diceValue);
 		
 		for(int i = 0; i < rolls.length; i++) {
 			message = message + " [" + String.valueOf(rolls[i]) + "]";
 		}
 		
-		try{channel.sendMessage(message).complete();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").complete(); }
+		try{channel.sendMessage(message).queue();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").complete(); }
 	}
 	
 	public int[] rollDice(int[] list, int amount, int value) {
