@@ -1,19 +1,26 @@
 package Data;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+
+import net.dv8tion.jda.core.entities.Member;
 
 public class Player {
 
 	public String name;
-	public ZonedDateTime joinDate;
+	public OffsetDateTime joinDate;
 	public ArrayList<Campaign> campaigns;
 	public ArrayList<Character> characters;
+	private Member member;
+	private int numCharacters;
+	private int numCampaigns;
 	
-	public Player(ArrayList<Character> chars, ArrayList<Campaign> camp, String name) {
-		characters = chars;
-		campaigns = camp;
+	public Player(Member member, String name) {
+		this.member = member;
 		this.name = name;
+		characters = new ArrayList<Character>();
+		campaigns = new ArrayList<Campaign>();
+		joinDate = member.getJoinDate();
 	}
 	
 	public void getInfo() {
@@ -24,16 +31,22 @@ public class Player {
 		this.name = name;
 	}
 	
-	public void setCampaigns(ArrayList<Campaign> camp) {
-		campaigns = camp;
+	public void addCharacter(String name) {
+		characters.add(new Character(this, name));
 	}
 	
-	public void setCharacters(ArrayList<Character> chars) {
-		characters = chars;
+	public Character getCharacter(String name){
+		for(int i = 0; i < getCharacters().size(); i++) {
+			if(getCharacters().get(i).getName().equalsIgnoreCase(name)) {
+				return getCharacters().get(i);
+			}
+		}
+		
+		return null;
 	}
 	
-	public void setJoinDate(ZonedDateTime join) {
-		joinDate = join;
+	public Member getMember() {
+		return member;
 	}
 	
 	public String getName() {
@@ -48,7 +61,7 @@ public class Player {
 		return characters;
 	}
 	
-	public ZonedDateTime getJoinDate() {
+	public OffsetDateTime getJoinDate() {
 		return joinDate;
 	}
 }

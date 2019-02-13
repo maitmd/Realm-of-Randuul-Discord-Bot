@@ -2,7 +2,7 @@ package Commands;
 
 import net.dv8tion.jda.core.entities.MessageChannel;
 
-public class RollDice {
+public class RollDice extends Command{
 	private int diceValue;
 	private int diceAmount;
 	private int[] rolls;
@@ -10,6 +10,7 @@ public class RollDice {
 	private String args;
 	
 	public RollDice(MessageChannel channel, String content) {
+		super();
 		output = " ";
 		
 		args = content.substring(content.indexOf(" ")+1);
@@ -67,7 +68,7 @@ public class RollDice {
 		int[] indvStat = new int[4];
 		int [] stats = list;
 		
-		for(int j = 0; j < 6; j++) {
+		for(int j = 0; j < stats.length; j++) {
 			rollDice(indvStat, 6);
 			
 			for(int i = 0; i < indvStat.length;i++) {

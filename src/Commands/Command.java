@@ -7,23 +7,17 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class Command extends ListenerAdapter{
-	private JDA jda;
-	
-	public Command(JDA jda) {
-		this.jda = jda;
-	}
-	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {	
 		String content = event.getMessage().getContentDisplay();
 		Message msg = event.getMessage();
 		MessageChannel channel = event.getChannel();
-		List<Member> mem = msg.getMentionedMembers();
+		Member mem = event.getMember();
 		
 		if(content.startsWith("!")) {
 			switch(getCommand(content)){
 			case "partyinfo":
-				new PartyInfo(channel, jda);
+				new PartyInfo(channel);
 				break;
 			case "roll":
 				new RollDice(channel, content);
@@ -32,13 +26,14 @@ public class Command extends ListenerAdapter{
 				break;
 			case "countdown":
 				break;
-			case "collapse":
-				jda.shutdownNow();
-				break;
 			case "user":
-				Member test = mem.get(0);
-				channel.sendMessage(test.getEffectiveName() + " " + test.getNickname() + " " + test.getRoles() + " " + test.getJoinDate()).complete();
 		    	break;
+			case "create":
+				new Create(channel, content, mem);
+				break;
+			case "charinfo":
+				new CharInfo(channel, content);
+				break;
 			}
 		}
 		
