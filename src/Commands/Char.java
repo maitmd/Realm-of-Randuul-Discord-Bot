@@ -15,11 +15,15 @@ public class Char extends Command{
 	
 	public Char(MessageChannel channel, String content, Member member) {
 		ArrayList<String> args = getArgs(content, 1);
+		Player player = GensoRanduul.getPlayer(member.getEffectiveName());
 		
+		//View
 		if(args.get(0).equals("view")) {
 			try{args = getArgs(content, 2);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue(); return;}
 			Data.Character character = getCharacter(args.get(1));
 			try{character.displayCharacter(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue(); return;}
+		
+		//Edit
 		}else if(args.get(0).equals("edit")) {
 			try{args = getArgs(content,4);}catch(Exception e) {
 				channel.sendMessage("What don't you like about this one..").queue();
@@ -62,23 +66,26 @@ public class Char extends Command{
 				channel.sendMessage("That destiny has yet to be created.").queue(); 
 				return;
 			}
+		
+		//Create
 		}else if(args.get(0).equals("create")) {
-			Player temp = GensoRanduul.getPlayer(member);
 			args = getArgs(content, 2);
 			String name = null;
 			try{name = args.get(1);}catch(Exception e) 
 			{channel.sendMessage("I suppose I won't be able to collaborate after all.").queue(); 
 			return;
 			}
-			if(temp != null) {
-				temp.addCharacter(name);
+			if(player != null) {
+				player.addCharacter(name);
 				channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getEffectiveName() + ".").queue();
 			}else {
-				temp = new Player(member, member.getEffectiveName());
-				GensoRanduul.addPlayer(temp);
-				temp.addCharacter(name);
+				player = new Player(member.getEffectiveName());
+				GensoRanduul.addPlayer(player);
+				player.addCharacter(name);
 				channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getEffectiveName() + ".").queue();
 			}
+			
+		//Generate
 		}else if(args.get(0).equals("generate")) {
 			try{args = getArgs(content,2);}catch(Exception e) {
 				channel.sendMessage("This destiny hasn't been created yet..").queue();
@@ -88,7 +95,8 @@ public class Char extends Command{
 			Data.Character character = getCharacter(args.get(1));
 			character.generate();
 			channel.sendMessage("A new soul is born.").queue();
-			
+		
+		//Level Up
 		}else if(args.get(0).equals("levelup")) {
 			try{args = getArgs(content,2);}catch(Exception e) {
 				channel.sendMessage("This destiny hasn't been created yet..").queue();
@@ -100,6 +108,8 @@ public class Char extends Command{
 			channel.sendMessage("Grow child.").queue();
 			
 		}
+		
+		player.save();
 	}
 	
 	public Data.Character getCharacter(String name) {

@@ -1,26 +1,41 @@
 package Data;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
-import net.dv8tion.jda.core.entities.Member;
+public class Player implements Serializable{
 
-public class Player {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String name;
 	public OffsetDateTime joinDate;
 	public ArrayList<Campaign> campaigns;
 	public ArrayList<Character> characters;
-	private Member member;
 	private int numCharacters;
 	private int numCampaigns;
 	
-	public Player(Member member, String name) {
-		this.member = member;
+	public Player(String name) {
 		this.name = name;
 		characters = new ArrayList<Character>();
 		campaigns = new ArrayList<Campaign>();
-		joinDate = member.getJoinDate();
+		numCharacters = 0;
+		numCampaigns = 0;
+	}
+	
+	public void save() {
+		try {
+			FileOutputStream f = new FileOutputStream(new File("players.txt"));
+			ObjectOutputStream o = new ObjectOutputStream(f);
+			
+			o.writeObject(this);
+			o.close();
+		}catch(Exception e) {}
 	}
 	
 	public void getInfo() {
@@ -33,6 +48,7 @@ public class Player {
 	
 	public void addCharacter(String name) {
 		characters.add(new Character(this, name));
+		numCharacters++;
 	}
 	
 	public Character getCharacter(String name){
@@ -43,10 +59,6 @@ public class Player {
 		}
 		
 		return null;
-	}
-	
-	public Member getMember() {
-		return member;
 	}
 	
 	public String getName() {

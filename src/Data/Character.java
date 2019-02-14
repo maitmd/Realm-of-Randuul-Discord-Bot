@@ -1,15 +1,20 @@
 package Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import Commands.RollDice;
 import net.dv8tion.jda.core.entities.MessageChannel;
 
-public class Character {
+public class Character implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final String[] RACES = {"Dragonborn", "Dwarf", "Elf", 
 									"Gnome", "Half-Elf", "Halfling", "Half-Orc", "Human", 
 									"Tiefling", "Aarakocra", "Genasi", "Golitah", "Dwarf", 
-									"Aasimar", "Gobling", "Firbolg", "Kenku", "Kobold", 
+									"Aasimar", "Goblin", "Firbolg", "Kenku", "Kobold", 
 									"Hobgoblin", "Lizarkfolk", "Orc", "Tabaxi", "Yuan-ti", 
 									"Changeling", "Shifter", "Warforged", "Loxodon", "Centaur"};
 	private final String[] CLASSES = {"Barbarian", "Bard", "Cleric", "Fighter", 
