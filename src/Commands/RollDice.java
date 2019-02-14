@@ -51,7 +51,7 @@ public class RollDice extends Command{
 		try{channel.sendMessage(output).queue();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").queue(); }
 	}
 	
-	public int[] rollDice(int[] list, int value) {
+	public static int[] rollDice(int[] list, int value) {
 		int[] rolls = list;
 		int random;
 		for(int i = 0; i < list.length; i++) {
@@ -62,7 +62,7 @@ public class RollDice extends Command{
 		return rolls;
 	}
 	
-	public int[] rollStats(int[] list){
+	public static int[] rollStats(int[] list){
 		int lowest = -1;
 		int single = 0;
 		int[] indvStat = new int[4];

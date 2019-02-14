@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import Data.Player;
 import Main.GensoRanduul;
-public class Create {
+public class Create extends Command{
 	
-	public Create(MessageChannel channel, String content, Member member) {
+	public Create(MessageChannel channel, String content, Member member){
 		String command = content.substring(content.indexOf(" ")+1);
 		String arg = command.substring(command.indexOf(" ")+1);
 		
