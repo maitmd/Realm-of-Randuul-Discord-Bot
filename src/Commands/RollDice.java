@@ -44,6 +44,12 @@ public class RollDice extends Command{
 	}
 	
 	public void sendRolls(MessageChannel channel) {
+		int length = output.length()/4;
+		int split1 = output.length()-length;
+		int split2 = split1 - length;
+		int split3 = split2 - length;
+		int split4 = split3 - length;
+		
 		for(int i = 0; i < rolls.length; i++) {
 			output = output + " [" + String.valueOf(rolls[i]) + "]";
 		}
@@ -63,7 +69,7 @@ public class RollDice extends Command{
 	}
 	
 	public static int[] rollStats(int[] list){
-		int lowest = -1;
+		int lowest = 1000;
 		int single = 0;
 		int[] indvStat = new int[4];
 		int [] stats = list;
@@ -84,6 +90,7 @@ public class RollDice extends Command{
 			}
 			
 				stats[j] = single;
+				lowest = 1000;
 				single = 0;
 		}
 		
