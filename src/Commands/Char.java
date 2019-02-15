@@ -37,7 +37,7 @@ public class Char extends Command{
 			
 			try{
 				character = getCharacter(name);
-			
+			if(character.getPlayer().getName().equals(member.getEffectiveName())){
 			
 				switch(stat) {
 					case "level":
@@ -62,6 +62,9 @@ public class Char extends Command{
 						character.setStat(stat, Integer.parseInt(value));
 						break;
 					}
+			}else{
+				channel.sendMessage("Hands to your own creations!").queue();
+			}
 			}catch(Exception e) {
 				channel.sendMessage("That destiny has yet to be created.").queue(); 
 				return;
@@ -93,8 +96,13 @@ public class Char extends Command{
 			}
 			
 			Data.Character character = getCharacter(args.get(1));
-			character.generate();
-			channel.sendMessage("A new soul is born.").queue();
+			
+				if(character.getPlayer().getName().equals(member.getEffectiveName())){
+					character.generate();
+					channel.sendMessage("A new soul is born.").queue();
+				}else{
+					channel.sendMessage("Hands to your own creations!").queue();
+				}
 		
 		//Level Up
 		}else if(args.get(0).equals("levelup")) {
@@ -106,6 +114,8 @@ public class Char extends Command{
 			Data.Character character = getCharacter(args.get(1));
 			character.levelUp();
 			channel.sendMessage("Grow child.").queue();
+			
+		}else if(args.get(0).equals("remove")) {
 			
 		}
 		

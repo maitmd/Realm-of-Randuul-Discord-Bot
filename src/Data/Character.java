@@ -155,4 +155,8 @@ public class Character implements Serializable{
 				break;
 		}
 	}
+	
+	public Player getPlayer(){
+		return player;
+	}
 }
