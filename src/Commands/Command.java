@@ -13,7 +13,7 @@ public class Command extends ListenerAdapter{
 		Message msg = event.getMessage();
 		String content = msg.getContentDisplay();
 		MessageChannel channel = event.getChannel();
-		Member mem = event.getMember();
+		User mem = event.getMember().getUser();
 		
 		if(content.startsWith("!")) {
 			switch(getCommand(content)){

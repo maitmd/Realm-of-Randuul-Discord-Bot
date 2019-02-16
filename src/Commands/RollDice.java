@@ -67,7 +67,6 @@ public class RollDice extends Command{
 		int single = 0;
 		int[] indvStat = new int[4];
 		int [] stats = list;
-		
 		for(int j = 0; j < stats.length; j++) {
 			rollDice(indvStat, 6);
 			

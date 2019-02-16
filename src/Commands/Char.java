@@ -1,9 +1,7 @@
 package Commands;
 
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.User;
 
 import java.util.ArrayList;
 
@@ -13,9 +11,9 @@ import Main.GensoRanduul;
 
 public class Char extends Command{
 	
-	public Char(MessageChannel channel, String content, Member member) {
+	public Char(MessageChannel channel, String content, User member) {
 		ArrayList<String> args = getArgs(content, 1);
-		Player player = GensoRanduul.getPlayer(member.getEffectiveName());
+		Player player = GensoRanduul.getPlayer(member.getName());
 		
 		//View
 		if(args.get(0).equals("view")) {
@@ -37,7 +35,7 @@ public class Char extends Command{
 			
 			try{
 				character = getCharacter(name);
-			if(character.getPlayer().getName().equals(member.getEffectiveName())){
+			if(character.getPlayer().getName().equals(member.getName())){
 			
 				switch(stat) {
 					case "level":
@@ -80,12 +78,12 @@ public class Char extends Command{
 			}
 			if(player != null) {
 				player.addCharacter(name);
-				channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getEffectiveName() + ".").queue();
+				channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getName() + ".").queue();
 			}else {
-				player = new Player(member.getEffectiveName());
+				player = new Player(member.getName());
 				GensoRanduul.addPlayer(player);
 				player.addCharacter(name);
-				channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getEffectiveName() + ".").queue();
+				channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getName() + ".").queue();
 			}
 			
 		//Generate
@@ -97,7 +95,7 @@ public class Char extends Command{
 			
 			Data.Character character = getCharacter(args.get(1));
 			
-				if(character.getPlayer().getName().equals(member.getEffectiveName())){
+				if(character.getPlayer().getName().equals(member.getName())){
 					character.generate();
 					channel.sendMessage("A new soul is born.").queue();
 				}else{
