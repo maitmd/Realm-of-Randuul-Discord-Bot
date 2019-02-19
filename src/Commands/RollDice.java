@@ -63,11 +63,10 @@ public class RollDice extends Command{
 	}
 	
 	public static int[] rollStats(int[] list){
-		int lowest = -1;
+		int lowest = 1000;
 		int single = 0;
 		int[] indvStat = new int[4];
 		int [] stats = list;
-		
 		for(int j = 0; j < stats.length; j++) {
 			rollDice(indvStat, 6);
 			
@@ -84,6 +83,7 @@ public class RollDice extends Command{
 			}
 			
 				stats[j] = single;
+				lowest = 1000;
 				single = 0;
 		}
 		

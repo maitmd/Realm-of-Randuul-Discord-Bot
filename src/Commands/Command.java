@@ -14,6 +14,7 @@ public class Command extends ListenerAdapter{
 		String content = msg.getContentDisplay();
 		MessageChannel channel = event.getChannel();
 		Member mem = event.getMember();
+		List<Member> men = msg.getMentionedMembers();
 		
 		if(content.startsWith("!")) {
 			switch(getCommand(content)){
@@ -26,7 +27,8 @@ public class Command extends ListenerAdapter{
 				break;
 			case "countdown":
 				break;
-			case "user":
+			case "player":
+				new PlayerC(channel, content, mem, men);
 		    	break;
 			case "char":
 				new Char(channel, content, mem);
@@ -38,11 +40,14 @@ public class Command extends ListenerAdapter{
 	
 	public ArrayList<String> getArgs(String msg, int args){
 		String content = msg.substring(msg.indexOf(" ")+1);
-		String split;
 		ArrayList<String> argList = new ArrayList<String>();
-		
+
 		if(args == 1) {
-			argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
+			try{
+				argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
+			}catch(IndexOutOfBoundsException iob){
+				argList.add(content.substring(content.indexOf(content)));
+			}
 		}else {
 			for(int i = 0; i < args-1; i++) {
 				argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));

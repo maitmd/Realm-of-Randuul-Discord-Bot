@@ -52,8 +52,8 @@ public class Character implements Serializable{
 		return name;
 	}
 	
-	public void displayCharacter(MessageChannel channel) {
-		channel.sendMessage("`" + name + "`\r\n" + 
+	public void display(MessageChannel channel) {
+		channel.sendMessage("**" + name + "**\r\n" + 
 				"```" + player.getName() + "'s Character\r\n" + 
 				"Campaign: [Campaign]\r\n" + 
 				"Level: " + level + "\r\n" + 
@@ -154,5 +154,9 @@ public class Character implements Serializable{
 				cha = value;
 				break;
 		}
+	}
+	
+	public Player getPlayer(){
+		return player;
 	}
 }

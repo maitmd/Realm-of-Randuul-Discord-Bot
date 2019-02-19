@@ -1,9 +1,8 @@
 package Commands;
 
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.User;
 
 import java.util.ArrayList;
 
@@ -15,13 +14,10 @@ public class Char extends Command{
 	
 	public Char(MessageChannel channel, String content, Member member) {
 		ArrayList<String> args = getArgs(content, 1);
-		Player player = GensoRanduul.getPlayer(member.getEffectiveName());
-		
+		User user = member.getUser();
+		Player player = GensoRanduul.getPlayer(user.getName());
 		//View
 		if(args.get(0).equals("view")) {
-			try{args = getArgs(content, 2);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue(); return;}
-			Data.Character character = getCharacter(args.get(1));
-			try{character.displayCharacter(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue(); return;}
 		
 		//Edit
 		}else if(args.get(0).equals("edit")) {
@@ -35,9 +31,8 @@ public class Char extends Command{
 			String value = args.get(3);
 			Data.Character character;
 			
-			try{
-				character = getCharacter(name);
-			
+			character = getCharacter(name);
+			if(character.getPlayer().getName().equals(user.getName())){
 			
 				switch(stat) {
 					case "level":
@@ -62,40 +57,36 @@ public class Char extends Command{
 						character.setStat(stat, Integer.parseInt(value));
 						break;
 					}
-			}catch(Exception e) {
-				channel.sendMessage("That destiny has yet to be created.").queue(); 
-				return;
+			}else{
+				channel.sendMessage("Hands to your own creations!").queue();
 			}
-		
+			
 		//Create
 		}else if(args.get(0).equals("create")) {
-			args = getArgs(content, 2);
-			String name = null;
-			try{name = args.get(1);}catch(Exception e) 
-			{channel.sendMessage("I suppose I won't be able to collaborate after all.").queue(); 
-			return;
-			}
-			if(player != null) {
-				player.addCharacter(name);
-				channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getEffectiveName() + ".").queue();
-			}else {
-				player = new Player(member.getEffectiveName());
-				GensoRanduul.addPlayer(player);
-				player.addCharacter(name);
-				channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getEffectiveName() + ".").queue();
-			}
+			create(user, channel, content, player, args);
 			
 		//Generate
 		}else if(args.get(0).equals("generate")) {
+			
 			try{args = getArgs(content,2);}catch(Exception e) {
 				channel.sendMessage("This destiny hasn't been created yet..").queue();
 				return;
 			}
 			
 			Data.Character character = getCharacter(args.get(1));
-			character.generate();
-			channel.sendMessage("A new soul is born.").queue();
-		
+			
+			if(character == null){
+				create(user, channel, content, player, args);
+				character = getCharacter(args.get(1));
+			}
+			
+			if(character.getPlayer().getName().equals(user.getName())){
+				character.generate();
+				channel.sendMessage("A new soul is born.").queue();
+			}else{
+				channel.sendMessage("Hands to your own creations!").queue();
+			}
+			
 		//Level Up
 		}else if(args.get(0).equals("levelup")) {
 			try{args = getArgs(content,2);}catch(Exception e) {
@@ -107,11 +98,43 @@ public class Char extends Command{
 			character.levelUp();
 			channel.sendMessage("Grow child.").queue();
 			
+			view(channel, content, args);
+			
+		}else if(args.get(0).equals("remove")) {
+			args = getArgs(content, 2);
+			player.removeCharacter(args.get(1));
+			channel.sendMessage("You remain in the memories").queue();
+			player.save();
+			return;
 		}
 		
 		player.save();
+		view(channel, content, args);
 	}
 	
+	public void create(User member, MessageChannel channel, String content, Player player, ArrayList<String> args){
+		args = getArgs(content, 2);
+		String name = null;
+		try{name = args.get(1);}catch(Exception e) 
+		{channel.sendMessage("I suppose I won't be able to collaborate after all.").queue(); 
+		return;
+		}
+		if(player != null) {
+			player.addCharacter(name);
+			channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getName() + ".").queue();
+		}else {
+			player = new Player(member.getName());
+			GensoRanduul.addPlayer(player);
+			player.addCharacter(name);
+			channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getName() + ".").queue();
+		}
+	}
+	
+	public void view(MessageChannel channel, String content, ArrayList<String> args){
+		Data.Character character = getCharacter(args.get(1));
+		try{character.display(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue();}
+	}
+		
 	public Data.Character getCharacter(String name) {
 		ArrayList<Player> players = GensoRanduul.getPlayers();
 		Data.Character character = null;
