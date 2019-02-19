@@ -1,5 +1,6 @@
 package Commands;
 
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
@@ -11,10 +12,10 @@ import Main.GensoRanduul;
 
 public class Char extends Command{
 	
-	public Char(MessageChannel channel, String content, User member) {
+	public Char(MessageChannel channel, String content, Member member) {
 		ArrayList<String> args = getArgs(content, 1);
-		Player player = GensoRanduul.getPlayer(member.getName());
-		
+		User user = member.getUser();
+		Player player = GensoRanduul.getPlayer(user.getName());
 		//View
 		if(args.get(0).equals("view")) {
 		
@@ -31,7 +32,7 @@ public class Char extends Command{
 			Data.Character character;
 			
 			character = getCharacter(name);
-			if(character.getPlayer().getName().equals(member.getName())){
+			if(character.getPlayer().getName().equals(user.getName())){
 			
 				switch(stat) {
 					case "level":
@@ -62,7 +63,7 @@ public class Char extends Command{
 			
 		//Create
 		}else if(args.get(0).equals("create")) {
-			create(member, channel, content, player, args);
+			create(user, channel, content, player, args);
 			
 		//Generate
 		}else if(args.get(0).equals("generate")) {
@@ -75,11 +76,11 @@ public class Char extends Command{
 			Data.Character character = getCharacter(args.get(1));
 			
 			if(character == null){
-				create(member, channel, content, player, args);
+				create(user, channel, content, player, args);
 				character = getCharacter(args.get(1));
 			}
 			
-			if(character.getPlayer().getName().equals(member.getName())){
+			if(character.getPlayer().getName().equals(user.getName())){
 				character.generate();
 				channel.sendMessage("A new soul is born.").queue();
 			}else{
@@ -100,7 +101,11 @@ public class Char extends Command{
 			view(channel, content, args);
 			
 		}else if(args.get(0).equals("remove")) {
-			
+			args = getArgs(content, 2);
+			player.removeCharacter(args.get(1));
+			channel.sendMessage("You remain in the memories").queue();
+			player.save();
+			return;
 		}
 		
 		player.save();
@@ -127,7 +132,7 @@ public class Char extends Command{
 	
 	public void view(MessageChannel channel, String content, ArrayList<String> args){
 		Data.Character character = getCharacter(args.get(1));
-		try{character.displayCharacter(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue();}
+		try{character.display(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue();}
 	}
 		
 	public Data.Character getCharacter(String name) {

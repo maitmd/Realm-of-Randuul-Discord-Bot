@@ -52,7 +52,7 @@ public class Character implements Serializable{
 		return name;
 	}
 	
-	public void displayCharacter(MessageChannel channel) {
+	public void display(MessageChannel channel) {
 		channel.sendMessage("**" + name + "**\r\n" + 
 				"```" + player.getName() + "'s Character\r\n" + 
 				"Campaign: [Campaign]\r\n" + 
