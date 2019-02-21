@@ -6,32 +6,29 @@ import net.dv8tion.jda.core.entities.User;
 
 import java.util.ArrayList;
 
-import Data.Character;
 import Data.Player;
 import Main.GensoRanduul;
 
 public class Char extends Command{
 	
 	public Char(MessageChannel channel, String content, Member member) {
-		ArrayList<String> args = getArgs(content, 1);
+		ArrayList<String> args = getArgs(content, 2);
 		User user = member.getUser();
 		Player player = GensoRanduul.getPlayer(user.getName());
+		Data.Character character = getCharacter(args.get(1));
 		//View
-		if(args.get(0).equals("view")) {
-		
+		if(args.get(1).equals("view")) {
+			
 		//Edit
-		}else if(args.get(0).equals("edit")) {
+		}else if(args.get(1).equals("edit")) {
 			try{args = getArgs(content,4);}catch(Exception e) {
 				channel.sendMessage("What don't you like about this one..").queue();
 				return;
 			}
 			
-			String name = args.get(1);
 			String stat = args.get(2);
 			String value = args.get(3);
-			Data.Character character;
 			
-			character = getCharacter(name);
 			if(character.getPlayer().getName().equals(user.getName())){
 			
 				switch(stat) {
@@ -62,22 +59,20 @@ public class Char extends Command{
 			}
 			
 		//Create
-		}else if(args.get(0).equals("create")) {
+		}else if(args.get(1).equals("create")) {
 			create(user, channel, content, player, args);
 			
 		//Generate
-		}else if(args.get(0).equals("generate")) {
+		}else if(args.get(1).equals("generate")) {
 			
 			try{args = getArgs(content,2);}catch(Exception e) {
 				channel.sendMessage("This destiny hasn't been created yet..").queue();
 				return;
 			}
 			
-			Data.Character character = getCharacter(args.get(1));
-			
 			if(character == null){
 				create(user, channel, content, player, args);
-				character = getCharacter(args.get(1));
+				character = getCharacter(args.get(0));
 			}
 			
 			if(character.getPlayer().getName().equals(user.getName())){
@@ -88,24 +83,24 @@ public class Char extends Command{
 			}
 			
 		//Level Up
-		}else if(args.get(0).equals("levelup")) {
-			try{args = getArgs(content,2);}catch(Exception e) {
-				channel.sendMessage("This destiny hasn't been created yet..").queue();
-				return;
-			}
-			
-			Data.Character character = getCharacter(args.get(1));
-			character.levelUp();
+		}else if(args.get(1).equals("levelup")) {
+
+			try{character.levelUp();}catch(NullPointerException e){channel.sendMessage("This destiny has yet to be created.").queue(); return;}
 			channel.sendMessage("Grow child.").queue();
 			
-			view(channel, content, args);
-			
-		}else if(args.get(0).equals("remove")) {
-			args = getArgs(content, 2);
-			player.removeCharacter(args.get(1));
+		}else if(args.get(1).equals("remove")) {
+			player.removeCharacter(args.get(0));
 			channel.sendMessage("You remain in the memories").queue();
-			player.save();
 			return;
+		}else if(args.get(1).equals("attune")){
+			try{character.attune(channel);}catch(NullPointerException e){channel.sendMessage("This destiny has yet to be created.").queue(); return;}
+		}else if(args.get(1).equals("spells")){
+			args = getArgs(content,5);
+			if(args.get(2).equals("add")){
+				character.addSpell(args.get(3), Integer.parseInt(args.get(4)));
+			}else if(args.get(2).equals("view")){
+				
+			}
 		}
 		
 		player.save();
@@ -113,9 +108,8 @@ public class Char extends Command{
 	}
 	
 	public void create(User member, MessageChannel channel, String content, Player player, ArrayList<String> args){
-		args = getArgs(content, 2);
 		String name = null;
-		try{name = args.get(1);}catch(Exception e) 
+		try{name = args.get(0);}catch(Exception e) 
 		{channel.sendMessage("I suppose I won't be able to collaborate after all.").queue(); 
 		return;
 		}
@@ -131,7 +125,7 @@ public class Char extends Command{
 	}
 	
 	public void view(MessageChannel channel, String content, ArrayList<String> args){
-		Data.Character character = getCharacter(args.get(1));
+		Data.Character character = getCharacter(args.get(0));
 		try{character.display(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue();}
 	}
 		

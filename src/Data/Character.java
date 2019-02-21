@@ -36,16 +36,19 @@ public class Character implements Serializable{
 	private int wis;
 	private int cha;
 	private ArrayList<String> bag;
-	private ArrayList<String> spells;
+	private ArrayList<Spell> spells;
 	private ArrayList<String> feats;
-	private ArrayList<String> proficienies;
+	private ArrayList<String> proficiencies;
 	private int attunedItems;
-	private int hitDice;
-	private int hdAvailable;
 	
 	public Character(Player player, String name) {
 		this.player = player;
 		this.name = name;
+		this.attunedItems = 0;
+		spells = new ArrayList<Spell>();
+		feats = new ArrayList<String>();
+		bag = new ArrayList<String>();
+		proficiencies = new ArrayList<String>();
 	}
 	
 	public String getName(){
@@ -53,6 +56,7 @@ public class Character implements Serializable{
 	}
 	
 	public void display(MessageChannel channel) {
+		
 		channel.sendMessage("**" + name + "**\r\n" + 
 				"```" + player.getName() + "'s Character\r\n" + 
 				"Campaign: [Campaign]\r\n" + 
@@ -64,12 +68,18 @@ public class Character implements Serializable{
 				"HP: " + hp + "\r\n" + 
 				"Speed: " + speed + "\r\n" + 
 				"\r\n" + 
-				"Con: " + con + "\r\n" + 
-				"Str: " + str + "\r\n" + 
-				"Dex: " + dex + "\r\n" + 
-				"Int: " + inte + "\r\n" + 
-				"Wis: " + wis + "\r\n" + 
-				"Cha: " + cha + "```").queue();
+				"Con: " + con + " (" + (getModifier(con) > 0 ? "+" : "") + getModifier(con) + ")" + "\r\n" + 
+				"Str: " + str + " (" + (getModifier(str) > 0 ? "+" : "") + getModifier(str) + ")" +"\r\n" + 
+				"Dex: " + dex + " (" + (getModifier(dex) > 0 ? "+" : "") + getModifier(dex) + ")" + "\r\n" + 
+				"Int: " + inte + " (" + (getModifier(inte) > 0 ? "+" : "") + getModifier(inte) + ")" + "\r\n" + 
+				"Wis: " + wis + " (" + (getModifier(wis) > 0 ? "+" : "") + getModifier(wis) + ")" + "\r\n" + 
+				"Cha: " + cha + " (" + (getModifier(cha) > 0 ? "+" : "") + getModifier(cha) + ")" + "\r\n" +
+				"\r\n" +
+				"Attuned Items: " + attunedItems +  "\r\n" +
+				"Spells Known: " + spells.size() +  "\r\n" +
+				"Spells Prepared: " + getSpellsPrepared() +  "\r\n" +
+				"Carrying " + bag.size() + " Items" + "\r\n" +
+				"```").queue();
 	}
 	
 	public void generate() {
@@ -99,13 +109,22 @@ public class Character implements Serializable{
 		setStat("cha", stat[0]);
 		
 		setSpeed(30);
-		setAC((int)(Math.random()*10)+10);
-		setHP((int)(Math.random()*9)+10);
+		setAC(getModifier(dex)+10);
+		setHP((int)(Math.random()*9)+10 + getModifier(con)*level);
 		setLevel(1);
 	}
 	
 	public void levelUp() {
 		setLevel(level++);
+	}
+	
+	public void attune(MessageChannel channel){
+		if(attunedItems >= 3){
+			attunedItems = 3;
+			channel.sendMessage("That is too many for you to handle..");
+		}else{
+			attunedItems++;		
+		}
 	}
 	
 	public void setLevel(int levelUp) {
@@ -156,7 +175,38 @@ public class Character implements Serializable{
 		}
 	}
 	
+	public void addSpell(String name, int level){
+		spells.add(new Spell(name, level));
+	}
+	
+	public void addItem(String name){
+		bag.add(name);
+	}
+	
 	public Player getPlayer(){
 		return player;
+	}
+	
+	public int getSpellsPrepared(){
+		int prep = 0;
+		for(int i = 0; i < spells.size(); i++){
+			if(spells.get(i).isPrepared()){
+				prep++;
+			}
+		}
+		
+		return prep;
+	}
+	
+	public int getModifier(int stat){
+		int mod = -1;
+
+			if(stat%2 != 0){
+				mod = (stat-1)-10;
+			}else{
+				mod = stat-10;
+			}
+			
+		return mod/2;
 	}
 }
