@@ -19,6 +19,7 @@ public class Char extends Command{
 		
 		if(player == null){
 			GensoRanduul.addPlayer(new Player(user.getName()));
+			player = GensoRanduul.getPlayer(user.getName());
 		}
 		
 		//View
@@ -133,6 +134,7 @@ public class Char extends Command{
 				return;
 			}
 		}
+		
 		
 		player.save();
 		view(channel, content, args, character);
