@@ -37,22 +37,31 @@ public class Command extends ListenerAdapter{
 	}
 	
 	public ArrayList<String> getArgs(String msg, int args){
-		String content = msg.substring(msg.indexOf(" ")+1);
+		String content = msg.substring(msg.indexOf(" ")+1) + " ";
 		ArrayList<String> argList = new ArrayList<String>();
-
+		
 		if(args == 1) {
-			try{
+			if(content.charAt(0) == ('\"')){
+				argList.add(content.substring(1, content.indexOf('\"')));
+			}else{
 				argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
-			}catch(IndexOutOfBoundsException iob){
-				argList.add(content.substring(content.indexOf(content)));
 			}
 		}else {
 			for(int i = 0; i < args-1; i++) {
-				argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
-				content = content.substring(content.indexOf(" ")+1);
+				if(content.charAt(0) == ('\"')){
+					content = content.substring(1);
+					
+					argList.add(content.substring(0, content.indexOf('\"')));
+					content = content.substring(content.indexOf('\"')+2);
+
+				}else{
+					argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
+					content = content.substring(content.indexOf(" ")+1);
+				}
 			}
 		}
-		argList.add(content.substring(content.indexOf(" ")+1));
+		
+		argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
 		
 		return argList;
 	}

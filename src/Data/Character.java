@@ -57,7 +57,7 @@ public class Character implements Serializable{
 	
 	public void display(MessageChannel channel) {
 		
-		channel.sendMessage("**" + name + "**\r\n" + 
+		channel.sendMessage("\n\n" + "**" + name + "**\r\n" + 
 				"```" + player.getName() + "'s Character\r\n" + 
 				"Campaign: [Campaign]\r\n" + 
 				"Level: " + level + "\r\n" + 
@@ -77,9 +77,64 @@ public class Character implements Serializable{
 				"\r\n" +
 				"Attuned Items: " + attunedItems +  "\r\n" +
 				"Spells Known: " + spells.size() +  "\r\n" +
-				"Spells Prepared: " + getSpellsPrepared() +  "\r\n" +
 				"Carrying " + bag.size() + " Items" + "\r\n" +
 				"```").queue();
+	}
+	
+	public void displayeSpells(MessageChannel channel){
+		String cantrip = ""; String one = ""; String two = ""; String three = ""; String four = ""; 
+		String five = ""; String six = ""; String seven = ""; String eight = ""; String nine = "";
+		
+		for(int i = 0; i < spells.size(); i++){
+			if(spells.get(i).getLevel() == 0){
+				cantrip = cantrip + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 1){
+				one = one + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 2){
+				two = two + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 3){
+				three = three + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 4){
+				four = four + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 5){
+				five = five + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 6){
+				six = six + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 7){
+				seven = seven + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 8){
+				eight = eight + spells.get(i).getName() + ", ";
+			}else if(spells.get(i).getLevel() == 9){
+				nine = nine + spells.get(i).getName() + ", ";
+			}
+		}
+		
+		cantrip = cantrip.contains(",") ? cantrip.substring(0, cantrip.length()-2) : "-";
+		one = one.contains(",") ? one.substring(0, one.length()-2) : "-";
+		two = two.contains(",") ? two.substring(0, two.length()-2) : "-";
+		three = three.contains(",") ? three.substring(0, three.length()-2) : "-";
+		four = four.contains(",") ? four.substring(0, four.length()-2) : "-";
+		five = five.contains(",") ? five.substring(0, five.length()-2) : "-";
+		six = six.contains(",") ? six.substring(0, six.length()-2) : "-";
+		seven = seven.contains(",") ? seven.substring(0, seven.length()-2) : "-";
+		eight = eight.contains(",") ? eight.substring(0, eight.length()-2) : "-";
+		nine = nine.contains(",") ? nine.substring(0, nine.length()-2) : "-";
+		
+		channel.sendMessage("**Cantrips:** \n```" + cantrip + "```**\nLevel 1:** \n```" + one + "```\n**Level 2:** \n```" + two 
+				+ "```\n**Level 3:** \n```" + three + "```\n**Level 4:** \n```" + four + "```\n**Level 5:** \n```" + five 
+				+ "```\n**Level 6:** \n```" + six + "```\n**Level 7:** \n```" + seven + "```\n**Level 8:** \n```"  
+				+ eight + "```\n**Level 9:** \n```" + nine + "```").queue();
+	}
+	
+	public void displayBag(MessageChannel channel){
+		String items = "";
+		
+		for(int i = 0; i < bag.size(); i++){
+			items = items + bag.get(i) + ", ";
+		}
+		
+		items = items.contains(",") ? items.substring(0, items.length()-2) : "-";
+		channel.sendMessage("```" + items + "```").queue();;
 	}
 	
 	public void generate() {
@@ -115,7 +170,7 @@ public class Character implements Serializable{
 	}
 	
 	public void levelUp() {
-		setLevel(level++);
+		setLevel(level+1);
 	}
 	
 	public void attune(MessageChannel channel){
@@ -175,6 +230,13 @@ public class Character implements Serializable{
 		}
 	}
 	
+	public void removeSpell(String name){
+		for(int i = 0; i < spells.size(); i++){
+			if(spells.get(i).getName().equals(name)){
+				spells.remove(i);
+			}
+		}
+	}
 	public void addSpell(String name, int level){
 		spells.add(new Spell(name, level));
 	}
@@ -183,19 +245,16 @@ public class Character implements Serializable{
 		bag.add(name);
 	}
 	
-	public Player getPlayer(){
-		return player;
-	}
-	
-	public int getSpellsPrepared(){
-		int prep = 0;
-		for(int i = 0; i < spells.size(); i++){
-			if(spells.get(i).isPrepared()){
-				prep++;
+	public void removeItem(String name){
+		for(int i = 0; i < bag.size(); i++){
+			if(bag.get(i).equals(name)){
+				bag.remove(i);
 			}
 		}
-		
-		return prep;
+	}
+	
+	public Player getPlayer(){
+		return player;
 	}
 	
 	public int getModifier(int stat){

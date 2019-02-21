@@ -1,21 +1,26 @@
 package Data;
 
-public class Spell {
+import java.io.Serializable;
+
+public class Spell implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private int level;
-	private boolean prepared;
 	
 	public Spell(String name, int level){
 		this.name = name;
 		this.level = level;
 	}
 	
-	public void prepare(){
-		prepared = true;
+	public int getLevel(){
+		return level;
 	}
 	
-	public boolean isPrepared(){
-		return prepared;
+	public String getName(){		
+		return name;
 	}
 }
