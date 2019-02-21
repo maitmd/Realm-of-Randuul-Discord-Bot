@@ -101,7 +101,7 @@ public class Char extends Command{
 		//Remove
 		}else if(args.get(1).equals("remove")) {
 			player.removeCharacter(args.get(0));
-			channel.sendMessage("You remain in the memories").queue();
+			channel.sendMessage("You remain in my memories").queue();
 			return;
 			
 		//Attune
