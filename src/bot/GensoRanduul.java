@@ -1,4 +1,4 @@
-package Main;
+package bot;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import javax.security.auth.login.LoginException;
 
-import Commands.Command;
-import Data.Campaign;
-import Data.Player;
+import commands.Command;
+import data.Campaign;
+import data.Player;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 

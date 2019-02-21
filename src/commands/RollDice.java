@@ -1,4 +1,4 @@
-package Commands;
+package commands;
 
 import net.dv8tion.jda.core.entities.MessageChannel;
 

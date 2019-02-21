@@ -1,8 +1,9 @@
-package Data;
+package data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import Commands.RollDice;
+
+import commands.RollDice;
 import net.dv8tion.jda.core.entities.MessageChannel;
 
 public class Character implements Serializable{

@@ -1,4 +1,4 @@
-package Commands;
+package commands;
 import java.util.ArrayList;
 import java.util.List;
 import net.dv8tion.jda.core.entities.*;

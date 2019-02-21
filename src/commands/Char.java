@@ -1,4 +1,4 @@
-package Commands;
+package commands;
 
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -6,8 +6,8 @@ import net.dv8tion.jda.core.entities.User;
 
 import java.util.ArrayList;
 
-import Data.Player;
-import Main.GensoRanduul;
+import bot.GensoRanduul;
+import data.Player;
 
 public class Char extends Command{
 	
@@ -15,7 +15,7 @@ public class Char extends Command{
 		ArrayList<String> args = getArgs(content, 2);
 		User user = member.getUser();
 		Player player = GensoRanduul.getPlayer(user.getName());
-		Data.Character character = getCharacter(args.get(0));
+		data.Character character = getCharacter(args.get(0));
 		
 		if(player == null){
 			GensoRanduul.addPlayer(new Player(user.getName()));
@@ -149,16 +149,16 @@ public class Char extends Command{
 		channel.sendMessage("Ahh my new creation **" + name + "** is born. Just for you " + member.getName() + ".").queue();
 	}
 	
-	public void view(MessageChannel channel, String content, ArrayList<String> args, Data.Character character){
+	public void view(MessageChannel channel, String content, ArrayList<String> args, data.Character character){
 		if(character == null){
 			character = getCharacter(args.get(0));
 		}
 		try{character.display(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue();}
 	}
 		
-	public Data.Character getCharacter(String name) {
+	public data.Character getCharacter(String name) {
 		ArrayList<Player> players = GensoRanduul.getPlayers();
-		Data.Character character = null;
+		data.Character character = null;
 		
 		for(int i = 0; i < players.size(); i++) {
 			if(players.get(i).getCharacter(name) != null) {
