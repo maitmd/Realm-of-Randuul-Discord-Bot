@@ -1,10 +1,8 @@
 package Main;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.security.auth.login.LoginException;
@@ -14,13 +12,12 @@ import Data.Campaign;
 import Data.Player;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Member;
 
 
 
 public class GensoRanduul{
-	static ArrayList<Campaign> campaigns = new ArrayList<Campaign>();
-	static ArrayList<Player> players = new ArrayList<Player>();
+	private static ArrayList<Campaign> campaigns = new ArrayList<Campaign>();
+	private static ArrayList<Player> players = new ArrayList<Player>();
 	
 	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
 

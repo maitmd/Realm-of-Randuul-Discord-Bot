@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.time.OffsetTime;
 import java.util.ArrayList;
 
 import net.dv8tion.jda.core.entities.Member;
@@ -17,10 +16,10 @@ public class Player implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public String name;
+	private String name;
 	private OffsetDateTime joinDate;
-	public ArrayList<Campaign> campaigns;
-	public ArrayList<Character> characters;
+	private ArrayList<Campaign> campaigns;
+	private ArrayList<Character> characters;
 	
 	public Player(String name) {
 		this.name = name;
