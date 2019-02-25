@@ -40,28 +40,18 @@ public class Command extends ListenerAdapter{
 		String content = msg.substring(msg.indexOf(" ")+1) + " ";
 		ArrayList<String> argList = new ArrayList<String>();
 		
-		if(args == 1) {
+		for(int i = 0; i < args-1; i++) {
 			if(content.charAt(0) == ('\"')){
-				argList.add(content.substring(1, content.indexOf('\"')));
+				content = content.substring(1);			
+				argList.add(content.substring(0, content.indexOf('\"')));
+				content = content.substring(content.indexOf('\"')+2);
 			}else{
 				argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
-			}
-		}else {
-			for(int i = 0; i < args-1; i++) {
-				if(content.charAt(0) == ('\"')){
-					content = content.substring(1);
-					
-					argList.add(content.substring(0, content.indexOf('\"')));
-					content = content.substring(content.indexOf('\"')+2);
-
-				}else{
-					argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
-					content = content.substring(content.indexOf(" ")+1);
-				}
+				content = content.substring(content.indexOf(" ")+1);
 			}
 		}
 		
-		argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
+		argList.add(content.charAt(0) == ('\"') ? content.substring(1, content.indexOf('\"')) : content.substring(content.indexOf(content), content.indexOf(" ")));
 		
 		return argList;
 	}

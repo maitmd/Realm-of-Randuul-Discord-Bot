@@ -12,7 +12,8 @@ import data.Player;
 public class Char extends Command{
 	
 	public Char(MessageChannel channel, String content, Member member) {
-		ArrayList<String> args = getArgs(content, 2);
+		ArrayList<String> args = new ArrayList<String>();
+		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
 		User user = member.getUser();
 		Player player = GensoRanduul.getPlayer(user.getName());
 		data.Character character = getCharacter(args.get(0));
