@@ -32,7 +32,7 @@ public class PlayerC extends Command{
 		case "view":
 			view(mentioned, channel, player, user, mem);
 			break;
-		case "character":
+		case "characters":
 			characters(mentioned, channel, user, player);
 			break;
 		}	

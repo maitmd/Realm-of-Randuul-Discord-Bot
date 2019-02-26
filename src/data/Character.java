@@ -65,8 +65,8 @@ public class Character implements Serializable{
 				"Race: " + race + "\r\n" + 
 				"\r\n" + 
 				"Proficiency Bonus: " + getProficiency() +  "\r\n" +
-				"AC: " + ac + "\r\n" + 
-				"HP: " + hp + "\r\n" + 
+				"AC: " + getAC() + "\r\n" + 
+				"HP: " + getHP() + "\r\n" + 
 				"Speed: " + speed + "\r\n" + 
 				"\r\n" + 
 				"Con: " + con + " (" + (getModifier(con) > 0 ? "+" : "") + getModifier(con) + ")" + "\r\n" + 
@@ -168,8 +168,8 @@ public class Character implements Serializable{
 		setStat("cha", stat[0]);
 		
 		setSpeed(30);
-		setAC(getModifier(dex)+10);
-		setHP((int)(Math.random()*9)+10 + getModifier(con)*level);
+		setAC(10);
+		setHP((int)(Math.random()*9)+10);
 		setLevel(1);
 	}
 	
@@ -185,7 +185,7 @@ public class Character implements Serializable{
 	
 	//Adds 1 to the characters level, but makes sures they aren't above level 20.
 	public void setLevel(int levelUp) {
-		level = (level>= 20) ? 20 : levelUp;
+		level = levelUp;
 	}
 	
 	//Sets the characters class
@@ -271,11 +271,17 @@ public class Character implements Serializable{
 		return level;
 	}
 	
+	public int getHP(){
+		return hp + getModifier(con)*level;
+	}
 	//Returns this characters owning player object
 	public Player getPlayer(){
 		return player;
 	}
 	
+	public int getAC(){
+		return ac + getModifier(dex);
+	}
 	//Returns the characters current proficieny bonus
 	public int getProficiency(){
 		int prof = (int)2+(level/4);
