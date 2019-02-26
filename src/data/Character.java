@@ -63,6 +63,7 @@ public class Character implements Serializable{
 				"Class: " + charClass + "\r\n" + 
 				"Race: " + race + "\r\n" + 
 				"\r\n" + 
+				"Proficiency Bonus: " + getProficiency() +  "\r\n" +
 				"AC: " + ac + "\r\n" + 
 				"HP: " + hp + "\r\n" + 
 				"Speed: " + speed + "\r\n" + 
@@ -182,7 +183,7 @@ public class Character implements Serializable{
 	}
 	
 	public void setLevel(int levelUp) {
-		level = levelUp;
+		level = (level>= 20) ? 20 : levelUp;
 	}
 	
 	public void setClass(String classs) {
@@ -256,6 +257,11 @@ public class Character implements Serializable{
 		return player;
 	}
 	
+	public int getProficiency(){
+		int prof = (int)2+(level/4);
+		
+		return level%4==0 ? prof-1 : prof;
+	}
 	public int getModifier(int stat){
 		int mod = -1;
 
