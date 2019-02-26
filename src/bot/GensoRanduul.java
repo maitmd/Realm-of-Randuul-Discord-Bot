@@ -10,6 +10,7 @@ import javax.security.auth.login.LoginException;
 import commands.Command;
 import data.Campaign;
 import data.Player;
+import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 
@@ -21,7 +22,7 @@ public class GensoRanduul{
 	
 	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
 
-			JDA api = new JDABuilder("NTQzMjkwMDE5MDM3NTc3MjI2.Dz6rRg.PF4ieCwenWr9zo7iEYpFFUcaO_g").build();
+			JDA api = new JDABuilder(AccountType.BOT).setToken("NTQ5NzU4OTczMzY5MjUzOTE5.D1Ymxw.BHAB-z_MXx3fSV7IlkXDZsZBwvA").build();
 			Command listener = new Command();
 			api.addEventListener(listener);
 			playerData();
