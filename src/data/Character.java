@@ -38,7 +38,6 @@ public class Character implements Serializable{
 	private int cha;
 	private ArrayList<String> bag;
 	private ArrayList<Spell> spells;
-	private ArrayList<String> feats;
 	private ArrayList<String> proficiencies;
 	private int attunedItems;
 	
@@ -47,7 +46,6 @@ public class Character implements Serializable{
 		this.name = name;
 		this.attunedItems = 0;
 		spells = new ArrayList<Spell>();
-		feats = new ArrayList<String>();
 		bag = new ArrayList<String>();
 		proficiencies = new ArrayList<String>();
 	}

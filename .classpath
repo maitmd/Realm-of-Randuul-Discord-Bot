@@ -7,5 +7,10 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/Maxwell/Documents/GitHub/Land-of-Brahm-Discord-Bot/External%20Jars/JDA-3.8.3_460-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/workspace/Land-of-Brahm-Discord-Bot/External Jars/Discord API/JDA-3.8.2_459-withDependencies.jar" sourcepath="D:/workspace/Land-of-Brahm-Discord-Bot/External Jars/Discord API/JDA-3.8.2_459-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/workspace/Land-of-Brahm-Discord-Bot/External%20Jars/Discord%20API/JDA-3.8.2_459-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -20,11 +20,10 @@ public class GensoRanduul{
 	private static ArrayList<Player> players = new ArrayList<Player>();
 	
 	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
-
-			JDA api = new JDABuilder("NTQzMjkwMDE5MDM3NTc3MjI2.Dz6rRg.PF4ieCwenWr9zo7iEYpFFUcaO_g").build();
-			Command listener = new Command();
-			api.addEventListener(listener);
-			playerData();
+		JDA api = new JDABuilder("NTQzMjkwMDE5MDM3NTc3MjI2.D1YggQ.jLbob_3PLWYPiMoirxRR29QfdH0").build();
+		Command listener = new Command();
+		api.addEventListener(listener);
+		playerData();
 	}
 	
 	public static void playerData() {
