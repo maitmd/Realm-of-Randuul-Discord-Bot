@@ -1,11 +1,17 @@
 package commands;
 import java.util.ArrayList;
 import java.util.List;
+
+import bot.GensoRanduul;
+import data.Player;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class Command extends ListenerAdapter{
+	
+	//Listens for messages that are sent in the server if they contain ! in them then the command is processed and
+	//the corresponding child of this class is called.
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {	
 		Message msg = event.getMessage();
@@ -36,6 +42,8 @@ public class Command extends ListenerAdapter{
 		
 	}
 	
+	//Splits up the whole command string into specific arguments as needed. Quotes("") override normal
+	//procedures and read in between quotes.
 	public ArrayList<String> getArgs(String msg, int args){
 		String content = msg.substring(msg.indexOf(" ")+1) + " ";
 		ArrayList<String> argList = new ArrayList<String>();
@@ -55,6 +63,8 @@ public class Command extends ListenerAdapter{
 		
 		return argList;
 	}
+	
+	//Retrieves the command that was issued.
 	public String getCommand(String msg) {
 		String command;
 		if(msg.contains(" ")) {
@@ -64,5 +74,19 @@ public class Command extends ListenerAdapter{
 		}
 		
 		return command;
+	}
+	
+	//Runs through all players and looks through each of their characters to see if
+	//they have a character matching the name provided.
+	public data.Character getCharacter(String name) {
+		ArrayList<Player> players = GensoRanduul.getPlayers();
+		data.Character character = null;
+		
+		for(int i = 0; i < players.size(); i++) {
+			if(players.get(i).getCharacter(name) != null) {
+				character = players.get(i).getCharacter(name);
+			}
+		}
+		return character;
 	}
 }

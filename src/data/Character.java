@@ -54,6 +54,7 @@ public class Character implements Serializable{
 		return name;
 	}
 	
+	//Displays the stats of the character.
 	public void display(MessageChannel channel) {
 		
 		channel.sendMessage("\n\n" + "**" + name + "**\r\n" + 
@@ -81,6 +82,7 @@ public class Character implements Serializable{
 				"```").queue();
 	}
 	
+	//Sorts this charactes spells by level and displays them in order.
 	public void displayeSpells(MessageChannel channel){
 		String cantrip = ""; String one = ""; String two = ""; String three = ""; String four = ""; 
 		String five = ""; String six = ""; String seven = ""; String eight = ""; String nine = "";
@@ -126,6 +128,7 @@ public class Character implements Serializable{
 				+ eight + "```\n**Level 9:** \n```" + nine + "```").queue();
 	}
 	
+	//Displays all items in this characters bag.
 	public void displayBag(MessageChannel channel){
 		String items = "";
 		
@@ -137,6 +140,7 @@ public class Character implements Serializable{
 		channel.sendMessage("```" + items + "```").queue();;
 	}
 	
+	//Randomly assigns numbers and titles to this characters stats.
 	public void generate() {
 		int[] stat = new int[1];
 		int classs = (int)(Math.random()*CLASSES.length);
@@ -169,10 +173,7 @@ public class Character implements Serializable{
 		setLevel(1);
 	}
 	
-	public void levelUp() {
-		setLevel(level+1);
-	}
-	
+	//Adds 1 to the characters attunement counter, but makes sure they have no more than 3.
 	public void attune(MessageChannel channel){
 		if(attunedItems >= 3){
 			attunedItems = 3;
@@ -182,30 +183,37 @@ public class Character implements Serializable{
 		}
 	}
 	
+	//Adds 1 to the characters level, but makes sures they aren't above level 20.
 	public void setLevel(int levelUp) {
 		level = (level>= 20) ? 20 : levelUp;
 	}
 	
+	//Sets the characters class
 	public void setClass(String classs) {
 		this.charClass = classs;
 	}
 	
+	//Sets the characters race
 	public void setRace(String race) {
 		this.race = race;
 	}
 	
+	//Sets the characters AC
 	public void setAC(int ac) {
 		this.ac = ac;
 	}
 	
+	//Sets the characters hp
 	public void setHP(int hp) {
 		this.hp = hp;
 	}
 	
+	//Sets the characters speed
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
 	
+	//Sets dex, con, int, wis, cha, str to the value given
 	public void setStat(String stat, int value) {
 		String formatted = stat.toLowerCase();
 		switch(formatted) {
@@ -230,6 +238,17 @@ public class Character implements Serializable{
 		}
 	}
 	
+	//Adds a spell to this characters spell list
+	public void addSpell(String name, int level){
+		spells.add(new Spell(name, level));
+	}
+	
+	//Adds an item to this characters bag
+	public void addItem(String name){
+		bag.add(name);
+	}
+	
+	//Removes a spell from this characters spell list
 	public void removeSpell(String name){
 		for(int i = 0; i < spells.size(); i++){
 			if(spells.get(i).getName().equals(name)){
@@ -237,14 +256,8 @@ public class Character implements Serializable{
 			}
 		}
 	}
-	public void addSpell(String name, int level){
-		spells.add(new Spell(name, level));
-	}
 	
-	public void addItem(String name){
-		bag.add(name);
-	}
-	
+	//Removes an item from this characters bag
 	public void removeItem(String name){
 		for(int i = 0; i < bag.size(); i++){
 			if(bag.get(i).equals(name)){
@@ -253,15 +266,24 @@ public class Character implements Serializable{
 		}
 	}
 	
+	//Returns this characters level
+	public int getLevel(){
+		return level;
+	}
+	
+	//Returns this characters owning player object
 	public Player getPlayer(){
 		return player;
 	}
 	
+	//Returns the characters current proficieny bonus
 	public int getProficiency(){
 		int prof = (int)2+(level/4);
 		
 		return level%4==0 ? prof-1 : prof;
 	}
+	
+	//Returns the characters current modifier given the stat value
 	public int getModifier(int stat){
 		int mod = -1;
 

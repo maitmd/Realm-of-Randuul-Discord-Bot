@@ -16,53 +16,71 @@ public class PlayerC extends Command{
 		User user = mem.getUser();
 		Player player = GensoRanduul.getPlayer(user.getName());
 		
+		//Checks to see if the player exists, if not it adds the player to the bots list.
 		if(player == null){
 			GensoRanduul.addPlayer(new Player(user.getName()));
+			player = GensoRanduul.getPlayer(user.getName());
 		}
+		
+		//Checks to see if any players were mentioned and if they do makes sure they exist,
+		//if not they are added to the bots list.
 		if(GensoRanduul.getPlayer(mentioned.get(0).getUser().getName()) == null){
 			GensoRanduul.addPlayer(new Player(mentioned.get(0).getUser().getName()));
 		}
 		
-		if(args.get(1).equals("view")){
-			Member tempmem = null;
-			try{tempmem = mentioned.get(0);}catch(Exception e){};
-
-			if(tempmem != null){
-				Player temp = GensoRanduul.getPlayer(tempmem.getUser().getName());
-
-				temp.display(tempmem, channel);
-			}else{
-				if(player == null){
-					Player newP = new Player(user.getName());
-					GensoRanduul.addPlayer(newP);
-					newP.save();
-					player = GensoRanduul.getPlayer(user.getName());;
-				}
-				player.display(mem, channel);
-			}
-		}else if(args.get(1).equals("characters")){
-			Member tempmem = null;
-			try{tempmem = mentioned.get(0);}catch(Exception e){};
-			
-			if(tempmem != null){
-				Player temp = GensoRanduul.getPlayer(tempmem.getUser().getName());
-				if(temp == null){
-					GensoRanduul.addPlayer(new Player(tempmem.getUser().getName()));
-					temp = GensoRanduul.getPlayer(tempmem.getUser().getName().substring(0));
-					temp.save();
-				}
-				
-				temp.displayCharacters(channel);
-			}else{
-				if(player == null){
-					Player newP = new Player(user.getName());
-					GensoRanduul.addPlayer(newP);
-					newP.save();
-					player = GensoRanduul.getPlayer(user.getName());
-				}
-				player.displayCharacters(channel);
-			}
-		}
-			
+		switch(args.get(1)){
+		case "view":
+			view(mentioned, channel, player, user, mem);
+			break;
+		case "character":
+			characters(mentioned, channel, user, player);
+			break;
+		}	
 	}
+	
+	//Displays the member/player's information.
+	public void view(List<Member> mentioned, MessageChannel channel, Player player, User user, Member mem){
+		Member tempmem = null;
+		try{tempmem = mentioned.get(0);}catch(Exception e){};
+
+		if(tempmem != null){
+			Player temp = GensoRanduul.getPlayer(tempmem.getUser().getName());
+
+			temp.display(tempmem, channel);
+		}else{
+			if(player == null){
+				Player newP = new Player(user.getName());
+				GensoRanduul.addPlayer(newP);
+				newP.save();
+				player = GensoRanduul.getPlayer(user.getName());;
+			}
+			player.display(mem, channel);
+		}
+	}
+	
+	//Displays the member/player's character names.
+	public void characters(List<Member> mentioned, MessageChannel channel, User user, Player player){
+		Member tempmem = null;
+		try{tempmem = mentioned.get(0);}catch(Exception e){};
+		
+		if(tempmem != null){
+			Player temp = GensoRanduul.getPlayer(tempmem.getUser().getName());
+			if(temp == null){
+				GensoRanduul.addPlayer(new Player(tempmem.getUser().getName()));
+				temp = GensoRanduul.getPlayer(tempmem.getUser().getName().substring(0));
+				temp.save();
+			}
+			
+			temp.displayCharacters(channel);
+		}else{
+			if(player == null){
+				Player newP = new Player(user.getName());
+				GensoRanduul.addPlayer(newP);
+				newP.save();
+				player = GensoRanduul.getPlayer(user.getName());
+			}
+			player.displayCharacters(channel);
+		}
+	}
+	
 }

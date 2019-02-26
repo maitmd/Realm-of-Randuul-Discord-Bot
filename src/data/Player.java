@@ -27,6 +27,7 @@ public class Player implements Serializable{
 		campaigns = new ArrayList<Campaign>();
 	}
 	
+	//Writes this player object to players.txt
 	public void save() {
 		try {
 			FileOutputStream f = new FileOutputStream(new File("players.txt"));
@@ -37,6 +38,7 @@ public class Player implements Serializable{
 		}catch(Exception e) {}
 	}
 	
+	//Displays this players information
 	public void display(Member mem, MessageChannel channel) {
 		channel.sendMessage("**" + mem.getEffectiveName() + "**"
 				+ "```\nDiscord Name: " + mem.getUser().getName()
@@ -45,6 +47,7 @@ public class Player implements Serializable{
 				+ "\nNumber of Campaigns: " + getCampaigns().size() + "```").queue();
 	}
 	
+	//Displays this player's characters
 	public void displayCharacters(MessageChannel channel){
 		String chars = "";
 		
@@ -62,10 +65,13 @@ public class Player implements Serializable{
 		
 		channel.sendMessage("**" + getName() + "'s Characters: **\n" + chars).queue();
 	}
+	
+	//Sets this players name
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	//Removes a character from this player's character list
 	public void removeCharacter(String name){
 		for(int i = 0; i < getCharacters().size(); i++) {
 			if(getCharacters().get(i).getName().equalsIgnoreCase(name)) {
@@ -74,10 +80,12 @@ public class Player implements Serializable{
 		}
 	}
 	
+	//Adds a character to this player's character list
 	public void addCharacter(String name) {
 		characters.add(new Character(this, name));
 	}
 	
+	//Returns a character matching the name given
 	public Character getCharacter(String name){
 		for(int i = 0; i < getCharacters().size(); i++) {
 			if(getCharacters().get(i).getName().equalsIgnoreCase(name)) {
@@ -88,18 +96,22 @@ public class Player implements Serializable{
 		return null;
 	}
 	
+	//Returns the players name
 	public String getName() {
 		return name;
 	}
 	
+	//Returns the list of campaigns this player is in
 	public ArrayList<Campaign> getCampaigns() {
 		return campaigns;
 	}
 	
+	//Returns the list of characters this player has
 	public ArrayList<Character> getCharacters() {
 		return characters;
 	}
 	
+	//Returns the dates this player joined the server
 	public OffsetDateTime getJoinDate(){
 		return joinDate;
 	}
