@@ -15,6 +15,7 @@ public class RollDice extends Command{
 		
 		args = content.substring(content.indexOf(" ")+1);
 		
+		//Checks to see if the player were rolling dice, stats, tables, etc.
 		switch(args) {
 			case "stats":
 				rolls = new int[6];
@@ -43,6 +44,7 @@ public class RollDice extends Command{
 		sendRolls(channel);
 	}
 	
+	//Displays the value of each roll.
 	public void sendRolls(MessageChannel channel) {
 		for(int i = 0; i < rolls.length; i++) {
 			output = output + " [" + String.valueOf(rolls[i]) + "]";
@@ -51,6 +53,7 @@ public class RollDice extends Command{
 		try{channel.sendMessage(output).queue();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").queue(); }
 	}
 	
+	//Randomizes integers based on the value of the dice and adds them to the the list of the number of the dice.
 	public static int[] rollDice(int[] list, int value) {
 		int[] rolls = list;
 		int random;
@@ -62,6 +65,7 @@ public class RollDice extends Command{
 		return rolls;
 	}
 	
+	//Rolls stats for a character. Stats are roll 4d6 and drop the lowest number.
 	public static int[] rollStats(int[] list){
 		int lowest = 1000;
 		int single = 0;
@@ -72,14 +76,14 @@ public class RollDice extends Command{
 			
 			for(int i = 0; i < indvStat.length;i++) {
 				if(indvStat[i] < lowest) {
-					lowest = indvStat[i];
+					lowest = i;
 				}
 			}
+		
+			indvStat[lowest] = 0;
 			
 			for(int i = 0; i < indvStat.length; i++) {
-				if(indvStat[i] != lowest) {
 					single+=indvStat[i];
-				}
 			}
 			
 				stats[j] = single;

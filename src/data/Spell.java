@@ -16,10 +16,12 @@ public class Spell implements Serializable{
 		this.level = level;
 	}
 	
+	//Returns this spells level
 	public int getLevel(){
 		return level;
 	}
 	
+	//Returns this spells name
 	public String getName(){		
 		return name;
 	}
