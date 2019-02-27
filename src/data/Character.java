@@ -276,7 +276,7 @@ public class Character implements Serializable{
 	}
 	//Returns this characters owning player object
 	public Player getPlayer(){
-		return player;
+		return player;		
 	}
 	
 	public int getAC(){

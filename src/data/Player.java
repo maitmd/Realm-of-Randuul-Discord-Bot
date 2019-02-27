@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 import net.dv8tion.jda.core.entities.Member;
@@ -17,7 +18,6 @@ public class Player implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private OffsetDateTime joinDate;
 	private ArrayList<Campaign> campaigns;
 	private ArrayList<Character> characters;
 	
@@ -109,10 +109,5 @@ public class Player implements Serializable{
 	//Returns the list of characters this player has
 	public ArrayList<Character> getCharacters() {
 		return characters;
-	}
-	
-	//Returns the dates this player joined the server
-	public OffsetDateTime getJoinDate(){
-		return joinDate;
 	}
 }
