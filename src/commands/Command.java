@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bot.GensoRanduul;
+import data.Campaign;
 import data.Player;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -27,7 +28,8 @@ public class Command extends ListenerAdapter{
 			case "roll":
 				new RollDice(channel, content);
 				break;
-			case "nextsession":
+			case "campaign":
+				new Camp();
 				break;
 			case "countdown":
 				break;
@@ -74,19 +76,5 @@ public class Command extends ListenerAdapter{
 		}
 		
 		return command;
-	}
-	
-	//Runs through all players and looks through each of their characters to see if
-	//they have a character matching the name provided.
-	public data.Character getCharacter(String name) {
-		ArrayList<Player> players = GensoRanduul.getPlayers();
-		data.Character character = null;
-		
-		for(int i = 0; i < players.size(); i++) {
-			if(players.get(i).getCharacter(name) != null) {
-				character = players.get(i).getCharacter(name);
-			}
-		}
-		return character;
 	}
 }

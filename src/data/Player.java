@@ -27,17 +27,6 @@ public class Player implements Serializable{
 		campaigns = new ArrayList<Campaign>();
 	}
 	
-	//Writes this player object to players.txt
-	public void save() {
-		try {
-			FileOutputStream f = new FileOutputStream(new File("players.txt"));
-			ObjectOutputStream o = new ObjectOutputStream(f);
-			
-			o.writeObject(this);
-			o.close();
-		}catch(Exception e) {}
-	}
-	
 	//Displays this players information
 	public void display(Member mem, MessageChannel channel) {
 		channel.sendMessage("**" + mem.getEffectiveName() + "**"
@@ -96,6 +85,17 @@ public class Player implements Serializable{
 		return null;
 	}
 	
+	//Returns a character matching the name given
+		public Campaign getCampaign(String name){
+			for(int i = 0; i < getCharacters().size(); i++) {
+				if(getCampaigns().get(i).getName().equalsIgnoreCase(name)) {
+					return getCampaigns().get(i);
+				}
+			}
+			
+			return null;
+		}
+		
 	//Returns the players name
 	public String getName() {
 		return name;

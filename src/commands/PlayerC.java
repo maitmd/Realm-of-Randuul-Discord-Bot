@@ -51,7 +51,7 @@ public class PlayerC extends Command{
 			if(player == null){
 				Player newP = new Player(user.getName());
 				GensoRanduul.addPlayer(newP);
-				newP.save();
+				GensoRanduul.save();
 				player = GensoRanduul.getPlayer(user.getName());;
 			}
 			player.display(mem, channel);
@@ -68,7 +68,7 @@ public class PlayerC extends Command{
 			if(temp == null){
 				GensoRanduul.addPlayer(new Player(tempmem.getUser().getName()));
 				temp = GensoRanduul.getPlayer(tempmem.getUser().getName().substring(0));
-				temp.save();
+				GensoRanduul.save();
 			}
 			
 			temp.displayCharacters(channel);
@@ -76,7 +76,7 @@ public class PlayerC extends Command{
 			if(player == null){
 				Player newP = new Player(user.getName());
 				GensoRanduul.addPlayer(newP);
-				newP.save();
+				GensoRanduul.save();
 				player = GensoRanduul.getPlayer(user.getName());
 			}
 			player.displayCharacters(channel);

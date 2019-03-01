@@ -16,7 +16,7 @@ public class Char extends Command{
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
 		User user = member.getUser();
 		Player player = GensoRanduul.getPlayer(user.getName());
-		data.Character character = getCharacter(args.get(0));
+		data.Character character = GensoRanduul.getCharacter(args.get(0));
 		
 		//Checking to see if the member has been added into the bot as a player. If not add them.
 		if(player == null){
@@ -96,7 +96,7 @@ public class Char extends Command{
 		}
 		
 		//Adds the player to players.txt
-		player.save();
+		GensoRanduul.save();
 		view(channel, content, args, character);
 	}
 	
@@ -115,7 +115,7 @@ public class Char extends Command{
 	//Displays the stats of the character.
 	public void view(MessageChannel channel, String content, ArrayList<String> args, data.Character character){
 		if(character == null){
-			character = getCharacter(args.get(0));
+			character = GensoRanduul.getCharacter(args.get(0));
 		}
 		try{character.display(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue();}
 	}
@@ -171,12 +171,12 @@ public class Char extends Command{
 		
 		if(character == null){
 			create(user, channel, content, player, args);
-			character = getCharacter(args.get(0));
+			character = GensoRanduul.getCharacter(args.get(0));
 		}
 		
 		if(character.getPlayer().getName().equals(user.getName())){
 			character.generate();
-			channel.sendMessage("A new soul is born.").queue();
+			channel.sendMessage("A brand new soul for " + character.getName()).queue();
 		}else{
 			channel.sendMessage("Hands to your own creations!").queue();
 		}
