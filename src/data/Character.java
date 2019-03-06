@@ -79,38 +79,52 @@ public class Character implements Serializable{
 				"Attuned Items: " + attunedItems +  "\r\n" +
 				"Spells Known: " + spells.size() +  "\r\n" +
 				"Carrying " + bag.size() + " Items" + "\r\n" +
+				"Proficiencies: [" + getProficiencies() + "]" +
 				"```").queue();
 	}
 	
-	//Sorts this charactes spells by level and displays them in order.
+	//Sorts this characters spells by level and displays them in order.
 	public void displayeSpells(MessageChannel channel){
 		String cantrip = ""; String one = ""; String two = ""; String three = ""; String four = ""; 
 		String five = ""; String six = ""; String seven = ""; String eight = ""; String nine = "";
 		
+		//Filling display strings
 		for(int i = 0; i < spells.size(); i++){
-			if(spells.get(i).getLevel() == 0){
-				cantrip = cantrip + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 1){
-				one = one + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 2){
-				two = two + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 3){
-				three = three + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 4){
-				four = four + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 5){
-				five = five + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 6){
-				six = six + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 7){
-				seven = seven + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 8){
-				eight = eight + spells.get(i).getName() + ", ";
-			}else if(spells.get(i).getLevel() == 9){
-				nine = nine + spells.get(i).getName() + ", ";
+			switch(spells.get(i).getLevel()) {
+				case 0:
+					cantrip = cantrip + spells.get(i).getName() + ", ";
+					break;
+				case 1:
+					one = one + spells.get(i).getName() + ", ";
+					break;
+				case 2:
+					two = two + spells.get(i).getName() + ", ";
+					break;
+				case 3:
+					three = three + spells.get(i).getName() + ", ";
+					break;
+				case 4:
+					four = four + spells.get(i).getName() + ", ";
+					break;
+				case 5:
+					five = five + spells.get(i).getName() + ", ";
+					break;
+				case 6:
+					six = six + spells.get(i).getName() + ", ";
+					break;
+				case 7:
+					seven = seven + spells.get(i).getName() + ", ";
+					break;
+				case 8:
+					eight = eight + spells.get(i).getName() + ", ";
+					break;
+				case 9:
+					nine = nine + spells.get(i).getName() + ", ";
+					break;
 			}
 		}
 		
+		//Removing last ", " or if its empty (since there is no ", " filling it with a character so its displayed correctly
 		cantrip = cantrip.contains(",") ? cantrip.substring(0, cantrip.length()-2) : "-";
 		one = one.contains(",") ? one.substring(0, one.length()-2) : "-";
 		two = two.contains(",") ? two.substring(0, two.length()-2) : "-";
@@ -122,6 +136,7 @@ public class Character implements Serializable{
 		eight = eight.contains(",") ? eight.substring(0, eight.length()-2) : "-";
 		nine = nine.contains(",") ? nine.substring(0, nine.length()-2) : "-";
 		
+		//Displaying the spells in an orderly manner
 		channel.sendMessage("**Cantrips:** \n```" + cantrip + "```**\nLevel 1:** \n```" + one + "```\n**Level 2:** \n```" + two 
 				+ "```\n**Level 3:** \n```" + three + "```\n**Level 4:** \n```" + four + "```\n**Level 5:** \n```" + five 
 				+ "```\n**Level 6:** \n```" + six + "```\n**Level 7:** \n```" + seven + "```\n**Level 8:** \n```"  
@@ -248,24 +263,40 @@ public class Character implements Serializable{
 		bag.add(name);
 	}
 	
+	//Adds a proficiency to the profs lists
+	public void addProf(String name) {
+		proficiencies.add(name);
+	}
+	
 	//Removes a spell from this characters spell list
 	public void removeSpell(String name){
-		for(int i = 0; i < spells.size(); i++){
-			if(spells.get(i).getName().equals(name)){
-				spells.remove(i);
+		for(Spell temp : spells) {
+			if(temp.getName().equals(name)){
+				spells.remove(temp);
+				return;
 			}
 		}
 	}
 	
 	//Removes an item from this characters bag
 	public void removeItem(String name){
-		for(int i = 0; i < bag.size(); i++){
-			if(bag.get(i).equals(name)){
-				bag.remove(i);
+		for(String temp : bag) {
+			if(temp.equals(name)){
+				bag.remove(temp);
+				return;
 			}
 		}
 	}
 	
+	//Removes a proficiency from the profs list
+	public void removeProf(String name) {
+		for(String temp : proficiencies) {
+			if(temp.equals(name)) {
+				proficiencies.remove(temp);
+				return;
+			}
+		}
+	}
 	//Returns this characters level
 	public int getLevel(){
 		return level;
@@ -282,6 +313,17 @@ public class Character implements Serializable{
 	public int getAC(){
 		return ac + getModifier(dex);
 	}
+	
+	public String getProficiencies() {
+		String profs = "";
+		
+		for(String temp : proficiencies) {
+			profs = temp + ", " + profs;
+		}
+		
+		return profs.contains(",") ? profs.substring(0, profs.length()-2) : "";
+	}
+	
 	//Returns the characters current proficieny bonus
 	public int getProficiency(){
 		int prof = (int)2+(level/4);

@@ -2,9 +2,6 @@ package commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import bot.GensoRanduul;
-import data.Campaign;
-import data.Player;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -61,8 +58,13 @@ public class Command extends ListenerAdapter{
 			}
 		}
 		
-		argList.add(content.charAt(0) == ('\"') ? content.substring(1, content.indexOf('\"')) : content.substring(content.indexOf(content), content.indexOf(" ")));
-		
+		if(content.charAt(0) == ('\"')){
+			content = content.substring(1);			
+			argList.add(content.substring(0, content.indexOf('\"')));
+		}else{
+			argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
+		}
+	
 		return argList;
 	}
 	

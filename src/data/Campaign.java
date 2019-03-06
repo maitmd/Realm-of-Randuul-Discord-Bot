@@ -1,16 +1,18 @@
 package data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-
 import net.dv8tion.jda.core.entities.MessageChannel;
 
-public class Campaign {
+public class Campaign implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static LocalDateTime now = LocalDateTime.now();
 	private ArrayList<Character> characters;
 	private String meetTime;

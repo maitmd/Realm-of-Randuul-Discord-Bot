@@ -49,7 +49,7 @@ public class Char extends Command{
 				//Removes the character from the players list.
 				player.removeCharacter(args.get(0));
 				channel.sendMessage("You remain in my memories").queue();
-				break;
+				return;
 			case "spells":
 				//!char [character] spells [sub-command] Find which sub-command of spells was issued.
 				args = getArgs(content, 3);
@@ -61,7 +61,6 @@ public class Char extends Command{
 						break;
 					case "remove":
 						//Removes a String of the spells name from the characters spell list.
-						args = getArgs(content,4);
 						character.removeSpell(args.get(3));
 						break;
 					case "view":
@@ -71,16 +70,14 @@ public class Char extends Command{
 				}
 			case "bag":
 				//!char [character] bag [sub-command] Find which sub-command was issued
-				args = getArgs(content, 3);
+				args = getArgs(content, 4);
 				switch(args.get(2)){
 					case "add":
 						//Adds a String with the item's name to the characters bag list.
-						args = getArgs(content,4);
 						character.addItem(args.get(3));
 						break;
 					case "remove": 
 						//Removes a String with the item's name from the characters bag list.
-						args = getArgs(content, 4);
 						character.removeItem(args.get(3));
 						break;
 					case "view":
@@ -92,6 +89,17 @@ public class Char extends Command{
 				//Adds 1 to the characters attune counter if that character exists
 				try{character.attune(channel);}catch(NullPointerException e){channel.sendMessage("This destiny has yet to be created.").queue(); return;}
 				break;
+			case "prof":
+				System.out.println("Profs: ");
+				args = getArgs(content, 4);
+				switch(args.get(2)) {
+				case "add":
+					character.addProf(args.get(3));
+					break;
+				case "remove":
+					character.removeProf(args.get(3));
+					break;
+				}
 			
 		}
 		
@@ -117,11 +125,13 @@ public class Char extends Command{
 		if(character == null){
 			character = GensoRanduul.getCharacter(args.get(0));
 		}
+		
 		try{character.display(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue();}
 	}
 	
 	//Replaces the characters current stat that was provided with the value given.
 	public void edit(MessageChannel channel, data.Character character, String content, ArrayList<String> args, User user){
+		System.out.println("Edit: ");
 		try{args = getArgs(content,4);}catch(Exception e) {
 			channel.sendMessage("What don't you like about this one..").queue();
 			return;
