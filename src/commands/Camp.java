@@ -72,12 +72,12 @@ public class Camp extends Command{
 				}
 			    break;
 			case "start":
-				campaign.play(true);
-				channel.sendMessage("@everyone " + campaign.getName() + " has started!").queue();
+				campaign.play(true, player);
+				channel.sendMessage(campaign.isPlaying() == true ? "@everyone " + campaign.getName() + " has started!" : "You are not the god of this world.").queue();
 				break;
 			case "stop":
-				channel.sendMessage("@everyone " + campaign.getName() + " has ended.").queue();
-				campaign.play(false);
+				campaign.play(false, player);
+				channel.sendMessage(campaign.isPlaying() == false ? "@everyone " + campaign.getName() + " has ended." : "You are not the god of this world.").queue();
 				break;
 			case "nextsession":
 				args = getArgs(content, 2);
@@ -85,6 +85,11 @@ public class Camp extends Command{
 				channel.sendMessage("```" + camp.getYear() + "-" + camp.getMonthValue() + "-" + camp.getDayOfMonth() + "```").queue();
 				break;
 			case "schedule":
+				if(campaign.getDm() != player) {
+					channel.sendMessage("You are not the god of this world.").queue();
+					break;
+				}
+				
 				args = getArgs(content, 5);
 				campaign.setNextSession(args.get(2), Integer.parseInt(args.get(3)), args.get(4));
 			default: 

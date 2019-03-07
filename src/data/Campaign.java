@@ -109,9 +109,10 @@ public class Campaign implements Serializable{
 	}
 	
 	public void removeCharacter(MessageChannel channel, String name, Player dm) {
-		if(dm == this.dm) {
+		data.Character chara = GensoRanduul.getCharacter(name);
+		if(dm == this.dm || dm == chara.getPlayer()) {
 			for(Character temp : characters) {
-				if(temp == GensoRanduul.getCharacter(name)) {
+				if(temp == chara) {
 					characters.remove(temp);
 					channel.sendMessage("To dust.").queue();
 					return;
@@ -198,7 +199,8 @@ public class Campaign implements Serializable{
 		dm = player;
 	}
 	
-	public void play(Boolean play) {
+	public void play(Boolean play, Player dm) {
+		if(dm == this.dm)
 		playing = play;
 	}
 }

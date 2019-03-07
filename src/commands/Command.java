@@ -26,13 +26,14 @@ public class Command extends ListenerAdapter{
 			case "campaign":
 				new Camp(channel, content, mem, men);
 				break;
-			case "countdown":
-				break;
 			case "player":
 				new PlayerC(channel, content, mem, men);
 		    	break;
 			case "char":
 				new Char(channel, content, mem);
+				break;
+			case "help":
+				new Help(channel, content);
 				break;
 			}
 		}

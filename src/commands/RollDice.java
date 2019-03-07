@@ -22,10 +22,6 @@ public class RollDice extends Command{
 				rollStats(rolls);
 				channel.sendMessage("Time to create a new destiny.").queue();
 				break;
-				
-			case "table":
-				break;
-				
 			default:
 				try{
 					diceAmount = Integer.parseInt(content.substring(content.indexOf(" ")+1, content.indexOf("d")));
