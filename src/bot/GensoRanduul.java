@@ -45,7 +45,6 @@ public class GensoRanduul{
 			fi.close();
 		}catch(Exception e) {
 			System.out.println("Error!");
-			e.printStackTrace();
 		}
 	}
 	

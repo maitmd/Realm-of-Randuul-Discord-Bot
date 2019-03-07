@@ -73,10 +73,10 @@ public class Camp extends Command{
 			    break;
 			case "start":
 				campaign.play(true);
-				channel.sendMessage("everyone " + campaign.getName() + " has started!").queue();
+				channel.sendMessage("@everyone " + campaign.getName() + " has started!").queue();
 				break;
 			case "stop":
-				channel.sendMessage("everyone " + campaign.getName() + " has ended.").queue();
+				channel.sendMessage("@everyone " + campaign.getName() + " has ended.").queue();
 				campaign.play(false);
 				break;
 			case "nextsession":
