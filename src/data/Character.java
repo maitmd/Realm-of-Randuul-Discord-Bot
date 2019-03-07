@@ -59,7 +59,7 @@ public class Character implements Serializable{
 		
 		channel.sendMessage("\n\n" + "**" + name + "**\r\n" + 
 				"```" + player.getName() + "'s Character\r\n" + 
-				"Campaign: [Campaign]\r\n" + 
+				"Campaign: " + campaign + "\r\n" + 
 				"Level: " + level + "\r\n" + 
 				"Class: " + charClass + "\r\n" + 
 				"Race: " + race + "\r\n" + 
@@ -268,6 +268,9 @@ public class Character implements Serializable{
 		proficiencies.add(name);
 	}
 	
+	public void addCampaign(Campaign camp) {
+		campaign = camp;
+	}
 	//Removes a spell from this characters spell list
 	public void removeSpell(String name){
 		for(Spell temp : spells) {
@@ -296,6 +299,10 @@ public class Character implements Serializable{
 				return;
 			}
 		}
+	}
+	
+	public Campaign getCampaign() {
+		return campaign;
 	}
 	//Returns this characters level
 	public int getLevel(){

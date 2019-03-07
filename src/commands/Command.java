@@ -20,13 +20,11 @@ public class Command extends ListenerAdapter{
 		
 		if(content.startsWith("!")) {
 			switch(getCommand(content)){
-			case "partyinfo":
-				break;
 			case "roll":
 				new RollDice(channel, content);
 				break;
 			case "campaign":
-				new Camp();
+				new Camp(channel, content, mem, men);
 				break;
 			case "countdown":
 				break;

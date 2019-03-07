@@ -20,6 +20,7 @@ public class PlayerC extends Command{
 		if(player == null){
 			GensoRanduul.addPlayer(new Player(user.getName()));
 			player = GensoRanduul.getPlayer(user.getName());
+			GensoRanduul.save();
 		}
 		
 		//Checks to see if any players were mentioned and if they do makes sure they exist,
@@ -34,6 +35,9 @@ public class PlayerC extends Command{
 			break;
 		case "characters":
 			characters(mentioned, channel, user, player);
+			break;
+		case "campaigns":
+			player.displayCampaigns(channel);
 			break;
 		}	
 	}
@@ -83,4 +87,22 @@ public class PlayerC extends Command{
 		}
 	}
 	
+	//Displays the member/player's character names.
+		public void campaigns(List<Member> mentioned, MessageChannel channel, User user, Player player){
+			Member tempmem = null;
+			try{tempmem = mentioned.get(0);}catch(Exception e){};
+			
+			if(tempmem != null){
+				Player temp = GensoRanduul.getPlayer(tempmem.getUser().getName());
+				if(temp == null){
+					GensoRanduul.addPlayer(new Player(tempmem.getUser().getName()));
+					temp = GensoRanduul.getPlayer(tempmem.getUser().getName().substring(0));
+					GensoRanduul.save();
+				}
+				
+				temp.displayCampaigns(channel);
+			}else{
+				player.displayCampaigns(channel);
+			}
+		}
 }

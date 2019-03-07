@@ -31,6 +31,23 @@ public class Player implements Serializable{
 				+ "\nNumber of Campaigns: " + getCampaigns().size() + "```").queue();
 	}
 	
+	//Displays the campaigns this player is in
+	public void displayCampaigns(MessageChannel channel) {
+		String campaign = "";
+		
+		if(campaigns.size() == 0){
+			channel.sendMessage("There is only void.").queue();
+			return;
+		}
+		
+		for(int i = 0; i < campaigns.size(); i++){
+			campaign = campaign + (campaigns.get(i).getDm() == this ?  campaigns.get(i).getName() + "*" :  campaigns.get(i).getName()) + ", ";
+		}
+		
+		campaign = campaign.substring(0, campaign.length()-2);
+		channel.sendMessage("```" + campaign + "```").queue();
+	}
+	
 	//Displays this player's characters
 	public void displayCharacters(MessageChannel channel){
 		String chars = "";
@@ -42,11 +59,9 @@ public class Player implements Serializable{
 		
 		for(int i = 0; i < getCharacters().size(); i++){
 			chars = chars + getCharacters().get(i).getName() + ", ";
-			if(i == getCharacters().size()-1){
-				chars = chars.substring(chars.indexOf(chars), chars.length()-2);
-			}
 		}
 		
+		chars = chars.substring(0, chars.length()-2);
 		channel.sendMessage("**" + getName() + "'s Characters: **\n" + chars).queue();
 	}
 	
@@ -69,6 +84,23 @@ public class Player implements Serializable{
 		characters.add(new Character(this, name));
 	}
 	
+	//Adds a campaign to this character
+	public void addCampaign(String time, String zone, String name, String meet) {
+		campaigns.add(new Campaign(time, zone, name, this, meet));
+	}
+	
+	//Removes a character from this character
+	public void removeCampaign(MessageChannel channel, String name) {
+		for(Campaign temp : campaigns) {
+			if(temp.getName().equals(name) && temp.getDm() == this){
+				campaigns.remove(temp);
+				channel.sendMessage("Return to the void").queue();
+				temp = null;
+				return;
+			}
+		}
+	}
+	
 	//Returns a character matching the name given
 	public Character getCharacter(String name){
 		for(int i = 0; i < getCharacters().size(); i++) {
@@ -82,8 +114,8 @@ public class Player implements Serializable{
 	
 	//Returns a character matching the name given
 		public Campaign getCampaign(String name){
-			for(int i = 0; i < getCharacters().size(); i++) {
-				if(getCampaigns().get(i).getName().equalsIgnoreCase(name)) {
+			for(int i = 0; i < campaigns.size(); i++) {
+				if(campaigns.get(i).getName().equalsIgnoreCase(name)) {
 					return getCampaigns().get(i);
 				}
 			}

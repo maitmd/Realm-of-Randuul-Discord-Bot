@@ -26,9 +26,6 @@ public class Char extends Command{
 		
 		//!char [character] [sub-command] Find which sub-command was issued.
 		switch(args.get(1)){
-			case "view":
-				//Displays the characters information
-				break;
 			case "edit":
 				//Edits the stat of a character.
 				edit(channel, character, content, args, user);
@@ -100,7 +97,9 @@ public class Char extends Command{
 					character.removeProf(args.get(3));
 					break;
 				}
-			
+			default:
+				view(channel, content, args, character);
+				return;
 		}
 		
 		//Adds the player to players.txt

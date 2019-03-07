@@ -99,7 +99,7 @@ public class GensoRanduul{
 		Campaign campaign = null;
 		
 		for(int i = 0; i < players.size(); i++) {
-			if(players.get(i).getCharacter(name) != null) {
+			if(players.get(i).getCampaign(name) != null) {
 				campaign = players.get(i).getCampaign(name);
 			}
 		}
