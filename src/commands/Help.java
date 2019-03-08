@@ -12,7 +12,7 @@ public class Help extends Command{
 			switch(args.get(0)) {
 			case "campaign":
 				channel.sendMessage("**Campaign Sub-Commands:**" + "\n\n" + "*Note: if any arguments you type have spaces you must containt them with quotes (\" \").*" + "\n\n" 
-			+ "**create [next session date] [time zone] [meet time]**" + "\n" + "```" + "[next session date] format \"Year-Month-Day\"." + "\n"  
+			+ "**create [next session date] [time zone] [meet time]**" + "\n" + "```" + "[next session date] format \"Year-Month-Day Hour:Minutes\"." + "\n"  
 						+ "[time zone] should use GMT + or - with number only (Example: \"-5\")." + "\n" + "[meet time] is just a description of the meet time of the campaign (Example: \"Bi-Weekly, Fridays at 6PM EST\")." 
 			+ "\n" + "```"+ "\n" + "**remove**"  + "\n" + "```" +"Removes a campaign from the server forever." + "```" + "\n" + "**characters [view, add, remove] [character name*]**"
 						+ "\n" + "```" + "[character name] is only used with the [add, remove] sub-commands." + "\n"  + "```" + "\n" + "**join**" + "\n" + "```" 
