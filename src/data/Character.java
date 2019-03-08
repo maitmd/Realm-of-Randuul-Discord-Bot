@@ -192,12 +192,20 @@ public class Character implements Serializable{
 	public void attune(MessageChannel channel){
 		if(attunedItems >= 3){
 			attunedItems = 3;
-			channel.sendMessage("That is too many for you to handle..");
+			channel.sendMessage("That is too many for you to handle..").queue();
 		}else{
 			attunedItems++;		
 		}
 	}
 	
+	public void unattune(MessageChannel channel){
+		if(attunedItems <= 0){
+			attunedItems = 0;
+			channel.sendMessage("You can't unattune to nothing idiot.").queue();
+		}else{
+			attunedItems--;		
+		}
+	}
 	//Adds 1 to the characters level, but makes sures they aren't above level 20.
 	public void setLevel(int levelUp) {
 		level = levelUp;
@@ -333,7 +341,7 @@ public class Character implements Serializable{
 	
 	//Returns the characters current proficieny bonus
 	public int getProficiency(){
-		int prof = (int)2+(level/4);
+		int prof = 2+(level/4);
 		
 		return level%4==0 ? prof-1 : prof;
 	}

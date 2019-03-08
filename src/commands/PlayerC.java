@@ -11,7 +11,8 @@ import net.dv8tion.jda.core.entities.User;
 
 public class PlayerC extends Command{
 	public PlayerC(MessageChannel channel, String content, Member mem, List<Member> mention){
-		ArrayList<String> args = getArgs(content, 2);
+		ArrayList<String> args;
+		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e) {return;}
 		List<Member> mentioned = mention;
 		User user = mem.getUser();
 		Player player = GensoRanduul.getPlayer(user.getName());

@@ -40,7 +40,9 @@ public class Char extends Command{
 				break;
 			case "levelup":
 				//Adds 1 to the characters level if they exist.
-				try{character.setLevel(character.getLevel()+1); channel.sendMessage("Grow child.").queue();}catch(NullPointerException e){channel.sendMessage("This destiny has yet to be created.").queue(); return;}
+				if(character.getPlayer().getName().equals(user.getName())){args = getArgs(content, 3);
+					try{character.setLevel(character.getLevel()+1); channel.sendMessage("Grow child.").queue();}catch(NullPointerException e){channel.sendMessage("This destiny has yet to be created.").queue(); return;}
+				}else{channel.sendMessage("Hands to your own creations!").queue();}
 				break;
 			case "remove":
 				//Removes the character from the players list.
@@ -49,54 +51,69 @@ public class Char extends Command{
 				return;
 			case "spells":
 				//!char [character] spells [sub-command] Find which sub-command of spells was issued.
-				args = getArgs(content, 3);
-				switch(args.get(2)){
-					case "add":
-						//Adds a String of the spells name and an integer to the characters spells list.
-						args = getArgs(content,5);
-						character.addSpell(args.get(3), Integer.parseInt(args.get(4)));
-						break;
-					case "remove":
-						//Removes a String of the spells name from the characters spell list.
-						character.removeSpell(args.get(3));
-						break;
-					case "view":
-						//Displays the characters spells by level.
-						character.displayeSpells(channel);
-						break;
-				}
+				
+				if(character.getPlayer().getName().equals(user.getName())){args = getArgs(content, 3);
+					switch(args.get(2)){
+						case "add":
+							//Adds a String of the spells name and an integer to the characters spells list.
+							args = getArgs(content,5);
+							character.addSpell(args.get(3), Integer.parseInt(args.get(4)));
+							break;
+						case "remove":
+							//Removes a String of the spells name from the characters spell list.
+							character.removeSpell(args.get(3));
+							break;
+						case "view":
+							//Displays the characters spells by level.
+							character.displayeSpells(channel);
+							break;
+					}
+				}else{channel.sendMessage("Hands to your own creations!").queue();}
 			case "bag":
 				//!char [character] bag [sub-command] Find which sub-command was issued
 				args = getArgs(content, 4);
-				switch(args.get(2)){
-					case "add":
-						//Adds a String with the item's name to the characters bag list.
-						character.addItem(args.get(3));
-						break;
-					case "remove": 
-						//Removes a String with the item's name from the characters bag list.
-						character.removeItem(args.get(3));
-						break;
-					case "view":
-						//Displays the characters bag list.
-						character.displayBag(channel);
-						break;
-				}
+				if(character.getPlayer().getName().equals(user.getName())){
+					switch(args.get(2)){
+						case "add":
+							//Adds a String with the item's name to the characters bag list.
+							character.addItem(args.get(3));
+							break;
+						case "remove": 
+							//Removes a String with the item's name from the characters bag list.
+							character.removeItem(args.get(3));
+							break;
+						case "view":
+							//Displays the characters bag list.
+							character.displayBag(channel);
+							break;
+					}
+				}else{channel.sendMessage("Hands to your own creations!").queue();}
 			case "attune":
 				//Adds 1 to the characters attune counter if that character exists
-				try{character.attune(channel);}catch(NullPointerException e){channel.sendMessage("This destiny has yet to be created.").queue(); return;}
+				if(character.getPlayer().getName().equals(user.getName())){
+					try{character.attune(channel);}catch(NullPointerException e){channel.sendMessage("This destiny has yet to be created.").queue(); return;}
+				}else{
+					channel.sendMessage("Hands to your own creations!").queue();}
+				break;
+				case "unattune":
+				//Removes 1 to the characters attune counter if that character exists
+				if(character.getPlayer().getName().equals(user.getName())){
+					try{character.unattune(channel);}catch(NullPointerException e){channel.sendMessage("This destiny has yet to be created.").queue(); return;}
+				}else{channel.sendMessage("Hands to your own creations!").queue();}
 				break;
 			case "prof":
-				System.out.println("Profs: ");
-				args = getArgs(content, 4);
-				switch(args.get(2)) {
-				case "add":
-					character.addProf(args.get(3));
-					break;
-				case "remove":
-					character.removeProf(args.get(3));
-					break;
-				}
+				if(character.getPlayer().getName().equals(user.getName())){
+					args = getArgs(content, 4);
+					switch(args.get(2)) {
+					case "add":
+						character.addProf(args.get(3));
+						break;
+					case "remove":
+						character.removeProf(args.get(3));
+						break;
+					}	
+				}else{channel.sendMessage("Hands to your own creations!").queue();
+			}
 			default:
 				view(channel, content, args, character);
 				return;
