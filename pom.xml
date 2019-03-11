@@ -3,13 +3,37 @@
   <groupId>Land-of-Brahm-Discord-Bot</groupId>
   <artifactId>Land-of-Brahm-Discord-Bot</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  
+  <dependencies>
+     <dependency>
+	    <groupId>net.dv8tion</groupId>
+	    <artifactId>JDA</artifactId>
+	    <version>3.8.3_461</version>
+	</dependency>
+   </dependencies>
+   
+   <repositories>
+	   <repository>
+	   	<id>jcenter</id>
+	   	 <name>jcenter-bintray</name>
+	   	 <url>http://jcenter.bintray.com</url>
+		</repository>
+   </repositories>
+   
   <build>
     <sourceDirectory>src</sourceDirectory>
+    	<defaultGoal>install</defaultGoal>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
+	        <archive>
+	        	<manifest>
+	        		<mainClass>bot.GensoRanduul</mainClass>
+	        	</manifest>
+	        </archive>
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
