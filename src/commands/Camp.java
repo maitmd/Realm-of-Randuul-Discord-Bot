@@ -9,19 +9,16 @@ import data.Campaign;
 import data.Player;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
-
 public class Camp extends Command{
-	public Camp(MessageChannel channel, String content, Member member, List<Member> mention) {
+	public Camp(MessageChannel channel, String content, Member member, List<Member> mention, Player player) {
 		ArrayList<String> args = new ArrayList<String>();
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
-		User user = member.getUser();
-		Player player = GensoRanduul.getPlayer(user.getName());
 		Campaign campaign = GensoRanduul.getCampaign(args.get(0));
 		
-		if(player == null) {
-			GensoRanduul.addPlayer(new Player(user.getName()));
-			player = GensoRanduul.getPlayer(user.getName());
+		if(mention.size() > 0) {
+			if(GensoRanduul.getPlayer(mention.get(0).getUser().getName()) == null) {
+				GensoRanduul.addPlayer(new Player(mention.get(0).getUser().getName()));
+			}
 		}
 		
 		switch(args.get(1)) {
@@ -85,12 +82,12 @@ public class Camp extends Command{
 				channel.sendMessage("```" + camp.getYear() + "-" + camp.getMonthValue() + "-" + camp.getDayOfMonth() + "```").queue();
 				break;
 			case "schedule":
+				args = getArgs(content, 5);
 				if(campaign.getDm() != player) {
 					channel.sendMessage("You are not the god of this world.").queue();
 					break;
 				}
 				
-				args = getArgs(content, 5);
 				campaign.setNextSession(args.get(2), Integer.parseInt(args.get(3)), args.get(4));
 			default: 
 				campaign.display(channel);

@@ -11,18 +11,11 @@ import data.Player;
 
 public class Char extends Command{
 	
-	public Char(MessageChannel channel, String content, Member member) {
+	public Char(MessageChannel channel, String content, Member member, Player player) {
 		ArrayList<String> args = new ArrayList<String>();
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
 		User user = member.getUser();
-		Player player = GensoRanduul.getPlayer(user.getName());
 		data.Character character = GensoRanduul.getCharacter(args.get(0));
-		
-		//Checking to see if the member has been added into the bot as a player. If not add them.
-		if(player == null){
-			GensoRanduul.addPlayer(new Player(user.getName()));
-			player = GensoRanduul.getPlayer(user.getName());
-		}
 		
 		//!char [character] [sub-command] Find which sub-command was issued.
 		switch(args.get(1)){

@@ -2,6 +2,8 @@ package commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import bot.GensoRanduul;
+import data.Player;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -17,6 +19,13 @@ public class Command extends ListenerAdapter{
 		MessageChannel channel = event.getChannel();
 		Member mem = event.getMember();
 		List<Member> men = msg.getMentionedMembers();
+		Player player = GensoRanduul.getPlayer(mem.getUser().getName());
+		
+		//Checking to see if the member has been added into the bot as a player. If not add them.
+		if(player == null){
+			GensoRanduul.addPlayer(new Player(mem.getUser().getName()));
+			player = GensoRanduul.getPlayer(mem.getUser().getName());
+		}
 		
 		if(content.startsWith("!")) {
 			switch(getCommand(content)){
@@ -24,13 +33,13 @@ public class Command extends ListenerAdapter{
 				new RollDice(channel, content);
 				break;
 			case "campaign":
-				new Camp(channel, content, mem, men);
+				new Camp(channel, content, mem, men, player);
 				break;
 			case "player":
-				new PlayerC(channel, content, mem, men);
+				new PlayerC(channel, content, mem, men, player);
 		    	break;
 			case "char":
-				new Char(channel, content, mem);
+				new Char(channel, content, mem, player);
 				break;
 			case "help":
 				new Help(channel, content);
@@ -46,7 +55,7 @@ public class Command extends ListenerAdapter{
 		String content = msg.substring(msg.indexOf(" ")+1) + " ";
 		ArrayList<String> argList = new ArrayList<String>();
 		
-		for(int i = 0; i < args-1; i++) {
+		for(int i = 0; i < args; i++) {
 			if(content.charAt(0) == ('\"')){
 				content = content.substring(1);			
 				argList.add(content.substring(0, content.indexOf('\"')));
@@ -57,12 +66,12 @@ public class Command extends ListenerAdapter{
 			}
 		}
 		
-		if(content.charAt(0) == ('\"')){
+		/*if(content.charAt(0) == ('\"')){
 			content = content.substring(1);			
 			argList.add(content.substring(0, content.indexOf('\"')));
 		}else{
 			argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
-		}
+		}*/
 	
 		return argList;
 	}

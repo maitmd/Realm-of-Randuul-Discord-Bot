@@ -22,7 +22,7 @@ public class Help extends Command{
 			+ "\n" + "**invite [@user]**" + "\n" + "```" +"The Dungeon Master can invite members of the server to a campaign that they have created." + "```" + "\n" +
 			"**start**" + "\n" + "```" +"This command will announce to the server that your campaign has started." + "```" + "\n" + "**stop**" 
 						+ "\n" + "```" +"This command will announce to the server that your campaign has stopped." + "```" + "\n" + "**schedule [time zone] [quantity] [month, week, day]**" 
-			+ "\n" + "```" +"This command will set your next session date to [quantity] [month, week, day]s from today." + "```").queue();
+			+ "\n" + "```" +"This command will set your next session date to [quantity] [month, week, day]s from the current next session date." + "```").queue();
 				break;
 			case "char":
 				channel.sendMessage("**Character Sub-Commands**" + "\n\n" + "*Note: if any arguments you type have spaces you must containt them with quotes (\" \"). Additionally any edits made to character may only be done by that character's owner.*" + "\n\n"

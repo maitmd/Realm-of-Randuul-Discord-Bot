@@ -15,7 +15,6 @@ public class Campaign implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static LocalDateTime now = LocalDateTime.now();
 	private ArrayList<Character> characters;
 	private String meetTime;
 	private ZonedDateTime nextSession;
@@ -42,6 +41,7 @@ public class Campaign implements Serializable{
 				"```Dungeon Master: " + dm.getName() + "\n" +
 				"Number of Players: " + players.size() + "\n" +
 				"Number of Characters: " + characters.size() + "\n" +
+				"Pending Invites: " + invited.size() + "\n" +
 				"Meet Time: " + meetTime + "\n" +
 				"Next Session: " +
 				nextSession.getYear() + "-" + nextSession.getDayOfMonth() + "-" + nextSession.getMonthValue() 
@@ -104,7 +104,7 @@ public class Campaign implements Serializable{
 	public void invitePlayer(MessageChannel channel, Player dm, Player player) {
 		if(dm == this.dm) {
 			invited.add(player);
-			channel.sendMessage(player.getName() + " have you ever created a soul?").queue();
+			channel.sendMessage(player.getName() + " have you ever created a soul? (!campaign [campaign name] join)").queue();
 		}
 	}
 	
@@ -151,7 +151,7 @@ public class Campaign implements Serializable{
 	}
 	
 	public void setNextSession(String zone, int jump, String unit) {
-		ZonedDateTime next = ZonedDateTime.of(now, ZoneId.of(zone));
+		ZonedDateTime next = ZonedDateTime.of(nextSession.toLocalDateTime(), ZoneId.of(zone));
 		switch(unit) {
 		case "week":
 			next = next.plusWeeks(jump);

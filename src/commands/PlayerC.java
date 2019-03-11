@@ -10,19 +10,11 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
 public class PlayerC extends Command{
-	public PlayerC(MessageChannel channel, String content, Member mem, List<Member> mention){
+	public PlayerC(MessageChannel channel, String content, Member mem, List<Member> mention, Player player){
 		ArrayList<String> args;
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e) {return;}
 		List<Member> mentioned = mention;
 		User user = mem.getUser();
-		Player player = GensoRanduul.getPlayer(user.getName());
-		
-		//Checks to see if the player exists, if not it adds the player to the bots list.
-		if(player == null){
-			GensoRanduul.addPlayer(new Player(user.getName()));
-			player = GensoRanduul.getPlayer(user.getName());
-			GensoRanduul.save();
-		}
 		
 		//Checks to see if any players were mentioned and if they do makes sure they exist,
 		//if not they are added to the bots list.
