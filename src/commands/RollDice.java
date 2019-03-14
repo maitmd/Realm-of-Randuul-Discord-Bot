@@ -10,7 +10,7 @@ public class RollDice extends Command{
 	private String args;
 	
 	public RollDice(MessageChannel channel, String content) {
-		super();
+		super(jda);
 		output = " ";
 		
 		args = content.substring(content.indexOf(" ")+1);

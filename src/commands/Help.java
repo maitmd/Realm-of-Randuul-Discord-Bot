@@ -6,10 +6,11 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 
 public class Help extends Command{
 	public Help(MessageChannel channel, String content) {
-			ArrayList<String> args = new ArrayList<String>();
-			try{args = getArgs(content, 1);}catch(StringIndexOutOfBoundsException e){System.out.println("No args for help!");}
+		super(jda);	
+		ArrayList<String> args = new ArrayList<String>();
+		try{args = getArgs(content, 1);}catch(StringIndexOutOfBoundsException e){System.out.println("No args for help!");}
 
-			switch(args.get(0)) {
+		switch(args.get(0)) {
 			case "campaign":
 				channel.sendMessage("**Campaign Sub-Commands:**" + "\n\n" + "*Note: if any arguments you type have spaces you must containt them with quotes (\" \").*" + "\n\n" 
 			+ "**create [next session date] [time zone] [meet time]**" + "\n" + "```" + "[next session date] format \"Year-Month-Day Hour:Minutes\"." + "\n"  

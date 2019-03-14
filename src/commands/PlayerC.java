@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.User;
 
 public class PlayerC extends Command{
 	public PlayerC(MessageChannel channel, String content, Member mem, List<Member> mention, Player player){
+		super(jda);
 		ArrayList<String> args;
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e) {return;}
 		List<Member> mentioned = mention;

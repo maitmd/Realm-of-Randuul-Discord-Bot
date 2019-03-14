@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
 public class Camp extends Command{
 	public Camp(MessageChannel channel, String content, Member member, List<Member> mention, Player player) {
+		super(jda);
 		ArrayList<String> args = new ArrayList<String>();
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
 		Campaign campaign = GensoRanduul.getCampaign(args.get(0));

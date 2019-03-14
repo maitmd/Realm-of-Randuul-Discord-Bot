@@ -12,6 +12,7 @@ import data.Player;
 public class Char extends Command{
 	
 	public Char(MessageChannel channel, String content, Member member, Player player) {
+		super(jda);
 		ArrayList<String> args = new ArrayList<String>();
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
 		User user = member.getUser();

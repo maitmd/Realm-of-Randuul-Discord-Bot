@@ -4,6 +4,7 @@ import java.util.List;
 
 import bot.GensoRanduul;
 import data.Player;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -12,6 +13,12 @@ public class Command extends ListenerAdapter{
 	
 	//Listens for messages that are sent in the server if they contain ! in them then the command is processed and
 	//the corresponding child of this class is called.
+
+	public static JDA jda;
+	public Command(JDA jda) {
+		Command.jda = jda;
+	}
+	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {	
 		Message msg = event.getMessage();
@@ -43,6 +50,9 @@ public class Command extends ListenerAdapter{
 				break;
 			case "help":
 				new Help(channel, content);
+				break;
+			case "collapse":
+				jda.shutdownNow();
 				break;
 			}
 		}
