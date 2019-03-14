@@ -10,10 +10,12 @@ public class Spell implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private int level;
+	private boolean ritual;
 	
-	public Spell(String name, int level){
+	public Spell(String name, int level, boolean ritual){
 		this.name = name;
 		this.level = level;
+		this.ritual = ritual;
 	}
 	
 	//Returns this spells level
@@ -24,5 +26,14 @@ public class Spell implements Serializable{
 	//Returns this spells name
 	public String getName(){		
 		return name;
+	}
+	
+	public boolean getRitual() {
+		return ritual;
+	}
+	
+	public String link() {
+		String linkName = name.replaceAll(" ", "-");
+		return "https://www.dnd-spells.com/spell/" + linkName + (ritual ? "-ritual" : "");
 	}
 }

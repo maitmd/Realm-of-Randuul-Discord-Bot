@@ -83,6 +83,14 @@ public class Character implements Serializable{
 				"```").queue();
 	}
 	
+	public void displaySpell(MessageChannel channel, String spell) {
+		for(Spell temp : spells) {
+			if(temp.getName().equals(spell)){
+				channel.sendMessage("**Name: " + temp.getName() + "** \n```Level: " + temp.getLevel() + "\nRitual: " + temp.getRitual() + "\nLink: " + temp.link() + "```").queue();
+			}
+		}
+	}
+	
 	//Sorts this characters spells by level and displays them in order.
 	public void displayeSpells(MessageChannel channel){
 		String cantrip = ""; String one = ""; String two = ""; String three = ""; String four = ""; 
@@ -262,8 +270,8 @@ public class Character implements Serializable{
 	}
 	
 	//Adds a spell to this characters spell list
-	public void addSpell(String name, int level){
-		spells.add(new Spell(name, level));
+	public void addSpell(String name, int level, boolean ritual){
+		spells.add(new Spell(name, level, ritual));
 	}
 	
 	//Adds an item to this characters bag

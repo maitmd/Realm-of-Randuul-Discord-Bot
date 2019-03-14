@@ -50,8 +50,8 @@ public class Char extends Command{
 					switch(args.get(2)){
 						case "add":
 							//Adds a String of the spells name and an integer to the characters spells list.
-							args = getArgs(content,5);
-							character.addSpell(args.get(3), Integer.parseInt(args.get(4)));
+							args = getArgs(content,6);
+							character.addSpell(args.get(3), Integer.parseInt(args.get(4)), args.get(5).equalsIgnoreCase("yes") ? true : false);
 							break;
 						case "remove":
 							//Removes a String of the spells name from the characters spell list.
@@ -59,7 +59,7 @@ public class Char extends Command{
 							break;
 						case "view":
 							//Displays the characters spells by level.
-							character.displayeSpells(channel);
+							try{character.displaySpell(channel, args.get(3));}catch(Exception e){character.displayeSpells(channel);};
 							break;
 					}
 				}else{channel.sendMessage("Hands to your own creations!").queue();}
