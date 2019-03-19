@@ -31,9 +31,4 @@ public class Spell implements Serializable{
 	public boolean getRitual() {
 		return ritual;
 	}
-	
-	public String link() {
-		String linkName = name.replaceAll(" ", "-");
-		return "https://www.dnd-spells.com/spell/" + linkName + (ritual ? "-ritual" : "");
-	}
 }

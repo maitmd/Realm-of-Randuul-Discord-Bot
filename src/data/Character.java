@@ -86,7 +86,10 @@ public class Character implements Serializable{
 	public void displaySpell(MessageChannel channel, String spell) {
 		for(Spell temp : spells) {
 			if(temp.getName().equals(spell)){
-				channel.sendMessage("**Name: " + temp.getName() + "** \n```Level: " + temp.getLevel() + "\nRitual: " + temp.getRitual() + "\nLink: " + temp.link() + "```").queue();
+				channel.sendMessage("**" + temp.getName() + 
+						"** \n```Level: " + temp.getLevel() + 
+						"\nRitual: " + temp.getRitual()).queue();
+				return;
 			}
 		}
 	}

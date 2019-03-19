@@ -46,12 +46,19 @@ public class Char extends Command{
 			case "spells":
 				//!char [character] spells [sub-command] Find which sub-command of spells was issued.
 				
-				if(character.getPlayer().getName().equals(user.getName())){args = getArgs(content, 3);
+				if(character.getPlayer().getName().equals(user.getName())){
+					args = getArgs(content, 4);
 					switch(args.get(2)){
 						case "add":
 							//Adds a String of the spells name and an integer to the characters spells list.
-							args = getArgs(content,6);
-							character.addSpell(args.get(3), Integer.parseInt(args.get(4)), args.get(5).equalsIgnoreCase("yes") ? true : false);
+							try{args = getArgs(content,6);}catch(Exception e) {args = getArgs(content,5);}
+							
+							if(args.size() < 6) {
+								character.addSpell(args.get(3), Integer.parseInt(args.get(4)), false);
+							}else {
+								character.addSpell(args.get(3), Integer.parseInt(args.get(4)), args.get(5).equalsIgnoreCase("yes") ? true : false);
+							}
+							
 							break;
 						case "remove":
 							//Removes a String of the spells name from the characters spell list.
@@ -59,9 +66,13 @@ public class Char extends Command{
 							break;
 						case "view":
 							//Displays the characters spells by level.
-							try{character.displaySpell(channel, args.get(3));}catch(Exception e){character.displayeSpells(channel);};
-							break;
+							if(args.size() < 4) {
+								character.displayeSpells(channel);
+							}else {
+								character.displaySpell(channel, args.get(3));
+							}
 					}
+					break;
 				}else{channel.sendMessage("Hands to your own creations!").queue();}
 			case "bag":
 				//!char [character] bag [sub-command] Find which sub-command was issued
@@ -115,7 +126,6 @@ public class Char extends Command{
 		
 		//Adds the player to players.txt
 		GensoRanduul.save();
-		view(channel, content, args, character);
 	}
 	
 	//Creates a new Character object and adds it to the player's Character list.
@@ -141,7 +151,6 @@ public class Char extends Command{
 	
 	//Replaces the characters current stat that was provided with the value given.
 	public void edit(MessageChannel channel, data.Character character, String content, ArrayList<String> args, User user){
-		System.out.println("Edit: ");
 		try{args = getArgs(content,4);}catch(Exception e) {
 			channel.sendMessage("What don't you like about this one..").queue();
 			return;

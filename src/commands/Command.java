@@ -54,6 +54,9 @@ public class Command extends ListenerAdapter{
 			case "collapse":
 				jda.shutdownNow();
 				break;
+			case "search":
+				new Search(channel, content);
+				break;
 			}
 		}
 		

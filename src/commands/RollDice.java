@@ -42,11 +42,13 @@ public class RollDice extends Command{
 	
 	//Displays the value of each roll.
 	public void sendRolls(MessageChannel channel) {
+		int sum = 0;
 		for(int i = 0; i < rolls.length; i++) {
-			output = output + " [" + String.valueOf(rolls[i]) + "]";
+			output = output + " [" + rolls[i] + "]";
+			sum += rolls[i];
 		}
 		
-		try{channel.sendMessage(output).queue();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").queue(); }
+		try{channel.sendMessage(output + "\n\n= " + sum).queue();}catch(Exception e) {channel.sendMessage("You thought I'd let you get that powerful?").queue(); }
 	}
 	
 	//Randomizes integers based on the value of the dice and adds them to the the list of the number of the dice.
