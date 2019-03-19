@@ -29,7 +29,6 @@ public class GensoRanduul{
 		api.addEventListener(listener);
 		getStoredData();
 		
-
 	}
 	
 	//Reads players.txt and retrieves all player and campaign objects stored there.

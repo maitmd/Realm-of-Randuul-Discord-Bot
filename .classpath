@@ -11,7 +11,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/workspace/Land-of-Brahm-Discord-Bot/lib/jda/JDA-3.8.2_459-withDependencies.jar" sourcepath="lib/jda/JDA-3.8.2_459-sources.jar">
+	<classpathentry kind="lib" path="C:/Users/Maxwell/Documents/GitHub/Land-of-Brahm-Discord-Bot/lib/jda/JDA-3.8.2_459-withDependencies.jar" sourcepath="lib/jda/JDA-3.8.2_459-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Land-of-Brahm-Discord-Bot/lib/jda/JDA-3.8.2_459-javadoc.jar!/"/>
 		</attributes>
