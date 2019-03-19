@@ -74,17 +74,15 @@ public class RollDice extends Command{
 			
 			for(int i = 0; i < indvStat.length;i++) {
 				if(indvStat[i] < lowest) {
-					lowest = i;
+					lowest = indvStat[i];
 				}
 			}
-		
-			indvStat[lowest] = 0;
 			
 			for(int i = 0; i < indvStat.length; i++) {
 					single+=indvStat[i];
 			}
 			
-				stats[j] = single;
+				stats[j] = single-lowest;
 				lowest = 1000;
 				single = 0;
 		}
