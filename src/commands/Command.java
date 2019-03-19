@@ -56,6 +56,7 @@ public class Command extends ListenerAdapter{
 				break;
 			case "search":
 				new Search(channel, content);
+				msg.delete();
 				break;
 			}
 		}
@@ -78,14 +79,6 @@ public class Command extends ListenerAdapter{
 				content = content.substring(content.indexOf(" ")+1);
 			}
 		}
-		
-		/*if(content.charAt(0) == ('\"')){
-			content = content.substring(1);			
-			argList.add(content.substring(0, content.indexOf('\"')));
-		}else{
-			argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
-		}*/
-	
 		return argList;
 	}
 	
