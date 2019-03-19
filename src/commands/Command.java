@@ -52,11 +52,11 @@ public class Command extends ListenerAdapter{
 				new Help(channel, content);
 				break;
 			case "collapse":
-				jda.shutdownNow();
+				channel.deleteMessageById(event.getMessageId()).queue();
+				jda.shutdown();
 				break;
 			case "search":
 				new Search(channel, content);
-				msg.delete();
 				break;
 			}
 		}
