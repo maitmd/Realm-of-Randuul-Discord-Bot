@@ -24,7 +24,7 @@ public class GensoRanduul{
 	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
 			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
 		
-		JDA api = new JDABuilder(AccountType.BOT).setToken("NTQ5NzU4OTczMzY5MjUzOTE5.D1Ymxw.BHAB-z_MXx3fSV7IlkXDZsZBwvA").build();
+		JDA api = new JDABuilder(AccountType.BOT).setToken("").build();
 		Command listener = new Command(api);
 		api.addEventListener(listener);
 		getStoredData();
