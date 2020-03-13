@@ -69,19 +69,17 @@ public class RollDice extends Command{
 		int single = 0;
 		int[] indvStat = new int[4];
 		int [] stats = list;
+		
 		for(int j = 0; j < stats.length; j++) {
 			rollDice(indvStat, 6);
 			
-			for(int i = 0; i < indvStat.length;i++) {
-				if(indvStat[i] < lowest) {
+			for(int i = 0; i < indvStat.length; i++) {
+				if(lowest > indvStat[i]) {
 					lowest = indvStat[i];
 				}
+				
+				single += indvStat[i];
 			}
-			
-			for(int i = 0; i < indvStat.length; i++) {
-					single+=indvStat[i];
-			}
-			
 				stats[j] = single-lowest;
 				lowest = 1000;
 				single = 0;
