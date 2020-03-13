@@ -85,8 +85,8 @@ public class Player implements Serializable{
 	}
 	
 	//Adds a campaign to this character
-	public void addCampaign(String time, String zone, String name, String meet) {
-		campaigns.add(new Campaign(time, zone, name, this, meet));
+	public void addCampaign(String name) {
+		campaigns.add(new Campaign(name, this));
 	}
 	
 	//Removes a character from this character

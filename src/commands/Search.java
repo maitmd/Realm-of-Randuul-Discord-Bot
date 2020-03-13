@@ -23,11 +23,11 @@ public class Search extends Command{
 			break;
 		case "item":
 			args = getArgs(content, 2);
-			channel.sendMessage("https://roll20.net/compendium/dnd5e/Items:" + args.get(1)).queue();
+			channel.sendMessage("https://roll20.net/compendium/dnd5e/Items:" + args.get(1).replaceAll(" ", "%20")).queue();
 			break;
 		case "monster":
 			args = getArgs(content, 2);
-			channel.sendMessage("http://chisaipete.github.io/bestiary/creatures/" + args.get(1).replaceAll(" ", "-").toLowerCase()).queue();
+			channel.sendMessage("http://chisaipete.github.io/bestiary/creature/" + args.get(1).replaceAll(" ", "-").toLowerCase()).queue();
 		}
 	}
 }

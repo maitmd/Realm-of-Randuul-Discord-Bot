@@ -48,7 +48,8 @@ public class Help extends Command{
 						+ "```" + "Campaign: !campaign [campaign name] [create, remove, invite, join, start, stop, nextsession, schedule, players, characters]"  + "```"
 						+ "```" +  "Characters: !char [character name] [view, edit, create, levelup, remove, spells, bag, attune, prof]" + "```"
 						+ "```" +  "Players: !player [@user name] [view, characters, campaigns]" + "```"
-						+ "```" +  "Dice: !roll [{number of dice}d{dice value}, stats]" + "```" + "\n"
+						+ "```" +  "Dice: !roll [{number of dice}d{dice value}, stats]" + "```" 
+						+ "```" +  "Search: !search [item, monster, spell], [search query]" + "```"+ "\n"
 						+ "To view more detailed descriptions type !help [inital sub-command]").queue();
 				break;
 			}

@@ -24,9 +24,8 @@ public class Camp extends Command{
 		
 		switch(args.get(1)) {
 			case "create":
-				args = getArgs(content, 5);
-				//name, time, zone, meet time
-				player.addCampaign(args.get(2), args.get(3), args.get(0), args.get(4));
+				args = getArgs(content, 2);
+				player.addCampaign(args.get(1));
 				campaign = GensoRanduul.getCampaign(args.get(0));
 				campaign.display(channel);
 			    break;
@@ -52,12 +51,6 @@ public class Camp extends Command{
 						break;
 				}
 			    break;
-			case "invite":
-				campaign.invitePlayer(channel, player, GensoRanduul.getPlayer(mention.get(0).getUser().getName()));
-				break;
-			case "join":
-				campaign.addPlayer(channel, player);
-				break;
 			case "players":
 				args = getArgs(content, 3);
 				switch(args.get(2)) {
@@ -65,31 +58,13 @@ public class Camp extends Command{
 					campaign.displayPlayers(channel);
 					break;
 				case "remove":
-					campaign.removePlayer(channel, mention.get(0).getUser().getName(), player);
+					campaign.removePlayer(channel, GensoRanduul.getPlayer(mention.get(0).getEffectiveName()), player);
+					break;
+				case "add":
+					campaign.addPlayer(channel, player);
 					break;
 				}
 			    break;
-			case "start":
-				campaign.play(true, player);
-				channel.sendMessage(campaign.isPlaying() == true ? "@everyone " + campaign.getName() + " has started!" : "You are not the god of this world.").queue();
-				break;
-			case "stop":
-				campaign.play(false, player);
-				channel.sendMessage(campaign.isPlaying() == false ? "@everyone " + campaign.getName() + " has ended." : "You are not the god of this world.").queue();
-				break;
-			case "nextsession":
-				args = getArgs(content, 2);
-				ZonedDateTime camp = campaign.getNextSession();
-				channel.sendMessage("```" + camp.getYear() + "-" + camp.getMonthValue() + "-" + camp.getDayOfMonth() + "```").queue();
-				break;
-			case "schedule":
-				args = getArgs(content, 5);
-				if(campaign.getDm() != player) {
-					channel.sendMessage("You are not the god of this world.").queue();
-					break;
-				}
-				
-				campaign.setNextSession(args.get(2), Integer.parseInt(args.get(3)), args.get(4));
 			default: 
 				campaign.display(channel);
 				return;

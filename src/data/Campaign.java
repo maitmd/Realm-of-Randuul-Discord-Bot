@@ -24,15 +24,13 @@ public class Campaign implements Serializable{
 	private Player dm;
 	private boolean playing;
 	
-	public Campaign(String time, String zone, String name, Player dm, String meet) {
+	public Campaign(String name, Player dm) {
 		this.dm = dm;
 		this.name = name;
-		meetTime = meet;
 		playing = false;
 		invited = new ArrayList<Player>();
 		players = new ArrayList<Player>();
 		characters = new ArrayList<Character>();
-		nextSession = getDate(time, zone);
 		players.add(dm);
 	}
 	
@@ -67,7 +65,7 @@ public class Campaign implements Serializable{
 	public void displayPlayers(MessageChannel channel) {
 		String plays = "";
 		for(Player temp : players) {
-			plays = temp.getName() + plays + ", ";
+			plays = temp.getName() + ", " + plays;
 		}
 		
 		plays = plays.substring(0, plays.length()-2);
@@ -90,7 +88,10 @@ public class Campaign implements Serializable{
 	
 	public void addPlayer(MessageChannel channel, Player player){
 		for(Player temp : invited){
-			if(player == temp && !players.contains(player)){
+			if(players.contains(player)) {
+				channel.sendMessage("Your soul walks the land already.");
+				return;
+			}else if(player == temp){
 				players.add(player);
 				invited.remove(player);
 				channel.sendMessage("Welcome to the universe.").queue();
@@ -121,13 +122,13 @@ public class Campaign implements Serializable{
 		}
 	}
 	
-	public void removePlayer(MessageChannel channel, String name, Player dm) {
+	public void removePlayer(MessageChannel channel, Player name, Player dm) {
 		ArrayList<Character> remove;
 		//Make sure this is the dm removing the player
 		if(dm == this.dm) {
 			//Find the player
 			for(Player temp : players) {
-				if(temp.getName().equals(name)) {
+				if(temp.equals(name)){
 					//Remove all of their characters from the campaign
 					remove = temp.getCharacters();
 					for(int i = 0; i < (remove.size() < characters.size() ? remove.size()-1 : characters.size()-1); i++){

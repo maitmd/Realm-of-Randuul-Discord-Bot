@@ -152,8 +152,7 @@ public class Char extends Command{
 	//Replaces the characters current stat that was provided with the value given.
 	public void edit(MessageChannel channel, data.Character character, String content, ArrayList<String> args, User user){
 		try{args = getArgs(content,4);}catch(Exception e) {
-			channel.sendMessage("What don't you like about this one..").queue();
-			return;
+			channel.sendMessage("What do you want to change about them? (!char [name] edit [stat] [value])").queue();
 		}
 		
 		String stat = args.get(2);
