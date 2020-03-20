@@ -27,7 +27,7 @@ public class Search extends Command{
 			break;
 		case "monster":
 			args = getArgs(content, 2);
-			channel.sendMessage("http://chisaipete.github.io/bestiary/creature/" + args.get(1).replaceAll(" ", "-").toLowerCase()).queue();
+			channel.sendMessage("https://www.jsigvard.com/dnd/monster.php?m=" + args.get(1).replaceAll(" ", "%20").toLowerCase()).queue();
 		}
 	}
 }
