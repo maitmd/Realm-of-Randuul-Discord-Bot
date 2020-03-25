@@ -58,6 +58,14 @@ public class Command extends ListenerAdapter{
 			case "search":
 				new Search(channel, content);
 				break;
+			case "diag":
+				ArrayList<String> len = getArgs(content, 2);
+				int arg1 = Integer.parseInt(len.get(0));
+				int arg2 = Integer.parseInt(len.get(1));
+				int diag = (int) Math.sqrt(((arg1*arg1)+(arg2*arg2)));
+				
+				channel.sendMessage("That will be moving **" + diag + "** feet with those numbers.").queue();
+				break;
 			}
 		}
 		
