@@ -66,6 +66,9 @@ public class Command extends ListenerAdapter{
 				
 				channel.sendMessage("That will be moving **" + diag + "** feet with those numbers.").queue();
 				break;
+			case "spam":
+				
+				break;
 			}
 		}
 		
