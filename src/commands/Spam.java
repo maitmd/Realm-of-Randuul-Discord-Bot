@@ -10,9 +10,17 @@ public class Spam {
 		List<Member> men = mention;
 		
 		if(men.size() > 0) {
-			channel.sendMessage("Hey @" + men.get(0).getUser().getId() + " get on!");
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
+			channel.sendMessage("Hey <@" + men.get(0).getUser().getId() + "> get on!").queue();
 		}else {
-			channel.sendMessage("That person doesn't exist :(");
+			channel.sendMessage("That person doesn't exist :(").queue();
 		}
 		
 		
