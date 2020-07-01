@@ -13,17 +13,19 @@ public class Help extends Command{
 		switch(args.get(0)) {
 			case "campaign":
 				channel.sendMessage("**Campaign Sub-Commands:**" + "\n\n" + "*Note: if any arguments you type have spaces you must containt them with quotes (\" \").*" + "\n\n" 
-			+ "**create [next session date] [time zone] [meet time]**" + "\n" + "```" + "[next session date] format \"Year-Month-Day Hour:Minutes\"." + "\n"  
-						+ "[time zone] should use GMT + or - with number only (Example: \"-5\")." + "\n" + "[meet time] is just a description of the meet time of the campaign (Example: \"Bi-Weekly, Fridays at 6PM EST\")." 
+			+ "**create**" + "\n" + "```" + "Creates and displays a blank campaign. You can set the next session date, description of the meet time, and invite players with the \"edit\" command and \"invite\" command respectively." 
 			+ "\n" + "```"+ "\n" + "**remove**"  + "\n" + "```" +"Removes a campaign from the server forever." + "```" + "\n" + "**characters [view, add, remove] [character name*]**"
-						+ "\n" + "```" + "[character name] is only used with the [add, remove] sub-commands." + "\n"  + "```" + "\n" + "**join**" + "\n" + "```" 
+						+ "\n" + "```" + "[character name] is only used with the [add, remove] sub-commands. If you wish to view individual characters you can use \"!char [character name] view\"" + "\n"  + "```" + "\n" + "**join**" + "\n" + "```" 
 						+"Players can only join campaigns they have been invited to." + "```" + "\n" + "**players [view, remove] [@user*]**" + "\n" + "```" 
-			+"[view] shows all players with at least one character in the campaign. \n[remove] can only be used by Dungeon Masters and it will remove the [@user] mentioned an all characters they had in the campaign." 
-						+ "```" + "\n" + "**nextsession**" + "\n" + "```" +"This command will display the next session for this campaign." + "```" + "\n\n" + "*The following commands can only be used by a Dungeon Master* \n\n" 
-			+ "\n" + "**invite [@user]**" + "\n" + "```" +"The Dungeon Master can invite members of the server to a campaign that they have created." + "```" + "\n" +
-			"**start**" + "\n" + "```" +"This command will announce to the server that your campaign has started." + "```" + "\n" + "**stop**" 
-						+ "\n" + "```" +"This command will announce to the server that your campaign has stopped." + "```" + "\n" + "**schedule [time zone] [quantity] [month, week, day]**" 
-			+ "\n" + "```" +"This command will set your next session date to [quantity] [month, week, day]s from the current next session date." + "```").queue();
+			+"[view] shows all players with at least one character in the campaign. \n[remove] can only be used by Dungeon Masters and it will remove the [@user] mentioned an all characters they had in the campaign. If you wish to view individual players you can use \"!player @[user] view\"" +  
+						"``` \n\n *The following commands can only be used by the Dungeon Master of the campaign*").queue(); 
+				channel.sendMessage("_ _").queue();
+				channel.sendMessage("_ _").queue();
+				channel.sendMessage("\n" + "**invite [@user]**" + "\n" + "```" +"The Dungeon Master can invite members of the server to a campaign that they have created. If you mention more than one member then they will all be invited!" + "```" + "\n" +
+		 "**nextsession [GMT Timezone] [Number] [Day, Week, Month]**" + "\n" + "```" + "Move the current \"Next Session\" date by [Number] [Day, Week, Month]s. For [GMT Timezone] only include the number do not put GMT in front of it! \n\nExample: !campaign [campaign name] nextsession -5 1 Week" +
+			"```" + "\n" + "**schedule [Year-Month-Day] [Hour:Minute] [GMT Timezone]**" + "\n" + "```" + "Set the current \"Next Session\" to a specific date. For [GMT Timezone] only include the number do not put GMT in front of it! For months and days that are single digit they must include a 0 in front of them. "
+					+ "The time set must be in military time. \n\nExample: !campaign [campaign name] 2020-06-24 16:00"
+			+ "```" + "\n" + "**meettime \"[Text]\"**" + "\n" + "```" + "Sets the current \"Meet Time\" text. The text must be surrounded by \" \" or it will not be displayed properly." + "```").queue();
 				break;
 			case "char":
 				channel.sendMessage("**Character Sub-Commands**" + "\n\n" + "*Note: if any arguments you type have spaces you must containt them with quotes (\" \"). Additionally any edits made to character may only be done by that character's owner.*" + "\n\n"
@@ -44,8 +46,8 @@ public class Help extends Command{
 				break;
 			default:
 				channel.sendMessage("**All Commands:**" + "\n\n"
-						+ "*Note: if any arguments you type have spaces you must containt them with quotes (\" \").*" + "\n\n"
-						+ "```" + "Campaign: !campaign [campaign name] [create, remove, invite, join, start, stop, nextsession, schedule, players, characters]"  + "```"
+						+ "*Note: if any arguments you type have spaces you must containt them with quotes (\" \") [Excluding mentions].*" + "\n\n"
+						+ "```" + "Campaign: !campaign [campaign name] [create, remove, join, , players, characters] \n\n(DM Only Sub-Commands) \n[invite, nextsession, schedule, meettime]"  + "```"
 						+ "```" +  "Characters: !char [character name] [view, edit, create, levelup, remove, spells, bag, attune, prof]" + "```"
 						+ "```" +  "Players: !player [@user name] [view, characters, campaigns]" + "```"
 						+ "```" +  "Dice: !roll [{number of dice}d{dice value}, stats]" + "```" 

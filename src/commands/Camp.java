@@ -12,40 +12,39 @@ public class Camp extends Command{
 	public Camp(MessageChannel channel, String content, Member member, List<Member> mention, Player player) {
 		super(jda);
 		ArrayList<String> args = new ArrayList<String>();
-		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
+		args = getArgs(content, 2);
 		Campaign campaign = GensoRanduul.getCampaign(args.get(0));
 		
 		if(mention.size() > 0) {
-			if(GensoRanduul.getPlayer(mention.get(0).getUser().getName()) == null) {
-				GensoRanduul.addPlayer(new Player(mention.get(0).getUser().getName()));
+			for(int i = 0; i < mention.size(); i++) {
+				if(GensoRanduul.getPlayer(mention.get(0).getUser().getName()) == null) {
+					GensoRanduul.addPlayer(new Player(mention.get(0).getUser().getName()));
+				}
 			}
 		}
 		
 		switch(args.get(1)) {
 			case "create":
 				args = getArgs(content, 2);
-				player.addCampaign(args.get(1));
+				player.addCampaign(args.get(0));
 				campaign = GensoRanduul.getCampaign(args.get(0));
 				campaign.display(channel);
 			    break;
 			case "remove":
-				args = getArgs(content, 2);
 				player.removeCampaign(channel, campaign.getName());
 			    break;
 			case "characters":
-				args = getArgs(content, 3);
+				args = getArgs(content, 4);
 				switch(args.get(2)) {
 					case "view":
 						campaign.displayCharacters(channel);
 						break;
 					case "add":
-						args = getArgs(content, 4);
 						data.Character chara = player.getCharacter(args.get(3));
 						campaign.addCharacter(channel, chara);
 						try{chara.addCampaign(campaign);}catch(NullPointerException e) {channel.sendMessage("That destiny has yet to be created.").queue(); return;}
 						break;
 					case "remove":
-						args = getArgs(content, 4);
 						campaign.removeCharacter(channel, args.get(3), player);
 						break;
 				}
@@ -57,16 +56,50 @@ public class Camp extends Command{
 					campaign.displayPlayers(channel);
 					break;
 				case "remove":
-					campaign.removePlayer(channel, GensoRanduul.getPlayer(mention.get(0).getEffectiveName()), player);
-					break;
-				case "add":
-					campaign.addPlayer(channel, player);
+					campaign.removePlayer(channel, GensoRanduul.getPlayer(mention.get(0).getUser().getName()), player);
 					break;
 				}
+			case "invite":
+				if(mention.size() > 0){
+					for(Member temp : mention) campaign.invitePlayer(channel, GensoRanduul.getPlayer(member.getUser().getName()), GensoRanduul.getPlayer(temp.getUser().getName()));
+				}
 			    break;
-			default: 
+			case "view": 
 				campaign.display(channel);
-				return;
+				break;
+			case "join":
+				campaign.addPlayer(channel, GensoRanduul.getPlayer(member.getUser().getName()));
+				break;
+			case "nextsession":
+				if(campaign.getDm() != GensoRanduul.getPlayer(member.getUser().getName())) {
+					channel.sendMessage("This is not your universe..").queue();
+					return;
+				}
+				
+				args = getArgs(content, 5);
+				campaign.nextSession(args.get(2), Integer.parseInt(args.get(3)), args.get(4));
+				channel.sendMessage("Until next time..").queue();
+				break;
+			case "schedule":
+				if(campaign.getDm() != GensoRanduul.getPlayer(member.getUser().getName())) {
+					channel.sendMessage("This is not your universe..").queue();
+					return;
+				}
+				
+				args = getArgs(content, 5);
+				campaign.setNextSession(args.get(2) + " " + args.get(3), args.get(4));
+				channel.sendMessage("Your time of communion has been noted.").queue();
+				break;
+			case "meettime":
+				if(campaign.getDm() != GensoRanduul.getPlayer(member.getUser().getName())) {
+					channel.sendMessage("This is not your universe..").queue();
+					return;
+				}
+				
+				args = getArgs(content, 3);
+				campaign.setMeetTime(args.get(2));
+				channel.sendMessage("See you then.").queue();
+				break;
 		}
 		
 		GensoRanduul.save();

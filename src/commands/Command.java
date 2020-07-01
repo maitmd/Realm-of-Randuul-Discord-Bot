@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class Command extends ListenerAdapter{
-	
+	boolean enabled = true;
 	//Listens for messages that are sent in the server if they contain ! in them then the command is processed and
 	//the corresponding child of this class is called.
 
@@ -53,6 +53,7 @@ public class Command extends ListenerAdapter{
 				break;
 			case "collapse":
 				channel.deleteMessageById(event.getMessageId()).queue();
+				jda.notifyAll();
 				jda.shutdown();
 				break;
 			case "search":
@@ -67,8 +68,10 @@ public class Command extends ListenerAdapter{
 				channel.sendMessage("That will be moving **" + diag + "** feet with those numbers.").queue();
 				break;
 			case "spam":
-				new Spam(channel, men);
+				//channel.sendMessage("This feature has been disabled sorry").queue();
+				new Spam(channel, men, mem);
 				break;
+
 			}
 		}
 		

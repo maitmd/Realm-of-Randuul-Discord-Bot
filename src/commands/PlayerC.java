@@ -13,27 +13,40 @@ public class PlayerC extends Command{
 	public PlayerC(MessageChannel channel, String content, Member mem, List<Member> mention, Player player){
 		super(jda);
 		ArrayList<String> args;
-		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e) {return;}
+		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e) {args = getArgs(content, 1);}
 		List<Member> mentioned = mention;
 		User user = mem.getUser();
 		
 		//Checks to see if any players were mentioned and if they do makes sure they exist,
 		//if not they are added to the bots list.
-		if(GensoRanduul.getPlayer(mentioned.get(0).getUser().getName()) == null){
-			GensoRanduul.addPlayer(new Player(mentioned.get(0).getUser().getName()));
-		}
+		if(mention.size() > 0)
+			if(GensoRanduul.getPlayer(mentioned.get(0).getUser().getName()) == null){
+				GensoRanduul.addPlayer(new Player(mentioned.get(0).getUser().getName()));
+			}
 		
-		switch(args.get(1)){
-		case "view":
-			view(mentioned, channel, player, user, mem);
-			break;
-		case "characters":
-			characters(mentioned, channel, user, player);
-			break;
-		case "campaigns":
-			player.displayCampaigns(channel);
-			break;
-		}	
+		if(args.size() > 1) {
+			switch(args.get(1)){
+			case "view":
+				view(mentioned, channel, player, user, mem);
+				break;
+			case "characters":
+				characters(mentioned, channel, user, player);
+				break;
+			case "campaigns":
+				player.displayCampaigns(channel);
+				break;
+			}
+		}else {
+			switch(args.get(0)){
+			case "all":
+				String players = "";
+				for(Player temp:GensoRanduul.getPlayers()) {
+					players = temp.getName() + ", " + players;
+				}
+				players = players.substring(0, players.length()-2);
+				channel.sendMessage("**Players** ```" + players + "```").queue();
+			}
+		}
 	}
 	
 	//Displays the member/player's information.

@@ -32,6 +32,7 @@ public class Campaign implements Serializable{
 		players = new ArrayList<Player>();
 		characters = new ArrayList<Character>();
 		players.add(dm);
+		nextSession = getDate("0001-01-01 00:00", "-0");
 	}
 	
 	public void display(MessageChannel channel) {
@@ -41,11 +42,10 @@ public class Campaign implements Serializable{
 				"Number of Characters: " + characters.size() + "\n" +
 				"Pending Invites: " + invited.size() + "\n" +
 				"Meet Time: " + meetTime + "\n" +
-				"Next Session: " +
-				nextSession.getYear() + "-" + nextSession.getDayOfMonth() + "-" + nextSession.getMonthValue() 
-				+ " " + (nextSession.getHour() > 12 ? nextSession.getHour()-12 : nextSession.getHour()) +
-				":" + (nextSession.getMinute() < 10 ? "0" + nextSession.getMinute() : nextSession.getMinute()) + "\n" +
-				"In Session: " + (playing ? "Yes" : "No") + "\n" +
+				"Next Session: " + (nextSession.getMonthValue() < 10 ? "0" + nextSession.getMonthValue() : nextSession.getMonthValue()) + "-" 
+				+ nextSession.getDayOfMonth() + "-" +
+				nextSession.getYear() + " " + (nextSession.getHour() > 12 ? nextSession.getHour()-12 : nextSession.getHour()) +
+				":" + (nextSession.getMinute() < 10 ? "0" + nextSession.getMinute() : nextSession.getMinute()) + (nextSession.getHour() > 12 ? "PM" : "AM") +"\n" +
 				"```").queue();
 	}
 	
@@ -106,6 +106,8 @@ public class Campaign implements Serializable{
 		if(dm == this.dm) {
 			invited.add(player);
 			channel.sendMessage(player.getName() + " have you ever created a soul? (!campaign [campaign name] join)").queue();
+		}else {
+			channel.sendMessage("This is not your world..").queue();
 		}
 	}
 	
@@ -151,7 +153,7 @@ public class Campaign implements Serializable{
 		return zoned;
 	}
 	
-	public void setNextSession(String zone, int jump, String unit) {
+	public void nextSession(String zone, int jump, String unit) {
 		ZonedDateTime next = ZonedDateTime.of(nextSession.toLocalDateTime(), ZoneId.of(zone));
 		switch(unit) {
 		case "week":
@@ -203,5 +205,9 @@ public class Campaign implements Serializable{
 	public void play(Boolean play, Player dm) {
 		if(dm == this.dm)
 		playing = play;
+	}
+	
+	public void setNextSession(String session, String zone) {
+		nextSession = getDate(session, zone);
 	}
 }
