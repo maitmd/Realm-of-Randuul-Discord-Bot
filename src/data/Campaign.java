@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import bot.GensoRanduul;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 
 public class Campaign implements Serializable{
 	/**

@@ -6,8 +6,8 @@ import java.util.List;
 import bot.GensoRanduul;
 import data.Campaign;
 import data.Player;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
 public class Camp extends Command{
 	public Camp(MessageChannel channel, String content, Member member, List<Member> mention, Player player) {
 		super(jda);

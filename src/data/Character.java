@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import commands.RollDice;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 
 public class Character implements Serializable{
 	

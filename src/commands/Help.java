@@ -2,7 +2,7 @@ package commands;
 
 import java.util.ArrayList;
 
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 
 public class Help extends Command{
 	public Help(MessageChannel channel, String content) {

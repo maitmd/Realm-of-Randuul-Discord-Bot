@@ -5,9 +5,9 @@ import java.util.List;
 
 import bot.GensoRanduul;
 import data.Player;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
 
 public class PlayerC extends Command{
 	public PlayerC(MessageChannel channel, String content, Member mem, List<Member> mention, Player player){

@@ -3,8 +3,8 @@ package data;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
 
 public class Player implements Serializable{
 
@@ -26,7 +26,7 @@ public class Player implements Serializable{
 	public void display(Member mem, MessageChannel channel) {
 		channel.sendMessage("**" + mem.getEffectiveName() + "**"
 				+ "```\nDiscord Name: " + mem.getUser().getName()
-				+ "\nJoin Date: " + mem.getJoinDate().toString().substring(0, mem.getJoinDate().toString().indexOf(("T")))
+				+ "\nJoin Date: " + mem.getTimeJoined().toString().substring(0, mem.getTimeJoined().toString().indexOf(("T")))
 				+ "\nNumber of Characters: " + getCharacters().size()
 				+ "\nNumber of Campaigns: " + getCampaigns().size() + "```").queue();
 	}

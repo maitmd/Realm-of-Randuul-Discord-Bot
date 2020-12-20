@@ -4,10 +4,12 @@ import java.util.List;
 
 import bot.GensoRanduul;
 import data.Player;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class Command extends ListenerAdapter{
 	boolean enabled = true;
@@ -53,7 +55,6 @@ public class Command extends ListenerAdapter{
 				break;
 			case "collapse":
 				channel.deleteMessageById(event.getMessageId()).queue();
-				jda.notifyAll();
 				jda.shutdown();
 				break;
 			case "search":
