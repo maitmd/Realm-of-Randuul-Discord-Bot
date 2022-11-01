@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 import javax.security.auth.login.LoginException;
@@ -22,11 +24,15 @@ public class GensoRanduul{
 	
 	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
 			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
-		
-		JDA api = JDABuilder.createDefault("").build();
+		String[] key = {Files.readString(Path.of("D:/workspace/key.txt"))};
+		JDA api = JDABuilder.createDefault(key[0]).build();
 		api.addEventListener(new Command(api));
 		getStoredData();
 		
+		FileOutputStream fileStream = new FileOutputStream("key.ser");
+		ObjectOutputStream os = new ObjectOutputStream(fileStream);
+		os.writeObject(key);
+		os.close();
 	}
 	
 	//Reads players.txt and retrieves all player and campaign objects stored there.
