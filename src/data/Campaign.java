@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import bot.GensoRanduul;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class Campaign implements Serializable{
 	/**
@@ -35,7 +35,7 @@ public class Campaign implements Serializable{
 		nextSession = getDate("0001-01-01 00:00", "-0");
 	}
 	
-	public void display(MessageChannel channel) {
+	public void display(MessageChannelUnion channel) {
 		channel.sendMessage("**" + name + "**" + "\n" +
 				"```Dungeon Master: " + dm.getName() + "\n" +
 				"Number of Players: " + players.size() + "\n" +
@@ -49,7 +49,7 @@ public class Campaign implements Serializable{
 				"```").queue();
 	}
 	
-	public void displayCharacters(MessageChannel channel) {
+	public void displayCharacters(MessageChannelUnion channel) {
 		String chars = "";
 		
 		try{characters.get(0);}catch(Exception e) {channel.sendMessage("No heros walk in this universe").queue(); return;}
@@ -62,7 +62,7 @@ public class Campaign implements Serializable{
 		channel.sendMessage("**Characters** ```" + chars + "```").queue();
 	}
 	
-	public void displayPlayers(MessageChannel channel) {
+	public void displayPlayers(MessageChannelUnion channel) {
 		String plays = "";
 		for(Player temp : players) {
 			plays = temp.getName() + ", " + plays;
@@ -72,7 +72,7 @@ public class Campaign implements Serializable{
 		channel.sendMessage("**Players** ```" + plays + "```").queue();
 	}
 	
-	public void addCharacter(MessageChannel channel, Character character){
+	public void addCharacter(MessageChannelUnion channel, Character character){
 		try{
 			for(Player temp : players){
 				if(temp == character.getPlayer() && !characters.contains(character)){
@@ -86,7 +86,7 @@ public class Campaign implements Serializable{
 		channel.sendMessage("Go back to your own universe.").queue();
 	}
 	
-	public void addPlayer(MessageChannel channel, Player player){
+	public void addPlayer(MessageChannelUnion channel, Player player){
 		for(Player temp : invited){
 			if(players.contains(player)) {
 				channel.sendMessage("Your soul walks the land already.");
@@ -102,7 +102,7 @@ public class Campaign implements Serializable{
 		channel.sendMessage("You aren't on the list.").queue();
 	}
 	
-	public void invitePlayer(MessageChannel channel, Player dm, Player player) {
+	public void invitePlayer(MessageChannelUnion channel, Player dm, Player player) {
 		if(dm == this.dm) {
 			invited.add(player);
 			channel.sendMessage(player.getName() + " have you ever created a soul? (!campaign [campaign name] join)").queue();
@@ -111,7 +111,7 @@ public class Campaign implements Serializable{
 		}
 	}
 	
-	public void removeCharacter(MessageChannel channel, String name, Player dm) {
+	public void removeCharacter(MessageChannelUnion channel, String name, Player dm) {
 		data.Character chara = GensoRanduul.getCharacter(name);
 		if(dm == this.dm || dm == chara.getPlayer()) {
 			for(Character temp : characters) {
@@ -124,7 +124,7 @@ public class Campaign implements Serializable{
 		}
 	}
 	
-	public void removePlayer(MessageChannel channel, Player name, Player dm) {
+	public void removePlayer(MessageChannelUnion channel, Player name, Player dm) {
 		ArrayList<Character> remove;
 		//Make sure this is the dm removing the player
 		if(dm == this.dm) {

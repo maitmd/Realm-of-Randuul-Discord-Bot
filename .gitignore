@@ -1,2 +1,2 @@
-/target/
-src/bot/GensoRanduul.java
+*.env
+target/*

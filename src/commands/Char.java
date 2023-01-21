@@ -1,8 +1,8 @@
 package commands;
 
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 import java.util.ArrayList;
 
@@ -11,8 +11,8 @@ import data.Player;
 
 public class Char extends Command{
 	
-	public Char(MessageChannel channel, String content, Member member, Player player) {
-		super(jda);
+	public Char(MessageChannelUnion channel, String content, Member member, Player player) {
+		super(jda, twitter);
 		ArrayList<String> args = new ArrayList<String>();
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
 		User user = member.getUser();
@@ -129,7 +129,7 @@ public class Char extends Command{
 	}
 	
 	//Creates a new Character object and adds it to the player's Character list.
-	public void create(User member, MessageChannel channel, String content, Player player, ArrayList<String> args){
+	public void create(User member, MessageChannelUnion channel, String content, Player player, ArrayList<String> args){
 		String name = null;
 		try{name = args.get(0);}catch(Exception e) {
 			channel.sendMessage("I suppose I won't be able to collaborate after all.").queue(); 
@@ -141,7 +141,7 @@ public class Char extends Command{
 	}
 	
 	//Displays the stats of the character.
-	public void view(MessageChannel channel, String content, ArrayList<String> args, data.Character character){
+	public void view(MessageChannelUnion channel, String content, ArrayList<String> args, data.Character character){
 		if(character == null){
 			character = GensoRanduul.getCharacter(args.get(0));
 		}
@@ -150,7 +150,7 @@ public class Char extends Command{
 	}
 	
 	//Replaces the characters current stat that was provided with the value given.
-	public void edit(MessageChannel channel, data.Character character, String content, ArrayList<String> args, User user){
+	public void edit(MessageChannelUnion channel, data.Character character, String content, ArrayList<String> args, User user){
 		try{args = getArgs(content,4);}catch(Exception e) {
 			channel.sendMessage("What do you want to change about them? (!char [name] edit [stat] [value])").queue();
 		}
@@ -191,7 +191,7 @@ public class Char extends Command{
 	}
 	
 	//Randomizes all of the character's stats. If the character doesn't exist it creates the character first.
-	public void generate(MessageChannel channel, ArrayList<String> args, data.Character character, User user, String content, Player player){
+	public void generate(MessageChannelUnion channel, ArrayList<String> args, data.Character character, User user, String content, Player player){
 		try{args = getArgs(content,2);}catch(Exception e) {
 			channel.sendMessage("This destiny hasn't been created yet..").queue();
 			return;

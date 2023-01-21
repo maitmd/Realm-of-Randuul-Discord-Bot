@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class Player implements Serializable{
 
@@ -23,7 +23,7 @@ public class Player implements Serializable{
 	}
 	
 	//Displays this players information
-	public void display(Member mem, MessageChannel channel) {
+	public void display(Member mem, MessageChannelUnion channel) {
 		channel.sendMessage("**" + mem.getEffectiveName() + "**"
 				+ "```\nDiscord Name: " + mem.getUser().getName()
 				+ "\nJoin Date: " + mem.getTimeJoined().toString().substring(0, mem.getTimeJoined().toString().indexOf(("T")))
@@ -32,7 +32,7 @@ public class Player implements Serializable{
 	}
 	
 	//Displays the campaigns this player is in
-	public void displayCampaigns(MessageChannel channel) {
+	public void displayCampaigns(MessageChannelUnion channel) {
 		String campaign = "";
 		
 		if(campaigns.size() == 0){
@@ -49,7 +49,7 @@ public class Player implements Serializable{
 	}
 	
 	//Displays this player's characters
-	public void displayCharacters(MessageChannel channel){
+	public void displayCharacters(MessageChannelUnion channel){
 		String chars = "";
 		
 		if(getCharacters().size() == 0){
@@ -90,7 +90,7 @@ public class Player implements Serializable{
 	}
 	
 	//Removes a character from this character
-	public void removeCampaign(MessageChannel channel, String name) {
+	public void removeCampaign(MessageChannelUnion channel, String name) {
 		for(Campaign temp : campaigns) {
 			if(temp.getName().equals(name) && temp.getDm() == this){
 				campaigns.remove(temp);

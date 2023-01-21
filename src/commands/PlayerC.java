@@ -6,12 +6,12 @@ import java.util.List;
 import bot.GensoRanduul;
 import data.Player;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class PlayerC extends Command{
-	public PlayerC(MessageChannel channel, String content, Member mem, List<Member> mention, Player player){
-		super(jda);
+	public PlayerC(MessageChannelUnion channel, String content, Member mem, List<Member> mention, Player player){
+		super(jda, twitter);
 		ArrayList<String> args;
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e) {args = getArgs(content, 1);}
 		List<Member> mentioned = mention;
@@ -50,7 +50,7 @@ public class PlayerC extends Command{
 	}
 	
 	//Displays the member/player's information.
-	public void view(List<Member> mentioned, MessageChannel channel, Player player, User user, Member mem){
+	public void view(List<Member> mentioned, MessageChannelUnion channel, Player player, User user, Member mem){
 		Member tempmem = null;
 		try{tempmem = mentioned.get(0);}catch(Exception e){};
 
@@ -70,7 +70,7 @@ public class PlayerC extends Command{
 	}
 	
 	//Displays the member/player's character names.
-	public void characters(List<Member> mentioned, MessageChannel channel, User user, Player player){
+	public void characters(List<Member> mentioned, MessageChannelUnion channel, User user, Player player){
 		Member tempmem = null;
 		try{tempmem = mentioned.get(0);}catch(Exception e){};
 		
@@ -95,7 +95,7 @@ public class PlayerC extends Command{
 	}
 	
 	//Displays the member/player's character names.
-		public void campaigns(List<Member> mentioned, MessageChannel channel, User user, Player player){
+		public void campaigns(List<Member> mentioned, MessageChannelUnion channel, User user, Player player){
 			Member tempmem = null;
 			try{tempmem = mentioned.get(0);}catch(Exception e){};
 			

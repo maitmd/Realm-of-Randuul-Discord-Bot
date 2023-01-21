@@ -2,11 +2,11 @@ package commands;
 
 import java.util.ArrayList;
 
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class Search extends Command{
-	public Search(MessageChannel channel, String content) {
-		super(jda);
+	public Search(MessageChannelUnion channel, String content) {
+		super(jda, twitter);
 		ArrayList<String> args = new ArrayList<String>();
 		try{args = getArgs(content, 1);}catch(StringIndexOutOfBoundsException e){return;}
 		

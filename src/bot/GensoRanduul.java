@@ -8,14 +8,18 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
 import commands.Command;
 import data.Campaign;
 import data.Player;
+import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.signature.TwitterCredentials;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 
 
@@ -24,9 +28,17 @@ public class GensoRanduul{
 	
 	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
 			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
-		String[] key = {Files.readString(Path.of("D:/workspace/key.txt"))};
-		JDA api = JDABuilder.createDefault(key[0]).build();
-		api.addEventListener(new Command(api));
+		List[] key = {Files.readAllLines(Path.of(".\\key.env"))};
+		JDA api = JDABuilder.createDefault((String)key[0].get(0)).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
+		TwitterClient client = new TwitterClient(TwitterCredentials.builder()
+                .accessToken((String) key[0].get(3))
+                .accessTokenSecret((String) key[0].get(4))
+                .apiKey((String) key[0].get(1))
+                .apiSecretKey((String) key[0].get(2))
+                .build());
+		
+		
+		api.addEventListener(new Command(api, client));
 		getStoredData();
 		
 		FileOutputStream fileStream = new FileOutputStream("key.ser");

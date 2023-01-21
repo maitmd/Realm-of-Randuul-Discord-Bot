@@ -1,6 +1,6 @@
 package commands;
 
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class RollDice extends Command{
 	private int diceValue;
@@ -9,8 +9,8 @@ public class RollDice extends Command{
 	private String output;
 	private String args;
 	
-	public RollDice(MessageChannel channel, String content) {
-		super(jda);
+	public RollDice(MessageChannelUnion channel, String content) {
+		super(jda, twitter);
 		output = " ";
 		
 		args = content.substring(content.indexOf(" ")+1);
@@ -41,7 +41,7 @@ public class RollDice extends Command{
 	}
 	
 	//Displays the value of each roll.
-	public void sendRolls(MessageChannel channel) {
+	public void sendRolls(MessageChannelUnion channel) {
 		int sum = 0;
 		for(int i = 0; i < rolls.length; i++) {
 			output = output + " [" + rolls[i] + "]";

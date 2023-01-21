@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import commands.RollDice;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class Character implements Serializable{
 	
@@ -55,7 +55,7 @@ public class Character implements Serializable{
 	}
 	
 	//Displays the stats of the character.
-	public void display(MessageChannel channel) {
+	public void display(MessageChannelUnion channel) {
 		
 		channel.sendMessage("\n\n" + "**" + name + "**\r\n" + 
 				"```" + player.getName() + "'s Character\r\n" + 
@@ -83,7 +83,7 @@ public class Character implements Serializable{
 				"```").queue();
 	}
 	
-	public void displaySpell(MessageChannel channel, String spell) {
+	public void displaySpell(MessageChannelUnion channel, String spell) {
 		for(Spell temp : spells) {
 			if(temp.getName().equals(spell)){
 				channel.sendMessage("**" + temp.getName() + 
@@ -95,7 +95,7 @@ public class Character implements Serializable{
 	}
 	
 	//Sorts this characters spells by level and displays them in order.
-	public void displayeSpells(MessageChannel channel){
+	public void displayeSpells(MessageChannelUnion channel){
 		String cantrip = ""; String one = ""; String two = ""; String three = ""; String four = ""; 
 		String five = ""; String six = ""; String seven = ""; String eight = ""; String nine = "";
 		
@@ -155,7 +155,7 @@ public class Character implements Serializable{
 	}
 	
 	//Displays all items in this characters bag.
-	public void displayBag(MessageChannel channel){
+	public void displayBag(MessageChannelUnion channel){
 		String items = "";
 		
 		for(int i = 0; i < bag.size(); i++){
@@ -200,7 +200,7 @@ public class Character implements Serializable{
 	}
 	
 	//Adds 1 to the characters attunement counter, but makes sure they have no more than 3.
-	public void attune(MessageChannel channel){
+	public void attune(MessageChannelUnion channel){
 		if(attunedItems >= 3){
 			attunedItems = 3;
 			channel.sendMessage("That is too many for you to handle..").queue();
@@ -209,7 +209,7 @@ public class Character implements Serializable{
 		}
 	}
 	
-	public void unattune(MessageChannel channel){
+	public void unattune(MessageChannelUnion channel){
 		if(attunedItems <= 0){
 			attunedItems = 0;
 			channel.sendMessage("You can't unattune to nothing idiot.").queue();

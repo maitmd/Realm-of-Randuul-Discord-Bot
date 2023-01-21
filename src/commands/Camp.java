@@ -7,10 +7,10 @@ import bot.GensoRanduul;
 import data.Campaign;
 import data.Player;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 public class Camp extends Command{
-	public Camp(MessageChannel channel, String content, Member member, List<Member> mention, Player player) {
-		super(jda);
+	public Camp(MessageChannelUnion channel, String content, Member member, List<Member> mention, Player player) {
+		super(jda, twitter);
 		ArrayList<String> args = new ArrayList<String>();
 		args = getArgs(content, 2);
 		Campaign campaign = GensoRanduul.getCampaign(args.get(0));
@@ -105,7 +105,7 @@ public class Camp extends Command{
 		GensoRanduul.save();
 	}
 	
-	public void create(MessageChannel channel, String name, Player dm) {
+	public void create(MessageChannelUnion channel, String name, Player dm) {
 		
 	}
 }

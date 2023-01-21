@@ -2,11 +2,11 @@ package commands;
 
 import java.util.ArrayList;
 
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class Help extends Command{
-	public Help(MessageChannel channel, String content) {
-		super(jda);	
+	public Help(MessageChannelUnion channel, String content) {
+		super(jda, twitter);
 		ArrayList<String> args = new ArrayList<String>();
 		try{args = getArgs(content, 1);}catch(StringIndexOutOfBoundsException e){System.out.println("No args for help!");}
 

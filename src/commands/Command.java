@@ -4,10 +4,11 @@ import java.util.List;
 
 import bot.GensoRanduul;
 import data.Player;
+import io.github.redouane59.twitter.TwitterClient;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -17,17 +18,20 @@ public class Command extends ListenerAdapter{
 	//the corresponding child of this class is called.
 
 	public static JDA jda;
-	public Command(JDA jda) {
+	public static TwitterClient twitter;
+	
+	public Command(JDA jda, TwitterClient twitter) {
 		Command.jda = jda;
+		Command.twitter = twitter;
 	}
 	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {	
 		Message msg = event.getMessage();
 		String content = msg.getContentDisplay();
-		MessageChannel channel = event.getChannel();
+		MessageChannelUnion channel = event.getChannel();
 		Member mem = event.getMember();
-		List<Member> men = msg.getMentionedMembers();
+		List<Member> men = msg.getMentions().getMembers();
 		Player player = GensoRanduul.getPlayer(mem.getUser().getName());
 		
 		//Checking to see if the member has been added into the bot as a player. If not add them.
@@ -72,7 +76,8 @@ public class Command extends ListenerAdapter{
 				//channel.sendMessage("This feature has been disabled sorry").queue();
 				new Spam(channel, men, mem);
 				break;
-
+			case "tweet":
+				new SendTweet(channel, content, twitter);
 			}
 		}
 		
