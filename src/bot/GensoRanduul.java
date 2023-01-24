@@ -28,7 +28,7 @@ public class GensoRanduul{
 	
 	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
 			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
-		List[] key = {Files.readAllLines(Path.of("./key.env"))};
+		List[] key = {Files.readAllLines(Path.of("../key.env"))};
 		JDA api = JDABuilder.createDefault((String)key[0].get(0)).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
 		TwitterClient client = new TwitterClient(TwitterCredentials.builder()
                 .accessToken((String) key[0].get(3))
