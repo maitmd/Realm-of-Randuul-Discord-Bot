@@ -26,7 +26,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 public class GensoRanduul{
 	private static ArrayList<Player> players = new ArrayList<Player>();
 	
-	
 	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
 			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
 		List[] key = {Files.readAllLines(Path.of("../key.env"))};
