@@ -87,10 +87,11 @@ public class Command extends ListenerAdapter{
 				return;
 			}
 			
-			channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" "))).queue();
+			if(!content.substring(content.indexOf("twitter.com")).contains(" ")) {
+				channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" "))).queue();
+			}
 			
-			
-			
+			channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue();
 		}
 		
 	}
