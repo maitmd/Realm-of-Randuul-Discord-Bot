@@ -81,7 +81,7 @@ public class Command extends ListenerAdapter{
 			}
 		}
 		
-		if(content.contains("https://twitter.com")) {
+		/*if(content.contains("https://twitter.com")) {
 			if(!content.contains(" ")) {
 				channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue(); 
 				return;
@@ -94,7 +94,7 @@ public class Command extends ListenerAdapter{
 			
 			channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" "))).queue();
 		}
-		
+		*/
 	}
 	
 	//Splits up the whole command string into specific arguments as needed. Quotes("") override normal
