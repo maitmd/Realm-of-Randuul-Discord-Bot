@@ -95,6 +95,8 @@ public class Command extends ListenerAdapter{
 			channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" "))).queue();
 		}
 		*/
+
+		//This is for testing
 	}
 	
 	//Splits up the whole command string into specific arguments as needed. Quotes("") override normal
