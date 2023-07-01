@@ -96,7 +96,6 @@ public class Command extends ListenerAdapter{
 		}
 		*/
 
-		//This is for testing
 	}
 	
 	//Splits up the whole command string into specific arguments as needed. Quotes("") override normal
