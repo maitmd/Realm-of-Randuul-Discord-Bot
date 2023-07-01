@@ -1,6 +1,7 @@
 package commands;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import bot.GensoRanduul;
 import data.Player;
@@ -81,8 +82,8 @@ public class Command extends ListenerAdapter{
 			}
 		}
 		
-		/*if(content.contains("https://twitter.com")) {
-			if(!content.contains(" ")) {
+		if(content.contains("https://twitter.com")) {
+			/*if(!content.contains(" ")) {
 				channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue(); 
 				return;
 			}
@@ -93,8 +94,12 @@ public class Command extends ListenerAdapter{
 			}
 			
 			channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" "))).queue();
+			*/
+
+			
+			if(new Random().nextInt(100) > 80) channel.sendMessage("Reminder: fxtwitter is broken due to Elon ruining the API. Is it available yet?").queue();
 		}
-		*/
+		
 
 	}
 	
