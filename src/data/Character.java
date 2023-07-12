@@ -269,6 +269,9 @@ public class Character implements Serializable{
 			case "cha":
 				cha = value;
 				break;
+			default:
+				System.err.println("Stat not found!");
+				break;
 		}
 	}
 	

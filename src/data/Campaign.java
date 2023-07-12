@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import bot.GensoRanduul;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
@@ -15,11 +16,11 @@ public class Campaign implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Character> characters;
+	private List<Character> characters;
 	private String meetTime;
 	private ZonedDateTime nextSession;
-	private ArrayList<Player> players;
-	private ArrayList<Player> invited;
+	private List<Player> players;
+	private List<Player> invited;
 	private String name;
 	private Player dm;
 	private boolean playing;
@@ -28,9 +29,9 @@ public class Campaign implements Serializable{
 		this.dm = dm;
 		this.name = name;
 		playing = false;
-		invited = new ArrayList<Player>();
-		players = new ArrayList<Player>();
-		characters = new ArrayList<Character>();
+		invited = new ArrayList<>();
+		players = new ArrayList<>();
+		characters = new ArrayList<>();
 		players.add(dm);
 		nextSession = getDate("0001-01-01 00:00", "-0");
 	}
@@ -125,32 +126,32 @@ public class Campaign implements Serializable{
 	}
 	
 	public void removePlayer(MessageChannelUnion channel, Player name, Player dm) {
-		ArrayList<Character> remove;
-		//Make sure this is the dm removing the player
-		if(dm == this.dm) {
-			//Find the player
-			for(Player temp : players) {
-				if(temp.equals(name)){
-					//Remove all of their characters from the campaign
-					remove = temp.getCharacters();
-					for(int i = 0; i < (remove.size() < characters.size() ? remove.size()-1 : characters.size()-1); i++){
-						if(remove.get(i) == characters.get(i)) {
-							removeCharacter(channel, remove.get(i).getName(), dm);
-						}
+		List<Character> charsToRemove;
+		// Make sure this is the dm removing the player
+		if (dm != this.dm) {
+			channel.sendMessage("You are no the Dungeon Master :thinking:").queue();
+		}
+		
+		// Find the player
+		for (Player temp : players) {
+			if (temp.equals(name)) {
+				charsToRemove = temp.getCharacters();
+				for (int i = 0; i < (charsToRemove.size() < characters.size() ? charsToRemove.size() - 1 : characters.size() - 1); i++) {
+					if (charsToRemove.get(i).equals(characters.get(i))) {
+						removeCharacter(channel, charsToRemove.get(i).getName(), dm);
 					}
-					players.remove(temp);
 				}
-				channel.sendMessage("Farewell.").queue();
+				players.remove(temp);
 			}
+			channel.sendMessage("Farewell.").queue();
 		}
 	}
 	
 	public ZonedDateTime getDate(String time, String zone) {
 		DateTimeFormatter parser = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		LocalDateTime next = LocalDateTime.parse(time, parser);
-		ZonedDateTime zoned = ZonedDateTime.of(next, ZoneId.of(zone));
 		
-		return zoned;
+		return ZonedDateTime.of(next, ZoneId.of(zone));
 	}
 	
 	public void nextSession(String zone, int jump, String unit) {
@@ -165,6 +166,8 @@ public class Campaign implements Serializable{
 		case "day":
 			next = next.plusDays(jump);
 			break;
+		default:
+			System.err.println("Not a valid time unit");
 		}
 		
 		nextSession = next;
@@ -203,8 +206,7 @@ public class Campaign implements Serializable{
 	}
 	
 	public void play(Boolean play, Player dm) {
-		if(dm == this.dm)
-		playing = play;
+		if(dm == this.dm) playing = play;
 	}
 	
 	public void setNextSession(String session, String zone) {

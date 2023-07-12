@@ -2,6 +2,7 @@ package data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
@@ -13,13 +14,13 @@ public class Player implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private ArrayList<Campaign> campaigns;
-	private ArrayList<Character> characters;
+	private List<Campaign> campaigns;
+	private List<Character> characters;
 	
 	public Player(String name) {
 		this.name = name;
-		characters = new ArrayList<Character>();
-		campaigns = new ArrayList<Campaign>();
+		characters = new ArrayList<>();
+		campaigns = new ArrayList<>();
 	}
 	
 	//Displays this players information
@@ -35,7 +36,7 @@ public class Player implements Serializable{
 	public void displayCampaigns(MessageChannelUnion channel) {
 		String campaign = "";
 		
-		if(campaigns.size() == 0){
+		if(campaigns.isEmpty()){
 			channel.sendMessage("There is only void.").queue();
 			return;
 		}
@@ -52,7 +53,7 @@ public class Player implements Serializable{
 	public void displayCharacters(MessageChannelUnion channel){
 		String chars = "";
 		
-		if(getCharacters().size() == 0){
+		if(getCharacters().isEmpty()){
 			channel.sendMessage("They hold no souls.").queue();
 			return;
 		}
@@ -72,7 +73,7 @@ public class Player implements Serializable{
 	
 	//Removes a character from this player's character list
 	public void removeCharacter(String name){
-		for(int i = 0; i < getCharacters().size(); i++) {
+		for(int i = getCharacters().size(); i > 0 ; i--) {
 			if(getCharacters().get(i).getName().equalsIgnoreCase(name)) {
 				getCharacters().remove(i);
 			}
@@ -95,7 +96,6 @@ public class Player implements Serializable{
 			if(temp.getName().equals(name) && temp.getDm() == this){
 				campaigns.remove(temp);
 				channel.sendMessage("Return to the void").queue();
-				temp = null;
 				return;
 			}
 		}
@@ -129,12 +129,12 @@ public class Player implements Serializable{
 	}
 	
 	//Returns the list of campaigns this player is in
-	public ArrayList<Campaign> getCampaigns() {
+	public List<Campaign> getCampaigns() {
 		return campaigns;
 	}
 	
 	//Returns the list of characters this player has
-	public ArrayList<Character> getCharacters() {
+	public List<Character> getCharacters() {
 		return characters;
 	}
 }

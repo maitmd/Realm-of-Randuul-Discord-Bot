@@ -9,6 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.security.auth.login.LoginException;
 
@@ -19,69 +22,100 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 
 
 public class GensoRanduul{
-	private static ArrayList<Player> players = new ArrayList<Player>();
+	private static List<Player> players = new ArrayList<>();
+	private static List<ThreadChannel> threadsToRemove = new ArrayList<>();
 	
-	public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, IOException {
+	public static void main(String[] args) throws LoginException, InterruptedException, IOException {
 			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
-		List[] key = {Files.readAllLines(Path.of("./key.env"))};
-		JDA api = JDABuilder.createDefault((String)key[0].get(0)).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
+		List<String> key = Files.readAllLines(Path.of("./key.env"));
+		JDA api = JDABuilder.createDefault((String)key.get(0)).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
 		TwitterClient client = new TwitterClient(TwitterCredentials.builder()
-                .accessToken((String) key[0].get(3))
-                .accessTokenSecret((String) key[0].get(4))
-                .apiKey((String) key[0].get(1))
-                .apiSecretKey((String) key[0].get(2))
+                .accessToken((String) key.get(3))
+                .accessTokenSecret((String) key.get(4))
+                .apiKey((String) key.get(1))
+                .apiSecretKey((String) key.get(2))
                 .build());
 		
 		api.addEventListener(new Command(api, client));
-		getStoredData();
 		
-		FileOutputStream fileStream = new FileOutputStream("key.ser");
-		ObjectOutputStream os = new ObjectOutputStream(fileStream);
-		os.writeObject(key);
-		os.close();
+		getStoredData();
+		writeKey(key);
+		startTimeTracker();
 	}
 	
 	//Reads players.txt and retrieves all player and campaign objects stored there.
-	@SuppressWarnings("unchecked")
 	public static void getStoredData() {
-		try {
-			FileInputStream fi = new FileInputStream(new File("players.player"));
-			ObjectInputStream oi = new ObjectInputStream(fi);
+		try{
+			FileInputStream playerFI = new FileInputStream(new File("players.player"));
+			FileInputStream threadFI = new FileInputStream(new File("threads.threads"));
+			ObjectInputStream oi;
 			
-			players = ((ArrayList<Player>)oi.readObject());
-			
+			oi = new ObjectInputStream(playerFI);
+			players = ((List<Player>)oi.readObject());
+			oi = new ObjectInputStream(threadFI);
+			threadsToRemove = ((List<ThreadChannel>)oi.readObject());
+
 			oi.close();
-			fi.close();
-		}catch(Exception e) {
-			System.out.println("Error!");
+			playerFI.close();
+			threadFI.close();
+		}catch(IOException e) {
+			System.err.println("Could not open one of the file streams!");
+		}catch(ClassNotFoundException e){
+			System.err.println("Could not find the class loaded in!");
 		}
 	}
 	
 	//Writes this player object to players.txt
 	public static void save() {
 		try {
-			FileOutputStream f = new FileOutputStream("players.player");
-			ObjectOutputStream o = new ObjectOutputStream(f);
+			FileOutputStream playerFS = new FileOutputStream("players.player");
+			FileOutputStream threadFS = new FileOutputStream("threads.threads");
+			ObjectOutputStream o;
 			
+			o = new ObjectOutputStream(playerFS);
 			o.writeObject(players);
-			
+			o = new ObjectOutputStream(threadFS);
+			o.writeObject(threadsToRemove);
+
 			o.close();
-			f.close();
-		}catch(Exception e) {}
+			playerFS.close();
+			threadFS.close();
+		}catch(IOException e) {
+			System.err.println("Could not open one of the file streams!");
+		}
 	}
 	
+	public static void writeKey(List<String> key){
+		FileOutputStream fileStream;
+		try {
+			fileStream = new FileOutputStream("key.ser");
+			ObjectOutputStream os = new ObjectOutputStream(fileStream);
+			os.writeObject(key);
+			os.close();
+		} catch (IOException e) {
+			System.err.println("Could not open one of the file streams!");
+		}
+	}
+
+	public static void startTimeTracker(){
+		TimeTracker timeTracker = new TimeTracker();
+		ScheduledExecutorService timeExec = Executors.newSingleThreadScheduledExecutor();
+		timeExec.scheduleAtFixedRate(timeTracker, 0, 30, TimeUnit.SECONDS);
+	}
+
 	//Adds a player to the player list
 	public static void addPlayer(Player player) {
 		players.add(player);
 	}
 
 	//Retrieves the entire player list object
-	public static ArrayList<Player> getPlayers(){
+	public static List<Player> getPlayers(){
 		return players;
 	}
 	
@@ -117,5 +151,13 @@ public class GensoRanduul{
 			}
 		}
 		return campaign;
+	}
+
+	public static void addThreadToRemove(ThreadChannel thread){
+		threadsToRemove.add(thread);
+	}
+
+	public static List<ThreadChannel> getThreadsToRemove(){
+		return threadsToRemove;
 	}
 }
