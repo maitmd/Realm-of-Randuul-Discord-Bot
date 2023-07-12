@@ -83,21 +83,18 @@ public class Command extends ListenerAdapter{
 		}
 		
 		if(content.contains("https://twitter.com")) {
-			/*if(!content.contains(" ")) {
-				channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue(); 
+			if(!content.contains(" ")) {
+				event.getMessage().editMessage("https://fx" + content.substring(content.indexOf("twitter.com"))); 
 				return;
 			}
 			
 			if(!content.substring(content.indexOf("https")).contains(" ")) {
-				channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue();
+				event.getMessage().editMessage("https://fx" + content.substring(content.indexOf("twitter.com")));
 				return;
 			}
 			
-			channel.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" "))).queue();
-			*/
-
+			event.getMessage().editMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" ")));
 			
-			if(new Random().nextInt(100) > 80) channel.sendMessage("Reminder: fxtwitter is broken due to Elon ruining the API. Is it available yet?").queue();
 		}
 		
 
