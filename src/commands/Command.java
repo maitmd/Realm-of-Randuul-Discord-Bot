@@ -94,6 +94,8 @@ public class Command extends ListenerAdapter{
 			}
 			
 			event.getMessage().editMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" ")));
+
+			channel.sendMessage("Editd B)").queue();
 			
 		}
 		
