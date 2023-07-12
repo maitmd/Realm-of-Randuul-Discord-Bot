@@ -6,12 +6,16 @@ import java.util.Random;
 import bot.GensoRanduul;
 import data.Player;
 import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage.MessageCreate;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
+import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 public class Command extends ListenerAdapter{
 	boolean enabled = true;
@@ -83,19 +87,18 @@ public class Command extends ListenerAdapter{
 		}
 		
 		if(content.contains("https://twitter.com")) {
+			
 			if(!content.contains(" ")) {
-				event.getMessage().editMessage("https://fx" + content.substring(content.indexOf("twitter.com"))); 
+				event.getMessage().createThreadChannel("fx").complete().sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue();
 				return;
 			}
 			
 			if(!content.substring(content.indexOf("https")).contains(" ")) {
-				event.getMessage().editMessage("https://fx" + content.substring(content.indexOf("twitter.com")));
+				event.getMessage().createThreadChannel("fx").complete().sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue();
 				return;
 			}
 			
-			event.getMessage().editMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" ")));
-
-			channel.sendMessage("Editd B)").queue();
+			event.getMessage().createThreadChannel("fx").complete().sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" "))).queue();
 			
 		}
 		
