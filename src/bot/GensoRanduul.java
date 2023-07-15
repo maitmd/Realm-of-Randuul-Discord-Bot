@@ -24,6 +24,8 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 
 
@@ -31,7 +33,7 @@ public class GensoRanduul{
 	private static List<Player> players = new ArrayList<>();
 	private static List<ThreadChannel> threadsToRemove = new ArrayList<>();
 	
-	public static void main(String[] args) throws LoginException, InterruptedException, IOException {
+	public static void main(String[] args) throws LoginException, InterruptedException, IOException, TwitterException {
 			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
 		List<String> key = Files.readAllLines(Path.of("./key.env"));
 		JDA api = JDABuilder.createDefault((String)key.get(0)).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
@@ -41,7 +43,7 @@ public class GensoRanduul{
                 .apiKey((String) key.get(1))
                 .apiSecretKey((String) key.get(2))
                 .build());
-		
+				
 		api.addEventListener(new Command(api, client));
 		
 		getStoredData();
@@ -53,7 +55,7 @@ public class GensoRanduul{
 	public static void getStoredData() {
 		try{
 			FileInputStream playerFI = new FileInputStream(new File("players.player"));
-			FileInputStream threadFI = new FileInputStream(new File("threads.threads"));
+			FileInputStream threadFI = new FileInputStream(new File("threads.thread"));
 			ObjectInputStream oi;
 			
 			oi = new ObjectInputStream(playerFI);
@@ -65,7 +67,7 @@ public class GensoRanduul{
 			playerFI.close();
 			threadFI.close();
 		}catch(IOException e) {
-			System.err.println("Could not open one of the file streams!");
+			System.err.println("Could not open one of the file streams! " + e);
 		}catch(ClassNotFoundException e){
 			System.err.println("Could not find the class loaded in!");
 		}
@@ -75,7 +77,7 @@ public class GensoRanduul{
 	public static void save() {
 		try {
 			FileOutputStream playerFS = new FileOutputStream("players.player");
-			FileOutputStream threadFS = new FileOutputStream("threads.threads");
+			FileOutputStream threadFS = new FileOutputStream("threads.thread");
 			ObjectOutputStream o;
 			
 			o = new ObjectOutputStream(playerFS);
@@ -87,7 +89,7 @@ public class GensoRanduul{
 			playerFS.close();
 			threadFS.close();
 		}catch(IOException e) {
-			System.err.println("Could not open one of the file streams!");
+			System.err.println("Could not write " + e);
 		}
 	}
 	
@@ -99,14 +101,14 @@ public class GensoRanduul{
 			os.writeObject(key);
 			os.close();
 		} catch (IOException e) {
-			System.err.println("Could not open one of the file streams!");
+			System.err.println("Could write key!");
 		}
 	}
 
 	public static void startTimeTracker(){
 		TimeTracker timeTracker = new TimeTracker();
 		ScheduledExecutorService timeExec = Executors.newSingleThreadScheduledExecutor();
-		timeExec.scheduleAtFixedRate(timeTracker, 0, 30, TimeUnit.SECONDS);
+		timeExec.scheduleAtFixedRate(timeTracker, 0, 5, TimeUnit.SECONDS);
 	}
 
 	//Adds a player to the player list

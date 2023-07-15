@@ -1,6 +1,10 @@
 package commands;
 
 import io.github.redouane59.twitter.TwitterClient;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters;
+import io.github.redouane59.twitter.dto.tweet.TweetType;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters.Media;
+import io.github.redouane59.twitter.dto.tweet.TweetParameters.TweetParametersBuilder;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class SendTweet extends Command{
@@ -14,6 +18,8 @@ public class SendTweet extends Command{
 		}
 		
 		channel.sendMessage("The tweet has been sent B)").queue();
-		client.postTweet(parsedTweet);
+		TweetParameters tweetParams = TweetParameters.builder().text(parsedTweet).build();
+
+		client.postTweet(tweetParams);
 	}
 }

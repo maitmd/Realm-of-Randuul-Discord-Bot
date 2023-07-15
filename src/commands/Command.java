@@ -87,7 +87,7 @@ public class Command extends ListenerAdapter{
 			}
 		}
 		
-		if(content.contains("https://twitter.com")) {
+		if(content.contains("https://twitter.com") && !content.contains("https://fxtwitter.com")) {
 			ThreadChannel thread = event.getMessage().createThreadChannel("fx").complete();
 			
 			if(!content.contains(" ")) {
@@ -99,6 +99,7 @@ public class Command extends ListenerAdapter{
 			}
 
 			GensoRanduul.addThreadToRemove(thread);
+			GensoRanduul.save();
 		}
 		
 

@@ -20,10 +20,8 @@ public class TimeTracker implements Runnable {
 
     private void removeOldThreads(){
         for( ThreadChannel thread : GensoRanduul.getThreadsToRemove()){
-            if(ChronoUnit.DAYS.between(getTime(), thread.getTimeCreated()) > 1){
-                for(Member mem : thread.getMembers()){
-                    thread.removeThreadMember(mem);
-                }
+            if(Math.abs(ChronoUnit.DAYS.between(getTime(), thread.getTimeCreated().atZoneSameInstant(ZoneId.systemDefault()))) > 3){
+                thread.delete().complete();
             }
         }
     }
