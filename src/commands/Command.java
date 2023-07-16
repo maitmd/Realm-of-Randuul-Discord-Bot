@@ -39,7 +39,6 @@ public class Command extends ListenerAdapter{
 		Member mem = event.getMember();
 		List<Member> men = msg.getMentions().getMembers();
 		Player player = GensoRanduul.getPlayer(mem.getUser().getName());
-		
 		//Checking to see if the member has been added into the bot as a player. If not add them.
 		if(player == null){
 			GensoRanduul.addPlayer(new Player(mem.getUser().getName()));
@@ -83,7 +82,7 @@ public class Command extends ListenerAdapter{
 				new Spam(channel, men, mem);
 				break;
 			case "tweet":
-				new SendTweet(channel, content, twitter);
+				new SendTweet(channel, msg, twitter);
 			}
 		}
 		
