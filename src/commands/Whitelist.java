@@ -42,22 +42,23 @@ public class Whitelist extends Command {
             if (args.get(0).equals("delete")) {
                 args = getArgs(message, 2);
                 username = args.get(1);
-                uuid = getUUID();
-                connection = setConnectionSettings("POST");
+                uuid = getUUID(username);
+                connection = setConnectionSettings("DELETE");
                 body = "uuid=" + uuid + "&name=" + username;
 
                 try {
                     os = (ByteArrayOutputStream) connection.getOutputStream();
                     os.write(body.getBytes());
                     response = connection.getResponseMessage();
+                    System.out.println(response);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+                
                 channel.sendMessage("Bye bye :)").queue();
             } else {
                 username = args.get(0);
-                uuid = getUUID();
+                uuid = getUUID(username);
                 connection = setConnectionSettings("POST");
                 body = "uuid=" + uuid + "&name=" + username;
 
@@ -65,6 +66,7 @@ public class Whitelist extends Command {
                     os = (ByteArrayOutputStream) connection.getOutputStream();
                     os.write(body.getBytes());
                     response = connection.getResponseMessage();
+                    System.out.println(response);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -108,7 +110,7 @@ public class Whitelist extends Command {
         channel.sendMessage("```" + returnMsg.toString() + "```").queue();
     }
 
-    private String getUUID() {
+    private String getUUID(String username) {
         URL endpoint;
         String content;
         JSONArray jsonArr;
@@ -118,7 +120,7 @@ public class Whitelist extends Command {
         BufferedReader br;
         HttpURLConnection connection;
         try {
-            endpoint = new URL("https://api.mojang.com/users/profiles/minecraft/Emanix");
+            endpoint = new URL("https://api.mojang.com/users/profiles/minecraft/" + username);
             connection = (HttpURLConnection) endpoint.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
@@ -150,7 +152,7 @@ public class Whitelist extends Command {
 
         try {
             key = Files.readAllLines(Path.of("./key.env"));
-            URL endpoint = new URL("http://localhost:4567/v1/server/whitelist");
+            URL endpoint = new URL("http://192.168.254.156:4567/v1/server/whitelist");
             connection = (HttpURLConnection) endpoint.openConnection();
             connection.setRequestMethod(method);
             connection.setRequestProperty("accept", "application/json");
