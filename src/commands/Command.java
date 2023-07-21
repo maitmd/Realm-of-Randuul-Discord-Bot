@@ -109,9 +109,10 @@ public class Command extends ListenerAdapter{
 	//Splits up the whole command string into specific arguments as needed. Quotes("") override normal
 	//procedures and read in between quotes.
 	public ArrayList<String> getArgs(String msg, int args){
-		String content = msg.substring(msg.indexOf(" ")+1) + " ";
 		ArrayList<String> argList = new ArrayList<String>();
-		
+		if(!msg.contains(" ")) return argList;
+
+		String content = msg.substring(msg.indexOf(" ")+1) + " ";
 		for(int i = 0; i < args; i++) {
 			if(content.charAt(0) == ('\"')){
 				content = content.substring(1);			
