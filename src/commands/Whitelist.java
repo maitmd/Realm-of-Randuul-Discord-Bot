@@ -24,8 +24,7 @@ public class Whitelist extends Command {
     public Whitelist(MessageChannelUnion channel, String message, Member mem) {
         super(jda, twitter);
 
-        if (!(mem.getId().equals("673294793966616576") || mem.getId().equals("595923572837318658")
-                || mem.getId().equals("132603306382983169"))) {
+        if (!isAuthorized(mem, "1131793549197856788")) {
             channel.sendMessage("Silly little person, you can't do that :skull:").queue();
             return;
         }
