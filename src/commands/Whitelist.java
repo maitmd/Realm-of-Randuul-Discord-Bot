@@ -150,7 +150,7 @@ public class Whitelist extends Command {
 
         try {
             key = Files.readAllLines(Path.of("./key.env"));
-            URL endpoint = new URL("http://192.168.254.156:4567/v1/server/whitelist");
+            URL endpoint = new URL("http://localhost:4567/v1/server/whitelist");
             connection = (HttpURLConnection) endpoint.openConnection();
             connection.setRequestMethod(method);
             connection.setRequestProperty("accept", "application/json");
