@@ -24,7 +24,7 @@ public class Whitelist extends Command {
     public Whitelist(MessageChannelUnion channel, String message, Member mem) {
         super(jda, twitter);
 
-        if (!isAuthorized(mem, "1131793549197856788")) {
+        if (!(isAuthorized(mem, "1131793549197856788") || isAuthorized(mem, "549765197162741801"))) {
             channel.sendMessage("Silly little person, you can't do that :skull:").queue();
             return;
         }
@@ -37,76 +37,78 @@ public class Whitelist extends Command {
         String uuid;
         String response = "";
 
-        if (!args.isEmpty()) {
-            if (args.get(0).equals("delete")) {
+        if (args.isEmpty() || args.get(0).equals("list")) {
+
+            StringBuilder builder = new StringBuilder();
+            String inputLine;
+            connection = setConnectionSettings("GET");
+
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+                while ((inputLine = br.readLine()) != null) {
+                    builder.append(inputLine);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            JSONArray jsonArr = new JSONArray(builder.toString());
+            StringBuilder returnMsg = new StringBuilder();
+            for (int i = 0; i < jsonArr.length(); i++) {
+                returnMsg.append(jsonArr.getJSONObject(i).getString("name") + "\n");
+            }
+
+            channel.sendMessage("```" + returnMsg.toString() + "```").queue();
+        } else if (args.get(0).equals("delete") || args.get(0).equals("remove")) {
+            args = getArgs(message, 2);
+            username = args.get(1);
+            uuid = getUUID(username);
+            connection = setConnectionSettings("DELETE");
+            body = "uuid=" + uuid + "&name=" + username;
+
+            try {
+                os = (ByteArrayOutputStream) connection.getOutputStream();
+                os.write(body.getBytes());
+                response = connection.getResponseMessage();
+                System.out.println(response);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            channel.sendMessage("Bye bye :)").queue();
+        } else {
+            if (args.get(0).equals("add")) {
                 args = getArgs(message, 2);
                 username = args.get(1);
-                uuid = getUUID(username);
-                connection = setConnectionSettings("DELETE");
-                body = "uuid=" + uuid + "&name=" + username;
-
-                try {
-                    os = (ByteArrayOutputStream) connection.getOutputStream();
-                    os.write(body.getBytes());
-                    response = connection.getResponseMessage();
-                    System.out.println(response);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                
-                channel.sendMessage("Bye bye :)").queue();
             } else {
                 username = args.get(0);
-                uuid = getUUID(username);
-                connection = setConnectionSettings("POST");
-                body = "uuid=" + uuid + "&name=" + username;
+            }
+            uuid = getUUID(username);
+            connection = setConnectionSettings("POST");
+            body = "uuid=" + uuid + "&name=" + username;
 
-                try {
-                    os = (ByteArrayOutputStream) connection.getOutputStream();
-                    os.write(body.getBytes());
-                    response = connection.getResponseMessage();
-                    System.out.println(response);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (response.equals("")) {
-                    channel.sendMessage("Can't connect to the server. Is it online?").queue();
-                } else if (response.contains("failed")) {
-                    channel.sendMessage("Could not white list " + username + "! Is the username right?").queue();
-                } else if (response.contains("duplicate")) {
-                    channel.sendMessage("Looks like they are already whitelisted :hypers:").queue();
-                } else if (response.contains("no whitelist")) {
-                    channel.sendMessage("No whitelist? :thinking:").queue();
-                } else {
-                    channel.sendMessage("Welcome " + username + " to the server :sunglasses:").queue();
-                }
+            try {
+                os = (ByteArrayOutputStream) connection.getOutputStream();
+                os.write(body.getBytes());
+                response = connection.getResponseMessage();
+                System.out.println(response);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            return;
-        }
-
-        StringBuilder builder = new StringBuilder();
-        String inputLine;
-        connection = setConnectionSettings("GET");
-
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-            while ((inputLine = br.readLine()) != null) {
-                builder.append(inputLine);
+            if (response.equals("")) {
+                channel.sendMessage("Can't connect to the server. Is it online?").queue();
+            } else if (response.contains("failed")) {
+                channel.sendMessage("Could not white list " + username + "! Is the username right?").queue();
+            } else if (response.contains("duplicate")) {
+                channel.sendMessage("Looks like they are already whitelisted :hypers:").queue();
+            } else if (response.contains("no whitelist")) {
+                channel.sendMessage("No whitelist? :thinking:").queue();
+            } else {
+                channel.sendMessage("Welcome " + username + " to the server :sunglasses:").queue();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        JSONArray jsonArr = new JSONArray(builder.toString());
-        StringBuilder returnMsg = new StringBuilder();
-        for (int i = 0; i < jsonArr.length(); i++) {
-            returnMsg.append(jsonArr.getJSONObject(i).getString("name") + "\n");
-        }
-
-        channel.sendMessage("```" + returnMsg.toString() + "```").queue();
     }
 
     private String getUUID(String username) {

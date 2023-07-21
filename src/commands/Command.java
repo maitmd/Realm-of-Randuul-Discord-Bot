@@ -83,8 +83,6 @@ public class Command extends ListenerAdapter{
 				new SendTweet(channel, msg, twitter, mem);
 			case "whitelist":
 				new Whitelist(channel, content, mem);
-			case "authorized":
-				new Authorized();
 			}
 		}
 		

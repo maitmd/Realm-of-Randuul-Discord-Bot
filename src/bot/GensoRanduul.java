@@ -25,7 +25,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 
