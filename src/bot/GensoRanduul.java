@@ -18,6 +18,7 @@ import javax.security.auth.login.LoginException;
 import commands.Command;
 import data.Campaign;
 import data.Player;
+import data.Server;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import net.dv8tion.jda.api.JDA;
@@ -32,6 +33,7 @@ import twitter4j.TwitterException;
 public class GensoRanduul{
 	private static List<Player> players = new ArrayList<>();
 	private static List<ThreadChannel> threadsToRemove = new ArrayList<>();
+	private static List<Server> servers = new ArrayList<>();
 	
 	public static void main(String[] args) throws LoginException, InterruptedException, IOException, TwitterException {
 			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
@@ -56,16 +58,20 @@ public class GensoRanduul{
 		try{
 			FileInputStream playerFI = new FileInputStream(new File("players.player"));
 			FileInputStream threadFI = new FileInputStream(new File("threads.thread"));
+			FileInputStream serverFI = new FileInputStream(new File("servers.server"));
 			ObjectInputStream oi;
 			
 			oi = new ObjectInputStream(playerFI);
 			players = ((List<Player>)oi.readObject());
 			oi = new ObjectInputStream(threadFI);
 			threadsToRemove = ((List<ThreadChannel>)oi.readObject());
+			oi = new ObjectInputStream(serverFI);
+			servers = ((List<Server>)oi.readObject());
 
 			oi.close();
 			playerFI.close();
 			threadFI.close();
+			serverFI.close();
 		}catch(IOException e) {
 			System.err.println("Could not open one of the file streams! " + e);
 		}catch(ClassNotFoundException e){
@@ -78,16 +84,20 @@ public class GensoRanduul{
 		try {
 			FileOutputStream playerFS = new FileOutputStream("players.player");
 			FileOutputStream threadFS = new FileOutputStream("threads.thread");
+			FileOutputStream serverFS = new FileOutputStream("servers.server");
 			ObjectOutputStream o;
 			
 			o = new ObjectOutputStream(playerFS);
 			o.writeObject(players);
 			o = new ObjectOutputStream(threadFS);
 			o.writeObject(threadsToRemove);
+			o = new ObjectOutputStream(serverFS);
+			o.writeObject(threadsToRemove);
 
 			o.close();
 			playerFS.close();
 			threadFS.close();
+			serverFS.close();
 		}catch(IOException e) {
 			System.err.println("Could not write " + e);
 		}
@@ -161,5 +171,9 @@ public class GensoRanduul{
 
 	public static List<ThreadChannel> getThreadsToRemove(){
 		return threadsToRemove;
+	}
+
+	public static void addServer(Server server){
+		servers.add(server);
 	}
 }

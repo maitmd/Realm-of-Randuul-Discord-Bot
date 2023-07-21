@@ -10,47 +10,87 @@ import java.util.concurrent.ExecutionException;
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters;
-import io.github.redouane59.twitter.dto.tweet.TweetType;
 import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
-import io.github.redouane59.twitter.dto.tweet.Attachments.AttachmentsBuilder;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters.Media;
-import io.github.redouane59.twitter.dto.tweet.TweetParameters.TweetParametersBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
-import net.dv8tion.jda.api.utils.AttachedFile;
-import net.dv8tion.jda.api.utils.AttachmentProxy;
-import net.dv8tion.jda.api.utils.FileUpload;
 
 public class SendTweet extends Command{
-	public SendTweet(MessageChannelUnion channel, Message tweet, TwitterClient client) {
+	public SendTweet(MessageChannelUnion channel, Message content, TwitterClient client, Member mem) {
 		super(jda, twitter);
-		String parsedTweet = tweet.getContentDisplay().substring(tweet.getContentDisplay().indexOf(" "));
-		List<Attachment> attachments = tweet.getAttachments();
 
-		if(parsedTweet.length() > 250) {
-			parsedTweet = parsedTweet.substring(0, 249);
-			channel.sendMessage("That is too long! Sending `" + parsedTweet + "` instead.").queue();
+		if(!isAuthorized(mem, "843923356494856192")){
+            channel.sendMessage("Silly little person, you can't do that :skull:").queue();
+            return;
+        }
+
+		List<Attachment> attachments = content.getAttachments();
+		String parsedTweet = buildText(content.getContentDisplay(), channel);
+		UploadMediaResponse response = buildAttachments(attachments, client);
+		TweetParameters tweetParams = buildTweet(parsedTweet, response, attachments);
+
+		client.postTweet(tweetParams);
+		channel.sendMessage("Tweet send B)").queue();
+	}
+
+	private String buildText(String str, MessageChannelUnion channel){
+		String returnString = str;
+		
+		if(!str.contains(" ")){
+			returnString = "";
+		}else{
+			returnString = str.substring(str.indexOf(" "));
 		}
 		
 		
+		if(returnString.length() > 250) {
+			returnString = returnString.substring(0, 249);
+			channel.sendMessage("That is too long! Sending `" + returnString + "` instead.").queue();
+		}
+
+		return returnString;
+	}
+
+	private UploadMediaResponse buildAttachments (List<Attachment> attachments, TwitterClient client){
 		InputStream is;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		UploadMediaResponse response = new UploadMediaResponse();
 
 		try {
-			is = attachments.get(0).getProxy().download().get();
-			byte[] buf = new byte[1024];
-			int k;
-			while((k = is.read(buf)) > 0){
-				baos.write(buf, 0, k);
+			if(attachments.size() > 0){
+				is = attachments.get(0).getProxy().download().get();
+				attachments.get(0).getProxy().download().get().transferTo(baos);
 			}
-		} catch (IOException | InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
+		
+		if(attachments.size() > 0){
+			if(attachments.get(0).getFileExtension().contains("gif")){
+				response = client.uploadMedia(attachments.get(0).getFileName(), baos.toByteArray(), MediaCategory.TWEET_GIF);
+			}else if(attachments.get(0).getFileExtension().contains("mp4") || attachments.get(0).getFileExtension().contains("mov") || attachments.get(0).getFileExtension().contains("mkv")){
+				response = client.uploadMedia(attachments.get(0).getFileName(), baos.toByteArray(), MediaCategory.TWEET_VIDEO);
+			}else{
+				response = client.uploadMedia(attachments.get(0).getFileName(), baos.toByteArray(), MediaCategory.TWEET_IMAGE);
+			}
+		}
 
-		UploadMediaResponse response = client.uploadMedia(attachments.get(0).getFileName(), baos.toByteArray(), MediaCategory.TWEET_IMAGE);
-		TweetParameters tweetParams = TweetParameters.builder().media(Media.builder().mediaIds(Arrays.asList(response.getMediaId())).build()).text(parsedTweet).build();
-		client.postTweet(tweetParams);
+		return response;
+	}
+
+	private TweetParameters buildTweet(String parsedTweet, UploadMediaResponse response, List<Attachment> attachments){
+		TweetParameters tweetParams = TweetParameters.builder().build();
+
+		tweetParams.setText(parsedTweet);
+		if(attachments.size() > 0) tweetParams.setMedia(Media.builder().mediaIds(Arrays.asList(response.getMediaId())).build());
+		
+		return tweetParams;
 	}
 }

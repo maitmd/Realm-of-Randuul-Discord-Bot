@@ -1,22 +1,18 @@
 package commands;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import bot.GensoRanduul;
 import data.Player;
 import io.github.redouane59.twitter.TwitterClient;
-import io.github.redouane59.twitter.dto.dm.deprecatedV1.DirectMessage.MessageCreate;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
-import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
-import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 public class Command extends ListenerAdapter{
 	boolean enabled = true;
@@ -63,8 +59,10 @@ public class Command extends ListenerAdapter{
 				new Help(channel, content);
 				break;
 			case "collapse":
-				channel.deleteMessageById(event.getMessageId()).queue();
-				jda.shutdown();
+				if(mem.getId().equals("132603306382983169")){
+					channel.deleteMessageById(event.getMessageId()).queue();
+					jda.shutdown();
+				}
 				break;
 			case "search":
 				new Search(channel, content);
@@ -82,7 +80,11 @@ public class Command extends ListenerAdapter{
 				new Spam(channel, men, mem);
 				break;
 			case "tweet":
-				new SendTweet(channel, msg, twitter);
+				new SendTweet(channel, msg, twitter, mem);
+			case "whitelist":
+				new Whitelist(channel, content, mem);
+			case "authorized":
+				new Authorized();
 			}
 		}
 		
@@ -133,5 +135,14 @@ public class Command extends ListenerAdapter{
 		}
 		
 		return command;
+	}
+
+	public Boolean isAuthorized(Member mem, String groupID){
+		Boolean authorized = false;
+		for(Role role : mem.getRoles()){
+			if(role.getId().equals(groupID)) authorized = true;
+		}
+
+		return authorized;
 	}
 }

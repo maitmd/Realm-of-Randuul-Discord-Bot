@@ -5,9 +5,9 @@ import java.util.List;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
-public class Spam {
+public class Spam extends Command{
 	public Spam(MessageChannelUnion channel, List<Member> mention, Member mem) {
-		
+		super(jda, twitter);
 		Boolean admin = false;
 		List<Member> men = mention;
 		String spamTarg;
