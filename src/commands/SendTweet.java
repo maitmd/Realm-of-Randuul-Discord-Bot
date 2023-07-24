@@ -14,7 +14,6 @@ import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters.Media;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
