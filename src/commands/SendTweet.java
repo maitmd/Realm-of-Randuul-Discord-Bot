@@ -31,8 +31,8 @@ public class SendTweet extends Command{
 		UploadMediaResponse response = buildAttachments(attachments, client);
 		TweetParameters tweetParams = buildTweet(parsedTweet, response, attachments);
 
-		client.postTweet(tweetParams);
-		channel.sendMessage("Tweet send B)").queue();
+		
+		channel.sendMessage("Tweet Sent B)\nhttps://twitter.com/TweetsByAether/status/" + client.postTweet(tweetParams).getId()).queue();
 	}
 
 	private String buildText(String str, MessageChannelUnion channel){

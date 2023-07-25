@@ -81,8 +81,10 @@ public class Command extends ListenerAdapter{
 				break;
 			case "tweet":
 				new SendTweet(channel, msg, twitter, mem);
+				break;
 			case "whitelist":
 				new Whitelist(channel, content, mem);
+				break;
 			}
 		}
 		
