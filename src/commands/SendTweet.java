@@ -1,8 +1,12 @@
 package commands;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -21,17 +25,16 @@ public class SendTweet extends Command{
 	public SendTweet(MessageChannelUnion channel, Message content, TwitterClient client, Member mem) {
 		super(jda, twitter);
 
-		if(!isAuthorized(mem, "843923356494856192")){
+		if(isAuthorized(mem, "843923356494856192")){
             channel.sendMessage("Silly little person, you can't do that :skull:").queue();
             return;
         }
 
 		List<Attachment> attachments = content.getAttachments();
 		String parsedTweet = buildText(content.getContentDisplay(), channel);
-		UploadMediaResponse response = buildAttachments(attachments, client);
+		List<String> response = buildAttachments(attachments, client);
 		TweetParameters tweetParams = buildTweet(parsedTweet, response, attachments);
 
-		
 		channel.sendMessage("Tweet Sent B)\nhttps://twitter.com/TweetsByAether/status/" + client.postTweet(tweetParams).getId()).queue();
 	}
 
@@ -53,15 +56,21 @@ public class SendTweet extends Command{
 		return returnString;
 	}
 
-	private UploadMediaResponse buildAttachments (List<Attachment> attachments, TwitterClient client){
+	private List<String> buildAttachments (List<Attachment> attachments, TwitterClient client){
 		InputStream is;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		UploadMediaResponse response = new UploadMediaResponse();
+		FileOutputStream fs;
+		List<File> mediaFiles = new ArrayList<>();
+		List<String> mediaIds = new ArrayList<>();
 
 		try {
-			if(attachments.size() > 0){
-				is = attachments.get(0).getProxy().download().get();
-				attachments.get(0).getProxy().download().get().transferTo(baos);
+			for(int i = 0; i < attachments.size(); i++){
+				is = attachments.get(i).getProxy().download().get();
+				mediaFiles.add(new File("files/" + attachments.get(i).getFileName() + "tweet." + attachments.get(i).getFileExtension()));
+				fs = new FileOutputStream(mediaFiles.get(i));
+				is.transferTo(fs);
+
+				is.close();
+				fs.close();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -71,25 +80,26 @@ public class SendTweet extends Command{
 			e.printStackTrace();
 		}
 		
-		if(attachments.size() > 0){
-			if(attachments.get(0).getFileExtension().contains("gif")){
-				response = client.uploadMedia(attachments.get(0).getFileName(), baos.toByteArray(), MediaCategory.TWEET_GIF);
-			}else if(attachments.get(0).getFileExtension().contains("mp4") || attachments.get(0).getFileExtension().contains("mov") || attachments.get(0).getFileExtension().contains("mkv")){
-				response = client.uploadMedia(attachments.get(0).getFileName(), baos.toByteArray(), MediaCategory.TWEET_VIDEO);
+		
+		for(File att : mediaFiles){
+			if(att.getName().contains("gif")){
+				 mediaIds.add(client.uploadChunkedMedia(att, MediaCategory.TWEET_GIF).get().getMediaId());
+			}else if(att.getName().contains("mp4") || att.getName().contains("mov") || att.getName().contains("mkv")){
+				mediaIds.add(client.uploadChunkedMedia(att, MediaCategory.TWEET_IMAGE).get().getMediaId());
 			}else{
-				response = client.uploadMedia(attachments.get(0).getFileName(), baos.toByteArray(), MediaCategory.TWEET_IMAGE);
+				mediaIds.add(client.uploadChunkedMedia(att, MediaCategory.TWEET_VIDEO).get().getMediaId());
 			}
 		}
 
-		return response;
+		return mediaIds;
 	}
 
-	private TweetParameters buildTweet(String parsedTweet, UploadMediaResponse response, List<Attachment> attachments){
+	private TweetParameters buildTweet(String parsedTweet, List<String> mediaIds, List<Attachment> attachments){
 		TweetParameters tweetParams = TweetParameters.builder().build();
 
 		tweetParams.setText(parsedTweet);
-		if(attachments.size() > 0) tweetParams.setMedia(Media.builder().mediaIds(Arrays.asList(response.getMediaId())).build());
-		
+		if(attachments.size() > 0) tweetParams.setMedia(Media.builder().mediaIds(mediaIds).build());
+
 		return tweetParams;
 	}
 }
