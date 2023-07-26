@@ -37,7 +37,7 @@ public class SendTweet extends Command{
 
 		channel.sendMessage("Tweet Sent B)\nhttps://twitter.com/TweetsByAether/status/" + client.postTweet(tweetParams).getId()).queue();
 	}
-
+//teest
 	private String buildText(String str, MessageChannelUnion channel){
 		String returnString = str;
 		
