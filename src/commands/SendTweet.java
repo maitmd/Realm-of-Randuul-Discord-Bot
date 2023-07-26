@@ -25,7 +25,7 @@ public class SendTweet extends Command{
 	public SendTweet(MessageChannelUnion channel, Message content, TwitterClient client, Member mem) {
 		super(jda, twitter);
 
-		if(isAuthorized(mem, "843923356494856192")){
+		if(!isAuthorized(mem, "843923356494856192")){
             channel.sendMessage("Silly little person, you can't do that :skull:").queue();
             return;
         }
@@ -38,6 +38,7 @@ public class SendTweet extends Command{
 		channel.sendMessage("Tweet Sent B)\nhttps://twitter.com/TweetsByAether/status/" + client.postTweet(tweetParams).getId()).queue();
 	}
 
+	//test
 	private String buildText(String str, MessageChannelUnion channel){
 		String returnString = str;
 		
