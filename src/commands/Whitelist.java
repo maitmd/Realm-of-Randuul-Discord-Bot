@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 public class Whitelist extends Command {
     public Whitelist(MessageChannelUnion channel, String message, Member mem) {
         super(jda, twitter);
-
+        channel.sendMessage("This works :)").queue();
         if (!(isAuthorized(mem, "1131793549197856788") || isAuthorized(mem, "549765197162741801"))) {
             channel.sendMessage("Silly little person, you can't do that :skull:").queue();
             return;
