@@ -14,7 +14,7 @@ public class Spam extends Command{
 		String spamMessage;
 		
 		for(int i = 0; i < mem.getRoles().size(); i++) {
-			if(mem.getRoles().get(i).toString().contains("Admin")){
+			if(mem.getRoles().get(i).toString().contains("Admin") || mem.getRoles().get(i).toString().contains("Dungeon Master")){
 				admin = true;
 			}
 		}
