@@ -88,15 +88,22 @@ public class Command extends ListenerAdapter{
 			}
 		}
 		
+
 		if((content.contains("https://twitter.com") || content.contains("https://x.com")) && !content.contains("https://fxtwitter.com")) {
 			ThreadChannel thread = event.getMessage().createThreadChannel("fx").complete();
-			
+			String url = content.contains("https://twitter.com") ? "https://twitter.com" : "https://x.com";
+
+			//If the message contains no spaces
 			if(!content.contains(" ")) {
-				thread.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue();
+				thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
+			
+		    //If the meessage has spaces after the link
 			}else if(!content.substring(content.indexOf("https")).contains(" ")) {
-				thread.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"))).queue();
+				thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
+			
+			//If the message has content before and after the link
 			}else {
-				thread.sendMessage("https://fx" + content.substring(content.indexOf("twitter.com"), content.substring(content.indexOf("https")).indexOf(" "))).queue();
+				thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
 			}
 
 			GensoRanduul.addThreadToRemove(thread);
