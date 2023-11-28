@@ -85,6 +85,9 @@ public class Command extends ListenerAdapter{
 			case "whitelist":
 				new Whitelist(channel, content, mem);
 				break;
+			default:
+				channel.sendMessage("I can't do anything like that..").queue();
+				break;
 			}
 		}
 		
