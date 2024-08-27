@@ -77,6 +77,8 @@ public class GensoRanduul{
 			System.err.println("Could not find the class loaded in!");
 		}
 	}
+	//bitch
+	
 	
 	//Writes this player object to players.txt
 	public static void save() {
