@@ -82,38 +82,13 @@ public class Command extends ListenerAdapter{
 			case "tweet":
 				new SendTweet(channel, msg, twitter, mem);
 				break;
-			case "whitelist":
-				new Whitelist(channel, content, mem);
-				break;
 			default:
 				channel.sendMessage("I can't do anything like that..").queue();
 				break;
 			}
-		}
-		
-
-		if((content.contains("https://twitter.com") || content.contains("https://x.com")) && !content.contains("https://fxtwitter.com")) {
-			ThreadChannel thread = event.getMessage().createThreadChannel("fx").complete();
-			String url = content.contains("https://twitter.com") ? "https://twitter.com" : "https://x.com";
-
-			//If the message contains no spaces
-			if(!content.contains(" ")) {
-				thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
-			
-		    //If the meessage has spaces after the link
-			}else if(!content.substring(content.indexOf("https")).contains(" ")) {
-				thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
-			
-			//If the message has content before and after the link
-			}else {
-				thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
-			}
-
-			GensoRanduul.addThreadToRemove(thread);
-			GensoRanduul.save();
-		}
-		
-
+		} else if((content.contains("https://twitter.com") || content.contains("https://x.com")) && !content.contains("https://fxtwitter.com")) {
+			//convertTwitterLink(content, event);
+		}	
 	}
 	
 	//Splits up the whole command string into specific arguments as needed. Quotes("") override normal
@@ -121,7 +96,6 @@ public class Command extends ListenerAdapter{
 	public ArrayList<String> getArgs(String msg, int args){
 		ArrayList<String> argList = new ArrayList<String>();
 		if(!msg.contains(" ")) return argList;
-
 		String content = msg.substring(msg.indexOf(" ")+1) + " ";
 		for(int i = 0; i < args; i++) {
 			if(content.charAt(0) == ('\"')){
@@ -155,5 +129,26 @@ public class Command extends ListenerAdapter{
 		}
 
 		return authorized;
+	}
+
+	public void convertTwitterLink(String content, MessageReceivedEvent event) {
+		ThreadChannel thread = event.getMessage().createThreadChannel("fx").complete();
+		String url = content.contains("https://twitter.com") ? "https://twitter.com" : "https://x.com";
+
+		//If the message contains no spaces
+		if(!content.contains(" ")) {
+			thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
+		
+		//If the meessage has spaces after the link
+		}else if(!content.substring(content.indexOf("https")).contains(" ")) {
+			thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
+		
+		//If the message has content before and after the link
+		}else {
+			thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
+		}
+
+		GensoRanduul.addThreadToRemove(thread);
+		GensoRanduul.save();
 	}
 }
