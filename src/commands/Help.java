@@ -30,7 +30,6 @@ public class Help extends Command {
 					+ "```" + "Tweet (Aether only): !tweet [message] [image (optional)]" + "```" + "\n"
 					+ "```" + "Diag: !diag [A-Length] [B-Length]" + "```" + "\n"
 					+ "```" + "Spam: !spam [@User's name]" + "```" + "\n"
-					+ "```" + "Whitelist (Tap's Minecraft Mods only): !whitelist [list,add,remove,delete] [username] OR !whitelist [username], !whitelist" + "```" + "\n"
 					+ "To view more detailed descriptions type !help [inital sub-command]").queue();
 
 		} else {
