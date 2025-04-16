@@ -81,6 +81,7 @@ public class ServerC extends Command {
                     String[] commands = {"cmd /c " + DataHandler.getBaseServerPath() + "\\start-all.bat"};
                     Runtime.getRuntime().exec(commands);
                 } catch (IOException e) {
+                    System.out.println("Unable to start server\n" + e);
                     channel.sendMessage("Failed to start server..").queue();
                 }
                 break;
