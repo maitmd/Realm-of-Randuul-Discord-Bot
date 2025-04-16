@@ -3,22 +3,22 @@ package commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import bot.GensoRanduul;
 import data.Campaign;
 import data.Player;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import services.DataHandler;
 public class Camp extends Command{
 	public Camp(MessageChannelUnion channel, String content, Member member, List<Member> mention, Player player) {
 		super(jda, twitter);
 		ArrayList<String> args = new ArrayList<String>();
 		args = getArgs(content, 2);
-		Campaign campaign = GensoRanduul.getCampaign(args.get(0));
+		Campaign campaign = DataHandler.getCampaign(args.get(0));
 		
 		if(mention.size() > 0) {
 			for(int i = 0; i < mention.size(); i++) {
-				if(GensoRanduul.getPlayer(mention.get(0).getUser().getName()) == null) {
-					GensoRanduul.addPlayer(new Player(mention.get(0).getUser().getName()));
+				if(DataHandler.getPlayer(mention.get(0).getUser().getName()) == null) {
+					DataHandler.addPlayer(new Player(mention.get(0).getUser().getName()));
 				}
 			}
 		}
@@ -27,7 +27,7 @@ public class Camp extends Command{
 			case "create":
 				args = getArgs(content, 2);
 				player.addCampaign(args.get(0));
-				campaign = GensoRanduul.getCampaign(args.get(0));
+				campaign = DataHandler.getCampaign(args.get(0));
 				campaign.display(channel);
 			    break;
 			case "remove":
@@ -56,22 +56,22 @@ public class Camp extends Command{
 					campaign.displayPlayers(channel);
 					break;
 				case "remove":
-					campaign.removePlayer(channel, GensoRanduul.getPlayer(mention.get(0).getUser().getName()), player);
+					campaign.removePlayer(channel, DataHandler.getPlayer(mention.get(0).getUser().getName()), player);
 					break;
 				}
 			case "invite":
 				if(mention.size() > 0){
-					for(Member temp : mention) campaign.invitePlayer(channel, GensoRanduul.getPlayer(member.getUser().getName()), GensoRanduul.getPlayer(temp.getUser().getName()));
+					for(Member temp : mention) campaign.invitePlayer(channel, DataHandler.getPlayer(member.getUser().getName()), DataHandler.getPlayer(temp.getUser().getName()));
 				}
 			    break;
 			case "view": 
 				campaign.display(channel);
 				break;
 			case "join":
-				campaign.addPlayer(channel, GensoRanduul.getPlayer(member.getUser().getName()));
+				campaign.addPlayer(channel, DataHandler.getPlayer(member.getUser().getName()));
 				break;
 			case "nextsession":
-				if(campaign.getDm() != GensoRanduul.getPlayer(member.getUser().getName())) {
+				if(campaign.getDm() != DataHandler.getPlayer(member.getUser().getName())) {
 					channel.sendMessage("This is not your universe..").queue();
 					return;
 				}
@@ -81,7 +81,7 @@ public class Camp extends Command{
 				channel.sendMessage("Until next time..").queue();
 				break;
 			case "schedule":
-				if(campaign.getDm() != GensoRanduul.getPlayer(member.getUser().getName())) {
+				if(campaign.getDm() != DataHandler.getPlayer(member.getUser().getName())) {
 					channel.sendMessage("This is not your universe..").queue();
 					return;
 				}
@@ -91,7 +91,7 @@ public class Camp extends Command{
 				channel.sendMessage("Your time of communion has been noted.").queue();
 				break;
 			case "meettime":
-				if(campaign.getDm() != GensoRanduul.getPlayer(member.getUser().getName())) {
+				if(campaign.getDm() != DataHandler.getPlayer(member.getUser().getName())) {
 					channel.sendMessage("This is not your universe..").queue();
 					return;
 				}
@@ -102,7 +102,7 @@ public class Camp extends Command{
 				break;
 		}
 		
-		GensoRanduul.save();
+		DataHandler.save();
 	}
 	
 	public void create(MessageChannelUnion channel, String name, Player dm) {

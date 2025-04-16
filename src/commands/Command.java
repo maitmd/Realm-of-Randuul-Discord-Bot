@@ -2,7 +2,6 @@ package commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import bot.GensoRanduul;
 import data.Player;
 import io.github.redouane59.twitter.TwitterClient;
 import net.dv8tion.jda.api.JDA;
@@ -13,6 +12,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import services.DataHandler;
 
 public class Command extends ListenerAdapter{
 	boolean enabled = true;
@@ -34,11 +34,12 @@ public class Command extends ListenerAdapter{
 		MessageChannelUnion channel = event.getChannel();
 		Member mem = event.getMember();
 		List<Member> men = msg.getMentions().getMembers();
-		Player player = GensoRanduul.getPlayer(mem.getUser().getName());
+		Player player = DataHandler.getPlayer(mem.getUser().getName());
+		
 		//Checking to see if the member has been added into the bot as a player. If not add them.
 		if(player == null){
-			GensoRanduul.addPlayer(new Player(mem.getUser().getName()));
-			player = GensoRanduul.getPlayer(mem.getUser().getName());
+			DataHandler.addPlayer(new Player(mem.getUser().getName()));
+			player = DataHandler.getPlayer(mem.getUser().getName());
 		}
 		
 		if(content.startsWith("!")) {
@@ -82,6 +83,9 @@ public class Command extends ListenerAdapter{
 			case "tweet":
 				new SendTweet(channel, msg, twitter, mem);
 				break;
+			case "server":
+				new ServerC(channel, content);
+				break;
 			default:
 				channel.sendMessage("I can't do anything like that..").queue();
 				break;
@@ -94,7 +98,7 @@ public class Command extends ListenerAdapter{
 	//Splits up the whole command string into specific arguments as needed. Quotes("") override normal
 	//procedures and read in between quotes.
 	public ArrayList<String> getArgs(String msg, int args){
-		ArrayList<String> argList = new ArrayList<String>();
+		ArrayList<String> argList = new ArrayList<>();
 		if(!msg.contains(" ")) return argList;
 		String content = msg.substring(msg.indexOf(" ")+1) + " ";
 		for(int i = 0; i < args; i++) {
@@ -103,7 +107,7 @@ public class Command extends ListenerAdapter{
 				argList.add(content.substring(0, content.indexOf('\"')));
 				content = content.substring(content.indexOf('\"')+2);
 			}else{
-				argList.add(content.substring(content.indexOf(content), content.indexOf(" ")));
+				argList.add(content.substring(0, content.indexOf(" ")));
 				content = content.substring(content.indexOf(" ")+1);
 			}
 		}
@@ -148,7 +152,7 @@ public class Command extends ListenerAdapter{
 			thread.sendMessage("https://fxtwitter.com" + content.substring(content.indexOf(url) + url.length())).queue();
 		}
 
-		GensoRanduul.addThreadToRemove(thread);
-		GensoRanduul.save();
+		DataHandler.addThreadToRemove(thread);
+		DataHandler.save();
 	}
 }

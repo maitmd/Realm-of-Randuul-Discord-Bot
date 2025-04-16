@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import bot.GensoRanduul;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import services.DataHandler;
 
 public class Campaign implements Serializable{
 	/**
@@ -113,7 +113,7 @@ public class Campaign implements Serializable{
 	}
 	
 	public void removeCharacter(MessageChannelUnion channel, String name, Player dm) {
-		data.Character chara = GensoRanduul.getCharacter(name);
+		data.Character chara = DataHandler.getCharacter(name);
 		if(dm == this.dm || dm == chara.getPlayer()) {
 			for(Character temp : characters) {
 				if(temp == chara) {

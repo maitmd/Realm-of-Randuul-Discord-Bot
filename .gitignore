@@ -2,3 +2,4 @@
 target/*
 compile.bat
 ssh in.bat
+data/*

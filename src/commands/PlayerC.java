@@ -3,11 +3,11 @@ package commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import bot.GensoRanduul;
 import data.Player;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import services.DataHandler;
 
 public class PlayerC extends Command{
 	public PlayerC(MessageChannelUnion channel, String content, Member mem, List<Member> mention, Player player){
@@ -20,8 +20,8 @@ public class PlayerC extends Command{
 		//Checks to see if any players were mentioned and if they do makes sure they exist,
 		//if not they are added to the bots list.
 		if(mention.size() > 0)
-			if(GensoRanduul.getPlayer(mentioned.get(0).getUser().getName()) == null){
-				GensoRanduul.addPlayer(new Player(mentioned.get(0).getUser().getName()));
+			if(DataHandler.getPlayer(mentioned.get(0).getUser().getName()) == null){
+				DataHandler.addPlayer(new Player(mentioned.get(0).getUser().getName()));
 			}
 		
 		if(args.size() > 1) {
@@ -40,7 +40,7 @@ public class PlayerC extends Command{
 			switch(args.get(0)){
 			case "all":
 				String players = "";
-				for(Player temp:GensoRanduul.getPlayers()) {
+				for(Player temp:DataHandler.getPlayers()) {
 					players = temp.getName() + ", " + players;
 				}
 				players = players.substring(0, players.length()-2);
@@ -55,15 +55,15 @@ public class PlayerC extends Command{
 		try{tempmem = mentioned.get(0);}catch(Exception e){};
 
 		if(tempmem != null){
-			Player temp = GensoRanduul.getPlayer(tempmem.getUser().getName());
+			Player temp = DataHandler.getPlayer(tempmem.getUser().getName());
 
 			temp.display(tempmem, channel);
 		}else{
 			if(player == null){
 				Player newP = new Player(user.getName());
-				GensoRanduul.addPlayer(newP);
-				GensoRanduul.save();
-				player = GensoRanduul.getPlayer(user.getName());;
+				DataHandler.addPlayer(newP);
+				DataHandler.save();
+				player = DataHandler.getPlayer(user.getName());;
 			}
 			player.display(mem, channel);
 		}
@@ -75,20 +75,20 @@ public class PlayerC extends Command{
 		try{tempmem = mentioned.get(0);}catch(Exception e){};
 		
 		if(tempmem != null){
-			Player temp = GensoRanduul.getPlayer(tempmem.getUser().getName());
+			Player temp = DataHandler.getPlayer(tempmem.getUser().getName());
 			if(temp == null){
-				GensoRanduul.addPlayer(new Player(tempmem.getUser().getName()));
-				temp = GensoRanduul.getPlayer(tempmem.getUser().getName().substring(0));
-				GensoRanduul.save();
+				DataHandler.addPlayer(new Player(tempmem.getUser().getName()));
+				temp = DataHandler.getPlayer(tempmem.getUser().getName().substring(0));
+				DataHandler.save();
 			}
 			
 			temp.displayCharacters(channel);
 		}else{
 			if(player == null){
 				Player newP = new Player(user.getName());
-				GensoRanduul.addPlayer(newP);
-				GensoRanduul.save();
-				player = GensoRanduul.getPlayer(user.getName());
+				DataHandler.addPlayer(newP);
+				DataHandler.save();
+				player = DataHandler.getPlayer(user.getName());
 			}
 			player.displayCharacters(channel);
 		}
@@ -100,11 +100,11 @@ public class PlayerC extends Command{
 			try{tempmem = mentioned.get(0);}catch(Exception e){};
 			
 			if(tempmem != null){
-				Player temp = GensoRanduul.getPlayer(tempmem.getUser().getName());
+				Player temp = DataHandler.getPlayer(tempmem.getUser().getName());
 				if(temp == null){
-					GensoRanduul.addPlayer(new Player(tempmem.getUser().getName()));
-					temp = GensoRanduul.getPlayer(tempmem.getUser().getName().substring(0));
-					GensoRanduul.save();
+					DataHandler.addPlayer(new Player(tempmem.getUser().getName()));
+					temp = DataHandler.getPlayer(tempmem.getUser().getName().substring(0));
+					DataHandler.save();
 				}
 				
 				temp.displayCampaigns(channel);

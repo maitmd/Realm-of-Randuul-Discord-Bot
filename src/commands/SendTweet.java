@@ -1,20 +1,16 @@
 package commands;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.tweet.MediaCategory;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters;
-import io.github.redouane59.twitter.dto.tweet.UploadMediaResponse;
 import io.github.redouane59.twitter.dto.tweet.TweetParameters.Media;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -22,10 +18,13 @@ import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 
 public class SendTweet extends Command{
+
+	private static String AUTHORIZED_GROUP = "843923356494856192";
+
 	public SendTweet(MessageChannelUnion channel, Message content, TwitterClient client, Member mem) {
 		super(jda, twitter);
 
-		if(!isAuthorized(mem, "843923356494856192")){
+		if(!isAuthorized(mem, AUTHORIZED_GROUP)){
             channel.sendMessage("Silly little person, you can't do that :skull:").queue();
             return;
         }

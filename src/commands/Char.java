@@ -3,10 +3,10 @@ package commands;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import services.DataHandler;
 
 import java.util.ArrayList;
 
-import bot.GensoRanduul;
 import data.Player;
 
 public class Char extends Command{
@@ -16,7 +16,7 @@ public class Char extends Command{
 		ArrayList<String> args = new ArrayList<String>();
 		try{args = getArgs(content, 2);}catch(StringIndexOutOfBoundsException e){return;}
 		User user = member.getUser();
-		data.Character character = GensoRanduul.getCharacter(args.get(0));
+		data.Character character = DataHandler.getCharacter(args.get(0));
 		
 		//!char [character] [sub-command] Find which sub-command was issued.
 		switch(args.get(1)){
@@ -125,7 +125,7 @@ public class Char extends Command{
 		}
 		
 		//Adds the player to players.txt
-		GensoRanduul.save();
+		DataHandler.save();
 	}
 	
 	//Creates a new Character object and adds it to the player's Character list.
@@ -143,7 +143,7 @@ public class Char extends Command{
 	//Displays the stats of the character.
 	public void view(MessageChannelUnion channel, String content, ArrayList<String> args, data.Character character){
 		if(character == null){
-			character = GensoRanduul.getCharacter(args.get(0));
+			character = DataHandler.getCharacter(args.get(0));
 		}
 		
 		try{character.display(channel);}catch(Exception e) {channel.sendMessage("That destiny has yet to be created.").queue();}
@@ -199,7 +199,7 @@ public class Char extends Command{
 		
 		if(character == null){
 			create(user, channel, content, player, args);
-			character = GensoRanduul.getCharacter(args.get(0));
+			character = DataHandler.getCharacter(args.get(0));
 		}
 		
 		if(character.getPlayer().getName().equals(user.getName())){
