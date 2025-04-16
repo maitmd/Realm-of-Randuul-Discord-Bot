@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -44,14 +43,9 @@ public class Server implements Serializable{
     }
 
     public File getLog() {
-        File crashReport = new File(DataHandler.getBaseServerPath() + getServerName() + "\\logs\\latest.log");
-        if (crashReport.exists() && crashReport.isDirectory()) {
-            Optional<File> opFile = Arrays.stream(crashReport.listFiles(File::isFile))
-                    .max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()));
-
-            if (opFile.isPresent()) {
-                return opFile.get();
-            }
+        File log = new File(DataHandler.getBaseServerPath() + getServerName() + "\\logs\\latest.log");
+        if (log.exists()) {
+            return log;
         }
 
         return null;
@@ -59,12 +53,17 @@ public class Server implements Serializable{
 
     public ServerStatusEnum getStatus() {
         File logFile = new File(DataHandler.getBaseServerPath() + getServerName() + "\\logs\\debug.log");
-
+        System.out.println("Start getStatus");
         if (logFile.exists()) {
+            System.out.println(logFile + " exists.");
             long currentTime = System.currentTimeMillis();
             long lastModified = logFile.lastModified();
 
-            if (Instant.ofEpochMilli(currentTime - 60000).isBefore(Instant.ofEpochMilli((lastModified)))) {
+            System.out.println("Current time: " + currentTime);
+            System.out.println("Modified time: " + lastModified);
+            System.out.println("Difference: " + currentTime - lastModified);
+
+            if ((currentTime - lastModified) < 5000) {
                 try (FileInputStream fis = new FileInputStream(logFile)) {
                     String contents = fis.toString();
                     if (contents.contains(FINISH_BOOT_STRING)) {
