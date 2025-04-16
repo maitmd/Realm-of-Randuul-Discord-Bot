@@ -63,9 +63,10 @@ public class Server implements Serializable{
             System.out.println("Modified time: " + lastModified);
             System.out.println("Difference: " + (currentTime - lastModified));
 
-            if ((currentTime - lastModified) < 10000) {
+            if ((currentTime - lastModified) < 30000) {
                 try (FileInputStream fis = new FileInputStream(logFile)) {
                     String contents = fis.toString();
+                    System.out.println("Contents: " + contents);
                     if (contents.contains(FINISH_BOOT_STRING)) {
                         return ServerStatusEnum.ONLINE;
                     } else if (contents.contains(START_BOOT_STRING)) {
