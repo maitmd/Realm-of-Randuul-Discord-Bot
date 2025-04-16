@@ -1,9 +1,9 @@
 package data;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Optional;
@@ -65,15 +65,19 @@ public class Server implements Serializable{
             System.out.println("Difference: " + (currentTime - lastModified));
 
             if ((currentTime - lastModified) < 30000) {
-                try (FileInputStream fis = new FileInputStream(logFile); ObjectInputStream oi = new ObjectInputStream(fis)) {
-                    String contents = oi.readUTF();
-                    System.out.println("Contents: " + contents);
-                    if (contents.contains(FINISH_BOOT_STRING)) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(logFile))) {
+                    StringBuilder content = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        content.append(line).append("\n");
+                    }
+                    if (content.toString().contains(FINISH_BOOT_STRING)) {
                         return ServerStatusEnum.ONLINE;
-                    } else if (contents.contains(START_BOOT_STRING)) {
+                    } else if (content.toString().contains(START_BOOT_STRING)) {
                         return ServerStatusEnum.BOOTING;
                     }
                 } catch (IOException e) {
+                    System.err.println("Unable to read one of the streams. \n" + e);
                     return ServerStatusEnum.UNKNOWN;
                 }
             } else {
