@@ -1,8 +1,5 @@
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +18,9 @@ import twitter4j.TwitterException;
 
 public class GensoRanduul{
 	public static void main(String[] args) throws LoginException, InterruptedException, IOException, TwitterException {
-			// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
+		DataHandler.loadEnv();
+		
+		// Building the JDA, logging the bot in, adding a Command class as a listener, and reading stored member/player data.
 		JDA api = JDABuilder.createDefault(DataHandler.getDiscordToken()).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
 		TwitterClient client = new TwitterClient(TwitterCredentials.builder()
                 .accessToken(DataHandler.getTwitterOauth())

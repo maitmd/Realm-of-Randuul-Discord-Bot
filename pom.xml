@@ -27,7 +27,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>bot.GensoRanduul</mainClass>
+              <mainClass>GensoRanduul</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -79,6 +79,11 @@
         <groupId>org.mongodb</groupId>
         <artifactId>mongodb-driver-sync</artifactId>
         <version>5.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.cdimascio</groupId>
+      <artifactId>dotenv-java</artifactId>
+      <version>3.2.0</version>
     </dependency>
   </dependencies>    
 </project>

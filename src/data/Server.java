@@ -3,6 +3,7 @@ package data;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import java.util.Optional;
 import services.DataHandler;
 import utils.ServerStatusEnum;
 
-public class Server {
+public class Server implements Serializable{
 
     public final String FINISH_BOOT_STRING = "[Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Done";
     public final String START_BOOT_STRING = "[main/DEBUG] [net.minecraftforge.fml.loading.FMLLoader/CORE]: FML 1.0 loading";

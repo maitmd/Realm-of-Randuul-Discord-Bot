@@ -26,28 +26,40 @@ public class ServerC extends Command {
         }
 
         Server server = null;
+
         if (args.size() > 1) {
-            server = DataHandler.getServer(args.get(2));
+            server = DataHandler.getServer(args.get(1));
         }
 
-        switch (args.get(1)) {
+        switch (args.get(0)) {
             case "add":
-                DataHandler.addServer(new Server(args.get(2)));
+                server = new Server(args.get(1));
+                DataHandler.addServer(server);
+                channel.sendMessage(server.getServerName() + " has been added.").queue();
+                DataHandler.save();
                 break;
             case "delete":
                 String serverName = server.getServerName();
+
                 if (DataHandler.removeServer(server)) {
                     channel.sendMessage(serverName + " has been deleted.").queue();
                 } else {
                     channel.sendMessage("Could not find" + serverName + " are you sure that's the right name?").queue();
                 }
+
+                DataHandler.save();
                 break;
             case "list":
-                String servers = "";
+                String servers = " ";
                 for (Server temp : DataHandler.getAllServers()) {
                     servers = temp.getServerName() + ", " + servers;
                 }
-                channel.sendMessage("**Servers** ```" + servers + "```").queue();
+
+                if (!servers.equals(" ")) {
+                    servers = servers.substring(0, servers.lastIndexOf(","));
+                }
+
+                channel.sendMessage("**Servers** ```" + servers + " ```").queue();
                 break;
             case "status":
                 ServerStatusEnum status = server.getStatus();

@@ -12,6 +12,7 @@ import java.util.List;
 import data.Campaign;
 import data.Player;
 import data.Server;
+import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 
 public class DataHandler {
@@ -20,22 +21,24 @@ public class DataHandler {
     private static List<Server> servers = new ArrayList<>();
 	private static List<ThreadChannel> threadsToRemove = new ArrayList<>();
 
-    private static String basePath;
-	private static String twitterApiKey;
-	private static String twitterApiSecret;
-	private static String twitterOauthKey;
-	private static String twitterOauthSecret;
-	private static String twitterBearerToken;
-    private static String discordToken;
+    private static String basePath = "";
+	private static String twitterApiKey = "";
+	private static String twitterApiSecret = "";
+	private static String twitterOauthKey = "";
+	private static String twitterOauthSecret = "";
+	private static String twitterBearerToken = "";
+    private static String discordToken = "";
 
-    private DataHandler(){};
+    private DataHandler(){
+
+    };
 
     //Reads players.txt and retrieves all player and campaign objects stored there.
 	@SuppressWarnings("unchecked")
 	public static void getStoredData() {
-		try (FileInputStream playerFI = new FileInputStream(new File("players.player"));
-		FileInputStream threadFI = new FileInputStream(new File("threads.thread"));
-		FileInputStream serverFI = new FileInputStream(new File("servers.server"));){
+		try (FileInputStream playerFI = new FileInputStream(new File("data/players.player"));
+		FileInputStream threadFI = new FileInputStream(new File("data/threads.thread"));
+		FileInputStream serverFI = new FileInputStream(new File("data/servers.server"));){
 			
 			
 			ObjectInputStream oi;
@@ -57,9 +60,9 @@ public class DataHandler {
 	
 	//Writes this player object to players.txt
 	public static void save() {
-		try (FileOutputStream playerFS = new FileOutputStream("players.player");
-		FileOutputStream threadFS = new FileOutputStream("threads.thread");
-		FileOutputStream serverFS = new FileOutputStream("servers.server");) {
+		try (FileOutputStream playerFS = new FileOutputStream("data/players.player");
+		FileOutputStream threadFS = new FileOutputStream("data/threads.thread");
+		FileOutputStream serverFS = new FileOutputStream("data/servers.server");) {
 
 			ObjectOutputStream o;
 			
@@ -68,7 +71,7 @@ public class DataHandler {
 			o = new ObjectOutputStream(threadFS);
 			o.writeObject(threadsToRemove);
 			o = new ObjectOutputStream(serverFS);
-			o.writeObject(threadsToRemove);
+			o.writeObject(servers);
 
 			o.close();
 		}catch(IOException e) {
@@ -161,13 +164,15 @@ public class DataHandler {
     }
 
 	public static void loadEnv() {
-		twitterApiKey = System.getenv("TWITTER_KEY");
-        twitterApiSecret = System.getenv("TWITTER_SECRET");
-        twitterOauthKey = System.getenv("TWITTER_OAUTH");
-        twitterOauthSecret = System.getenv("TWITTER_OAUTH_SECRET");
-        twitterBearerToken = System.getenv("BEARER_TOKEN");
-        discordToken = System.getenv("DISCORD_TOKEN");
-        basePath = System.getenv("BASE_SERVER_PATH");
+		Dotenv dotenv = Dotenv.load();
+
+		twitterApiKey = dotenv.get("TWITTER_KEY");
+        twitterApiSecret = dotenv.get("TWITTER_SECRET");
+        twitterOauthKey = dotenv.get("TWITTER_OAUTH");
+        twitterOauthSecret = dotenv.get("TWITTER_OAUTH_SECRET");
+        twitterBearerToken = dotenv.get("BEARER_TOKEN");
+        discordToken = dotenv.get("DISCORD_TOKEN");
+        basePath = dotenv.get("BASE_SERVER_PATH");
 	}
 
     public static String getTwitterKey() {

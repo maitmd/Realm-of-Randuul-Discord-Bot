@@ -30,6 +30,7 @@ public class Help extends Command {
 					+ "```" + "Tweet (Aether only): !tweet [message] [image (optional)]" + "```" + "\n"
 					+ "```" + "Diag: !diag [A-Length] [B-Length]" + "```" + "\n"
 					+ "```" + "Spam: !spam [@User's name]" + "```" + "\n"
+					+ "```" + "Server Controls: !server list or !server [add/delete/list/status/crashreport/log/start] [Server Name] " + "```" + "\n"
 					+ "To view more detailed descriptions type !help [inital sub-command]").queue();
 
 		} else {
