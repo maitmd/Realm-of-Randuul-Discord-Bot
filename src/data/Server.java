@@ -61,7 +61,7 @@ public class Server implements Serializable{
 
             System.out.println("Current time: " + currentTime);
             System.out.println("Modified time: " + lastModified);
-            System.out.println("Difference: " + currentTime - lastModified);
+            System.out.println("Difference: " + (currentTime - lastModified));
 
             if ((currentTime - lastModified) < 5000) {
                 try (FileInputStream fis = new FileInputStream(logFile)) {
