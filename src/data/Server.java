@@ -3,6 +3,7 @@ package data;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Optional;
@@ -64,8 +65,8 @@ public class Server implements Serializable{
             System.out.println("Difference: " + (currentTime - lastModified));
 
             if ((currentTime - lastModified) < 30000) {
-                try (FileInputStream fis = new FileInputStream(logFile)) {
-                    String contents = fis.toString();
+                try (ObjectInputStream ois = new ObjectInputStream(logFile)) {
+                    String contents = ois.readUTF();
                     System.out.println("Contents: " + contents);
                     if (contents.contains(FINISH_BOOT_STRING)) {
                         return ServerStatusEnum.ONLINE;
