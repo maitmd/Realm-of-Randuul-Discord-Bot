@@ -15,6 +15,9 @@ public class Server implements Serializable{
 
     public final String FINISH_BOOT_STRING = "[Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Done";
     public final String START_BOOT_STRING = "[main/DEBUG] [net.minecraftforge.fml.loading.FMLLoader/CORE]: FML 1.0 loading";
+    public final String CRASHED_STRING = "[net.minecraftforge.common.ForgeMod/]: Preparing crash report with UUID";
+    public final String STOPPED_STRING = "[Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server";
+
     private String serverName;
 
     public Server(String serverName) {
@@ -71,9 +74,20 @@ public class Server implements Serializable{
                     while ((line = reader.readLine()) != null) {
                         content.append(line).append("\n");
                     }
+                    
+                    if (content.toString().contains(CRASHED_STRING)) {
+                        return ServerStatusEnum.CRASHED;
+                    }
+
+                    if (content.toString().contains(STOPPED_STRING)) {
+                        return ServerStatusEnum.OFFLINE;
+                    }
+
                     if (content.toString().contains(FINISH_BOOT_STRING)) {
                         return ServerStatusEnum.ONLINE;
-                    } else if (content.toString().contains(START_BOOT_STRING)) {
+                    }
+                    
+                    if (content.toString().contains(START_BOOT_STRING)) {
                         return ServerStatusEnum.BOOTING;
                     }
                 } catch (IOException e) {

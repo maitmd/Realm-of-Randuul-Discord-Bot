@@ -76,7 +76,7 @@ public class ServerC extends Command {
                 channel.sendFiles(FileUpload.fromData(logFile)).complete();
                 break;
             case "start":
-                channel.sendMessage("Will try to start server.. Use '/server " + server.getServerName() + " status' to check current status.").queue();
+                channel.sendMessage("Will try to start server.. Use '!server status " + server.getServerName() + "' to check current status.").queue();
                 try {
                     String[] commands = {"\"" + DataHandler.getBaseServerPath() + "start-all.bat\""};
                     Runtime.getRuntime().exec(commands);
