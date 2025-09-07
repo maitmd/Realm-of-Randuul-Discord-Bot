@@ -54,7 +54,32 @@ public class Server implements Serializable{
 
         return null;
     }
-
+    
+    public int getPort() {
+        String serverPropertiesPath new File(DataHandler.getBaseServerPath() + getServerName() + "\\server.properties");
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(serverPropertiesPath))) {
+            String line;
+            while (line = reader.readLine()) {
+                if (line.contains("server-port")) {
+                    return Integer.parseInt(line.substring(line.indexOf("=")));
+                }
+            }
+        }
+    }
+    
+    public int getPID() {
+        String[] commands = {"netstat -ano | findstr :" + getPort()};
+        Process process = Runtime.getRuntime().exec(commands);
+        BufferedReader reader = new BufferedReader(process.getInputStream());
+        String line = reader.readLine();
+        if (line.contains(port)) {
+            //get PID
+        } else {
+            return -1;
+        }
+    }
+    
     public ServerStatusEnum getStatus() {
         File logFile = new File(DataHandler.getBaseServerPath() + getServerName() + "\\logs\\debug.log");
         System.out.println("Start getStatus");
@@ -83,7 +108,7 @@ public class Server implements Serializable{
                         return ServerStatusEnum.OFFLINE;
                     }
 
-                    if (content.toString().contains(FINISH_BOOT_STRING)) {
+                    if (getPID() != -1) {
                         return ServerStatusEnum.ONLINE;
                     }
                     
