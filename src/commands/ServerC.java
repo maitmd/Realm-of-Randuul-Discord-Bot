@@ -99,7 +99,7 @@ public class ServerC extends Command {
                 channel.sendMessage("Attempting to reboot server.. Use '!server status " + server.getServerName() + "' to check current status.").queue();
                 try {
                     String pid = Integer.toString(server.getPID());
-                    String[] commands = {"taskkill /PID " + pid + " /F"};
+                    String[] commands = {"C:\\Windows\\system32\\taskkill.exe /PID " + pid + " /F"};
                     Runtime.getRuntime().exec(commands);
                     
                     Thread.sleep(2);

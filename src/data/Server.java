@@ -91,7 +91,7 @@ public class Server implements Serializable{
     }
 
     public int searchForPIDByPort(int port) throws IOException {
-        String[] commands = {"netstat -ano | findstr :" + port};
+        String[] commands = {"C:\\Windows\\system32\\NETSTAT.EXE -ano | C:\\Windows\\system32\\findstr.exe :" + port};
         Process process = Runtime.getRuntime().exec(commands);
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
@@ -112,7 +112,7 @@ public class Server implements Serializable{
             setPID(-1);
         }
         
-        String[] commands = {"\"" + DataHandler.getBaseServerPath() + "start-all.bat\""};
+        String[] commands = {".\\\"" + DataHandler.getBaseServerPath() + "start-all.bat\""};
         Runtime.getRuntime().exec(commands);
     }
 
