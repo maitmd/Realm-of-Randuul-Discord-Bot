@@ -112,7 +112,7 @@ public class Server implements Serializable{
             setPID(-1);
         }
         
-        CommandService.runCommand("\"" + DataHandler.getBaseServerPath() + "start-all.bat\"");
+        CommandService.runScript("\"" + DataHandler.getBaseServerPath() + "start-all.bat\"");
     }
 
     public ServerStatusEnum getStatus() {
