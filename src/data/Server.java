@@ -121,47 +121,37 @@ public class Server implements Serializable{
         System.out.println("Start getStatus");
         if (logFile.exists()) {
             System.out.println(logFile + " exists.");
-            long currentTime = System.currentTimeMillis();
-            long lastModified = logFile.lastModified();
 
-            System.out.println("Current time: " + currentTime);
-            System.out.println("Modified time: " + lastModified);
-            System.out.println("Difference: " + (currentTime - lastModified));
-
-            if ((currentTime - lastModified) < 30000) {
-                try (BufferedReader reader = new BufferedReader(new FileReader(logFile))) {
-                    StringBuilder content = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        content.append(line).append("\n");
-                    }
-                    
-                    if (content.toString().contains(CRASHED_STRING)) {
-                        return ServerStatusEnum.CRASHED;
-                    }
-
-                    int currentPID = searchForPIDByPort(port);
-                    if (currentPID == -1) {
-                        if (currentPID != getPID()) {
-                            setPID(currentPID);
-                        }
-
-                        return ServerStatusEnum.OFFLINE;
-                    }
-
-                    if (getPID() != -1) {
-                        return ServerStatusEnum.ONLINE;
-                    }
-                    
-                    if (serverStarting) {
-                        return ServerStatusEnum.BOOTING;
-                    }
-                } catch (IOException e) {
-                    System.err.println("Unable to read one of the streams. \n" + e);
-                    return ServerStatusEnum.UNKNOWN;
+            try (BufferedReader reader = new BufferedReader(new FileReader(logFile))) {
+                StringBuilder content = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
                 }
-            } else {
-                return ServerStatusEnum.OFFLINE;
+
+                if (content.toString().contains(CRASHED_STRING)) {
+                    return ServerStatusEnum.CRASHED;
+                }
+
+                int currentPID = searchForPIDByPort(port);
+                if (currentPID == -1) {
+                    if (currentPID != getPID()) {
+                        setPID(currentPID);
+                    }
+
+                    return ServerStatusEnum.OFFLINE;
+                }
+
+                if (getPID() != -1) {
+                    return ServerStatusEnum.ONLINE;
+                }
+
+                if (serverStarting) {
+                    return ServerStatusEnum.BOOTING;
+                }
+            } catch (IOException e) {
+                System.err.println("Unable to read one of the streams. \n" + e);
+                return ServerStatusEnum.UNKNOWN;
             }
         }
 

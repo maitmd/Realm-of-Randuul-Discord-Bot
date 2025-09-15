@@ -123,24 +123,13 @@ public class ServerC extends Command {
                 }
                 break;
             case "sendcommand":
-                if (!serverExists(channel, server, args.get(1))) {
-                    return;
-                }
-                
-                try {
-                    String[] commands = {DataHandler.getBaseServerPath() + server.getServerName() + "/rcon.lnk"};
-                    Runtime.getRuntime().exec(commands);
-                } catch (IOException e) {
-                    System.out.println("Unable to send command to server\n" + e);
-                    channel.sendMessage("I wasn't able to reach that realm..").queue();
-                }
                 break;
         }
     }
 
     private boolean serverExists(MessageChannelUnion channel, Server server, String serverName) {
         if (server == null) {
-            channel.sendMessage("Could not find" + serverName + " are you sure that's the right name?").queue();
+            channel.sendMessage("Could not find " + serverName + " are you sure that's the right name?").queue();
             return false;
         }
 
