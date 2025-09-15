@@ -128,12 +128,13 @@ public class Server implements Serializable{
                     content.append(line).append("\n");
                 }
 
+                if (getPID() != -1) {
+                    serverStarting = false;
+                    return ServerStatusEnum.ONLINE;
+                }
+                
                 if (serverStarting) {
                     return ServerStatusEnum.BOOTING;
-                }
-
-                if (getPID() != -1) {
-                    return ServerStatusEnum.ONLINE;
                 }
 
                 if (content.toString().contains(CRASHED_STRING)) {
