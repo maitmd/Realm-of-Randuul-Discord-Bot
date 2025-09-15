@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Optional;
@@ -14,11 +15,13 @@ import utils.ServerStatusEnum;
 public class Server implements Serializable{
 
     public final String FINISH_BOOT_STRING = "[Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Done";
-    public final String START_BOOT_STRING = "[main/DEBUG] [net.minecraftforge.fml.loading.FMLLoader/CORE]: FML 1.0 loading";
-    public final String CRASHED_STRING = "[net.minecraftforge.common.ForgeMod/]: Preparing crash report with UUID";
-    public final String STOPPED_STRING = "[Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server";
+    public final String CRASHED_STRING = "Preparing crash report with UUID";
+    public final String STOPPED_STRING = "Stopping server";
 
     private String serverName;
+    private int port = -1;
+    private int pid = -1;
+    private boolean serverStarting = false;
 
     public Server(String serverName) {
         this.serverName = serverName;
@@ -55,33 +58,66 @@ public class Server implements Serializable{
         return null;
     }
     
-    public int getPort() {
-        String serverPropertiesPath new File(DataHandler.getBaseServerPath() + getServerName() + "\\server.properties");
+    public int getPort() throws IOException {
+        String serverPropertiesPath = new File(DataHandler.getBaseServerPath() + getServerName() + "\\server.properties").getAbsolutePath();
         
+        if (port != -1) {
+            return port;
+        }
+
         try (BufferedReader reader = new BufferedReader(new FileReader(serverPropertiesPath))) {
             String line;
-            while (line = reader.readLine()) {
+            while ((line = reader.readLine()) != null) {
                 if (line.contains("server-port")) {
-                    return Integer.parseInt(line.substring(line.indexOf("=")));
+                    port = Integer.parseInt(line.substring(line.indexOf("=")));
                 }
             }
         }
+        
+        return port;
     }
     
-    public int getPID() {
-        String[] commands = {"netstat -ano | findstr :" + getPort()};
-        Process process = Runtime.getRuntime().exec(commands);
-        BufferedReader reader = new BufferedReader(process.getInputStream());
-        String line = reader.readLine();
-        if (line.contains(port)) {
-            //get PID
-        } else {
-            return -1;
+    public int getPID() throws IOException {
+        if (pid != -1) {
+            return pid;
         }
+
+        setPID(searchForPIDByPort(getPort()));
+        return pid;
     }
     
+    public void setPID(int pid) {
+        this.pid = pid;
+    }
+
+    public int searchForPIDByPort(int port) throws IOException {
+        String[] commands = {"netstat -ano | findstr :" + port};
+        Process process = Runtime.getRuntime().exec(commands);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.trim().split("\\s+");
+            if (parts.length > 4 && parts[1].endsWith(":" + port)) {
+                return Integer.parseInt(parts[parts.length - 1]);
+            }
+        }
+
+        return -1;
+    }
+
+    public void startServer() throws IOException {
+        serverStarting = true;
+        if (pid != -1) {
+            setPID(-1);
+        }
+        
+        String[] commands = {"\"" + DataHandler.getBaseServerPath() + "start-all.bat\""};
+        Runtime.getRuntime().exec(commands);
+    }
+
     public ServerStatusEnum getStatus() {
-        File logFile = new File(DataHandler.getBaseServerPath() + getServerName() + "\\logs\\debug.log");
+        File logFile = new File(DataHandler.getBaseServerPath() + getServerName() + "\\logs\\latest.log");
         System.out.println("Start getStatus");
         if (logFile.exists()) {
             System.out.println(logFile + " exists.");
@@ -104,7 +140,12 @@ public class Server implements Serializable{
                         return ServerStatusEnum.CRASHED;
                     }
 
-                    if (content.toString().contains(STOPPED_STRING)) {
+                    int currentPID = searchForPIDByPort(port);
+                    if (currentPID == -1) {
+                        if (currentPID != getPID()) {
+                            setPID(currentPID);
+                        }
+
                         return ServerStatusEnum.OFFLINE;
                     }
 
@@ -112,7 +153,7 @@ public class Server implements Serializable{
                         return ServerStatusEnum.ONLINE;
                     }
                     
-                    if (content.toString().contains(START_BOOT_STRING)) {
+                    if (serverStarting) {
                         return ServerStatusEnum.BOOTING;
                     }
                 } catch (IOException e) {

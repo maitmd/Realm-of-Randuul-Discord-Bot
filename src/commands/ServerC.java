@@ -31,6 +31,11 @@ public class ServerC extends Command {
             server = DataHandler.getServer(args.get(1));
         }
 
+        if (server == null) {
+            channel.sendMessage("Could not find" + args.get(1) + " are you sure that's the right name?").queue();
+            return;
+        }
+
         switch (args.get(0)) {
             case "add":
                 server = new Server(args.get(1));
@@ -78,13 +83,13 @@ public class ServerC extends Command {
             case "restart":
                 channel.sendMessage("Attempting to reboot server.. Use '!server status " + server.getServerName() + "' to check current status.").queue();
                 try {
-                    String pid = server.getPID();
+                    String pid = Integer.toString(server.getPID());
                     String[] commands = {"taskkill /PID " + pid + " /F"};
                     Runtime.getRuntime().exec(commands);
+                    
                     Thread.sleep(2);
-                    String[] commands = {"\"" + DataHandler.getBaseServerPath() + "start-all.bat\""};
-                    Runtime.getRuntime().exec(commands);
-                } catch (IOException e) {
+                    server.startServer();
+                } catch (IOException | InterruptedException e) {
                     System.out.println("Unable to start server\n" + e);
                     channel.sendMessage("Failed to start server..").queue();
                 }
@@ -92,8 +97,7 @@ public class ServerC extends Command {
             case "start":
                 channel.sendMessage("Attempting to start server.. Use '!server status " + server.getServerName() + "' to check current status.").queue();
                 try {
-                    String[] commands = {"\"" + DataHandler.getBaseServerPath() + "start-all.bat\""};
-                    Runtime.getRuntime().exec(commands);
+                    server.startServer();
                 } catch (IOException e) {
                     System.out.println("Unable to start server\n" + e);
                     channel.sendMessage("Failed to start server..").queue();
