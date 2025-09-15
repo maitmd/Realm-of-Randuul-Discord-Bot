@@ -112,7 +112,7 @@ public class Server implements Serializable{
             setPID(-1);
         }
         
-        CommandService.runPowershellCommand(".\\\"" + DataHandler.getBaseServerPath() + "start-all.bat\"");
+        CommandService.runPowershellCommand(DataHandler.getBaseServerPath() + "start-all.bat\"");
     }
 
     public ServerStatusEnum getStatus() {
@@ -132,7 +132,7 @@ public class Server implements Serializable{
                     serverStarting = false;
                     return ServerStatusEnum.ONLINE;
                 }
-                
+
                 if (serverStarting) {
                     return ServerStatusEnum.BOOTING;
                 }
