@@ -8,4 +8,8 @@ public class CommandService {
     public static Process runPowershellCommand(String command) throws IOException {
         return Runtime.getRuntime().exec(POWERSHELL_PATH + command);
     }
+
+    public static Process runScript(String scriptPath) throws IOException {
+        return Runtime.getRuntime().exec(scriptPath);
+    }
 }
