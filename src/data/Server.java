@@ -69,7 +69,7 @@ public class Server implements Serializable{
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.contains("server-port")) {
-                    port = Integer.parseInt(line.substring(line.indexOf("=")));
+                    port = Integer.parseInt(line.substring(line.indexOf("=")+1));
                 }
             }
         }
@@ -132,7 +132,7 @@ public class Server implements Serializable{
                 if (serverStarting) {
                     return ServerStatusEnum.BOOTING;
                 }
-                
+
                 if (getPID() != -1) {
                     return ServerStatusEnum.ONLINE;
                 }
