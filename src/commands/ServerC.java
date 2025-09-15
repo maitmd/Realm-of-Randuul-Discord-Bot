@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import data.Server;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import net.dv8tion.jda.api.utils.FileUpload;
+import services.CommandService;
 import services.DataHandler;
 import utils.ServerStatusEnum;
 
@@ -99,8 +100,7 @@ public class ServerC extends Command {
                 channel.sendMessage("Attempting to reboot server.. Use '!server status " + server.getServerName() + "' to check current status.").queue();
                 try {
                     String pid = Integer.toString(server.getPID());
-                    String[] commands = {"C:\\Windows\\system32\\taskkill.exe /PID " + pid + " /F"};
-                    Runtime.getRuntime().exec(commands);
+                    CommandService.runPowershellCommand("taskkill /PID " + pid + " /F");
                     
                     Thread.sleep(2);
                     server.startServer();

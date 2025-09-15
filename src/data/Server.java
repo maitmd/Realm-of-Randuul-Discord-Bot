@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Optional;
 
+import services.CommandService;
 import services.DataHandler;
 import utils.ServerStatusEnum;
 
@@ -91,8 +92,7 @@ public class Server implements Serializable{
     }
 
     public int searchForPIDByPort(int port) throws IOException {
-        String[] commands = {"C:\\Windows\\system32\\NETSTAT.EXE -ano | C:\\Windows\\system32\\findstr.exe :" + port};
-        Process process = Runtime.getRuntime().exec(commands);
+        Process process = CommandService.runPowershellCommand("netstat -ano | findstr :" + port);
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
         String line;
@@ -112,8 +112,7 @@ public class Server implements Serializable{
             setPID(-1);
         }
         
-        String[] commands = {".\\\"" + DataHandler.getBaseServerPath() + "start-all.bat\""};
-        Runtime.getRuntime().exec(commands);
+        CommandService.runPowershellCommand(".\\\"" + DataHandler.getBaseServerPath() + "start-all.bat\"");
     }
 
     public ServerStatusEnum getStatus() {
