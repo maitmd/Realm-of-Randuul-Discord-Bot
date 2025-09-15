@@ -129,6 +129,14 @@ public class Server implements Serializable{
                     content.append(line).append("\n");
                 }
 
+                if (serverStarting) {
+                    return ServerStatusEnum.BOOTING;
+                }
+                
+                if (getPID() != -1) {
+                    return ServerStatusEnum.ONLINE;
+                }
+
                 if (content.toString().contains(CRASHED_STRING)) {
                     return ServerStatusEnum.CRASHED;
                 }
@@ -142,13 +150,6 @@ public class Server implements Serializable{
                     return ServerStatusEnum.OFFLINE;
                 }
 
-                if (getPID() != -1) {
-                    return ServerStatusEnum.ONLINE;
-                }
-
-                if (serverStarting) {
-                    return ServerStatusEnum.BOOTING;
-                }
             } catch (IOException e) {
                 System.err.println("Unable to read one of the streams. \n" + e);
                 return ServerStatusEnum.UNKNOWN;
