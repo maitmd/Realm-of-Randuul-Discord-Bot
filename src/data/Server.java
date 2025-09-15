@@ -15,7 +15,6 @@ import utils.ServerStatusEnum;
 
 public class Server implements Serializable{
 
-    public final String FINISH_BOOT_STRING = "[Server thread/INFO] [net.minecraft.server.dedicated.DedicatedServer/]: Done";
     public final String CRASHED_STRING = "Preparing crash report with UUID";
     public final String STOPPED_STRING = "Stopping server";
 
