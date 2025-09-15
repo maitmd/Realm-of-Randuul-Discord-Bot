@@ -31,11 +31,6 @@ public class ServerC extends Command {
             server = DataHandler.getServer(args.get(1));
         }
 
-        if (server == null) {
-            channel.sendMessage("Could not find" + args.get(1) + " are you sure that's the right name?").queue();
-            return;
-        }
-
         switch (args.get(0)) {
             case "add":
                 server = new Server(args.get(1));
@@ -44,6 +39,10 @@ public class ServerC extends Command {
                 DataHandler.save();
                 break;
             case "delete":
+                if (!serverExists(channel, server, args.get(1))) {
+                    return;
+                }
+
                 String serverName = server.getServerName();
 
                 if (DataHandler.removeServer(server)) {
@@ -67,20 +66,36 @@ public class ServerC extends Command {
                 channel.sendMessage("**Servers** ```" + servers + " ```").queue();
                 break;
             case "status":
+                if (!serverExists(channel, server, args.get(1))) {
+                    return;
+                }
+
                 ServerStatusEnum status = server.getStatus();
                 channel.sendMessage("**" + server.getServerName() + "** ```Current Status: " + status + "```").queue();
                 break;
             case "crashreport":
+                if (!serverExists(channel, server, args.get(1))) {
+                    return;
+                }
+
                 channel.sendMessage("The latest crash-report..").queue();
                 File crashReport = server.getCrashReport();
                 channel.sendFiles(FileUpload.fromData(crashReport)).complete();
                 break;
             case "log":
+                if (!serverExists(channel, server, args.get(1))) {
+                    return;
+                }
+
                 channel.sendMessage("The latest log file..").queue();
                 File logFile = server.getLog();
                 channel.sendFiles(FileUpload.fromData(logFile)).complete();
                 break;
             case "restart":
+                if (!serverExists(channel, server, args.get(1))) {
+                    return;
+                }
+
                 channel.sendMessage("Attempting to reboot server.. Use '!server status " + server.getServerName() + "' to check current status.").queue();
                 try {
                     String pid = Integer.toString(server.getPID());
@@ -95,6 +110,10 @@ public class ServerC extends Command {
                 }
                 break;
             case "start":
+                if (!serverExists(channel, server, args.get(1))) {
+                    return;
+                }
+
                 channel.sendMessage("Attempting to start server.. Use '!server status " + server.getServerName() + "' to check current status.").queue();
                 try {
                     server.startServer();
@@ -104,7 +123,27 @@ public class ServerC extends Command {
                 }
                 break;
             case "sendcommand":
+                if (!serverExists(channel, server, args.get(1))) {
+                    return;
+                }
+                
+                try {
+                    String[] commands = {DataHandler.getBaseServerPath() + server.getServerName() + "/rcon.lnk"};
+                    Runtime.getRuntime().exec(commands);
+                } catch (IOException e) {
+                    System.out.println("Unable to send command to server\n" + e);
+                    channel.sendMessage("I wasn't able to reach that realm..").queue();
+                }
                 break;
         }
+    }
+
+    private boolean serverExists(MessageChannelUnion channel, Server server, String serverName) {
+        if (server == null) {
+            channel.sendMessage("Could not find" + serverName + " are you sure that's the right name?").queue();
+            return false;
+        }
+
+        return true;
     }
 }
