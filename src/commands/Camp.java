@@ -9,65 +9,91 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import services.DataHandler;
 public class Camp extends Command{
-	public Camp(MessageChannelUnion channel, String content, Member member, List<Member> mention, Player player) {
+	public Camp(MessageChannelUnion channel, String content, Member member, List<Member> mention, Player messageOwner) {
 		super(jda, twitter);
-		ArrayList<String> args = new ArrayList<String>();
+		ArrayList<String> args;
 		args = getArgs(content, 2);
-		Campaign campaign = DataHandler.getCampaign(args.get(0));
-		
-		if(mention.size() > 0) {
-			for(int i = 0; i < mention.size(); i++) {
-				if(DataHandler.getPlayer(mention.get(0).getUser().getName()) == null) {
-					DataHandler.addPlayer(new Player(mention.get(0).getUser().getName()));
+
+		Campaign campaign = DataHandler.getCampaign(args.get(1));
+
+		if(!mention.isEmpty()) {
+			for(Member mem : mention) {
+				if(DataHandler.getPlayer(mem.getUser().getName()) == null) {
+					DataHandler.addPlayer(new Player(mem.getUser().getName()));
 				}
 			}
 		}
 		
 		switch(args.get(1)) {
 			case "create":
-				args = getArgs(content, 2);
-				player.addCampaign(args.get(0));
-				campaign = DataHandler.getCampaign(args.get(0));
+				campaign = new Campaign(args.get(1), messageOwner);
+				messageOwner.addCampaign(campaign);
 				campaign.display(channel);
 			    break;
 			case "remove":
-				player.removeCampaign(channel, campaign.getName());
+				if (campaign == null) {
+					channel.sendMessage("That universe does not exist").queue();
+					return;
+				}
+				DataHandler.getAllCampaigns().remove(campaign);
 			    break;
 			case "characters":
+				if (campaign == null) {
+					channel.sendMessage("That universe does not exist").queue();
+					return;
+				}
 				args = getArgs(content, 4);
 				switch(args.get(2)) {
 					case "view":
 						campaign.displayCharacters(channel);
 						break;
 					case "add":
-						data.Character chara = player.getCharacter(args.get(3));
-						campaign.addCharacter(channel, chara);
-						try{chara.addCampaign(campaign);}catch(NullPointerException e) {channel.sendMessage("That destiny has yet to be created.").queue(); return;}
+						data.Character character = DataHandler.getCharacter(args.get(3));
+						campaign.addCharacter(channel, character);
+						try{character.addCampaign(campaign);}catch(NullPointerException e) {channel.sendMessage("That destiny has yet to be created.").queue(); return;}
 						break;
 					case "remove":
-						campaign.removeCharacter(channel, args.get(3), player);
+						campaign.removeCharacter(channel, args.get(3), messageOwner);
 						break;
 				}
 			    break;
 			case "players":
+				if (campaign == null) {
+					channel.sendMessage("That universe does not exist").queue();
+					return;
+				}
 				args = getArgs(content, 3);
 				switch(args.get(2)) {
 				case "view":
 					campaign.displayPlayers(channel);
 					break;
 				case "remove":
-					campaign.removePlayer(channel, DataHandler.getPlayer(mention.get(0).getUser().getName()), player);
+					campaign.removePlayer(channel, DataHandler.getPlayer(mention.get(0).getUser().getName()), messageOwner);
 					break;
 				}
 			case "invite":
-				if(mention.size() > 0){
-					for(Member temp : mention) campaign.invitePlayer(channel, DataHandler.getPlayer(member.getUser().getName()), DataHandler.getPlayer(temp.getUser().getName()));
+				if (campaign == null) {
+					channel.sendMessage("That universe does not exist").queue();
+					return;
+				}
+				if(!mention.isEmpty()){
+					for(Member temp : mention) {
+						campaign.invitePlayer(channel, DataHandler.getPlayer(member.getUser().getName()), DataHandler.getPlayer(temp.getUser().getName()));
+					}
 				}
 			    break;
 			case "view": 
+				if (campaign == null) {
+					channel.sendMessage("That universe does not exist").queue();
+					return;
+				}
 				campaign.display(channel);
 				break;
 			case "join":
+				if (campaign == null) {
+					channel.sendMessage("That universe does not exist").queue();
+					return;
+				}
 				campaign.addPlayer(channel, DataHandler.getPlayer(member.getUser().getName()));
 				break;
 			case "nextsession":

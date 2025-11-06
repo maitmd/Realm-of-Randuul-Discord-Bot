@@ -11,16 +11,25 @@ public class TimeTracker implements Runnable {
     @Override
     public void run() {
         removeOldThreads();
+        sendCampaignReminders();
     }
     
-    private LocalDateTime getTime(){
+    private LocalDateTime getTime() {
         return LocalDateTime.now(ZoneId.systemDefault());
     }
 
-    private void removeOldThreads(){
+    private void removeOldThreads() {
         for( ThreadChannel thread : DataHandler.getThreadsToRemove()){
             if(Math.abs(ChronoUnit.DAYS.between(getTime(), thread.getTimeCreated().atZoneSameInstant(ZoneId.systemDefault()))) > 3){
                 thread.delete().complete();
+            }
+        }
+    }
+
+    private void sendCampaignReminders(){
+        for (data.Campaign campaign : DataHandler.getAllCampaigns()) {
+            if (campaign.getNextSession().isAfter(campaign.getNextSession().minusDays(5))) {
+
             }
         }
     }

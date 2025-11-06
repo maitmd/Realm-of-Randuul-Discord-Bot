@@ -19,6 +19,7 @@ public class DataHandler {
 
     private static List<Player> players = new ArrayList<>();
     private static List<Server> servers = new ArrayList<>();
+	private static List<Campaign> campaigns = new ArrayList<>();
 	private static List<ThreadChannel> threadsToRemove = new ArrayList<>();
 
     private static String basePath = "";
@@ -112,15 +113,25 @@ public class DataHandler {
 		return character;
 	}
 	
+	public static void addCampaign(Campaign campaign) {
+		campaigns.add(campaign);
+	}
+
+	public static void removeCampaign(Campaign campaign) {
+		campaigns.remove(campaign);
+	}
+
 	public static Campaign getCampaign(String name) {
-		Campaign campaign = null;
-		
-		for(int i = 0; i < players.size(); i++) {
-			if(players.get(i).getCampaign(name) != null) {
-				campaign = players.get(i).getCampaign(name);
+		for(Campaign camp : campaigns) {
+			if(camp.getName().equalsIgnoreCase(name)) {
+				return camp;
 			}
 		}
-		return campaign;
+		return null;
+	}
+
+	public static List<Campaign> getAllCampaigns() {
+		return campaigns;
 	}
 
 	public static void addThreadToRemove(ThreadChannel thread){

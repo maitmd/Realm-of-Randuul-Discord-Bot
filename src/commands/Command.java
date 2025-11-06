@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import services.DataHandler;
 
 public class Command extends ListenerAdapter{
-	boolean enabled = true;
 	//Listens for messages that are sent in the server if they contain ! in them then the command is processed and
 	//the corresponding child of this class is called.
 

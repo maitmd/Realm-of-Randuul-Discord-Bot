@@ -38,6 +38,6 @@ public class GensoRanduul{
 	public static void startTimeTracker(){
 		TimeTracker timeTracker = new TimeTracker();
 		ScheduledExecutorService timeExec = Executors.newSingleThreadScheduledExecutor();
-		timeExec.scheduleAtFixedRate(timeTracker, 0, 5, TimeUnit.SECONDS);
+		timeExec.scheduleAtFixedRate(timeTracker, 0, 30, TimeUnit.SECONDS);
 	}
 }

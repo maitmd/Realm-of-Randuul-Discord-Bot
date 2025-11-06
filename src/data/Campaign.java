@@ -102,7 +102,17 @@ public class Campaign implements Serializable{
 		
 		channel.sendMessage("You aren't on the list.").queue();
 	}
-	
+
+	public void removePlayer(MessageChannelUnion channel, Player player){
+			if(players.contains(player)) {
+				players.remove(player);
+				channel.sendMessage("Be forgotten").queue();
+				return;
+			}
+		
+		channel.sendMessage("You aren't on the list.").queue();
+	}
+
 	public void invitePlayer(MessageChannelUnion channel, Player dm, Player player) {
 		if(dm == this.dm) {
 			invited.add(player);
